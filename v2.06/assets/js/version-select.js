@@ -1,20 +1,24 @@
 /**
  * Model Release Version Selector Handler
- * Persists selected version in localStorage across navigation (including Home & References)
- * and dynamically synchronizes top navigation tab links.
+ * Universal base path resolution for GitHub Pages (e.g. /ml_web/ or /channel-shape-ML/) and Localhost.
  */
 document.addEventListener("DOMContentLoaded", function () {
     const select = document.getElementById("header-version-select");
     if (!select) return;
 
-    const path = window.location.pathname;
-    let basePath = "/";
-    const metaBase = document.querySelector("base");
-    if (metaBase && metaBase.getAttribute("href")) {
-        basePath = metaBase.getAttribute("href");
-    } else if (path.includes("/channel-shape-ML/")) {
-        basePath = "/channel-shape-ML/";
+    function getBasePath() {
+        const path = window.location.pathname;
+        if (window.location.hostname.endsWith("github.io")) {
+            const segments = path.split("/").filter(Boolean);
+            if (segments.length > 0) {
+                return "/" + segments[0] + "/";
+            }
+        }
+        return "/";
     }
+
+    const basePath = getBasePath();
+    const path = window.location.pathname;
 
     // Relative path within site
     let relPath = path;
@@ -47,13 +51,18 @@ document.addEventListener("DOMContentLoaded", function () {
     // Set dropdown visual value
     select.value = activeVersion;
 
-    // Dynamically update tab links to match active version
+    // Dynamically update tab links to match active version and current basePath
     function updateTabs(version) {
+        const tabHome = document.querySelector('.md-tabs__link[data-tab="home"]');
         const tabOverview = document.querySelector('.md-tabs__link[data-tab="overview"]');
         const tabTW = document.querySelector('.md-tabs__link[data-tab="tw"]');
         const tabY = document.querySelector('.md-tabs__link[data-tab="y"]');
         const tabR = document.querySelector('.md-tabs__link[data-tab="r"]');
         const tabN = document.querySelector('.md-tabs__link[data-tab="n"]');
+        const tabRefs = document.querySelector('.md-tabs__link[data-tab="references"]');
+
+        if (tabHome) tabHome.setAttribute("href", basePath);
+        if (tabRefs) tabRefs.setAttribute("href", basePath + "references/");
 
         if (version === "v1.0") {
             if (tabOverview) tabOverview.setAttribute("href", basePath + "v1.0/overview/");
