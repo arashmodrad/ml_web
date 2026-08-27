@@ -1,0 +1,53 @@
+{#-
+  Custom navigation sidebar with seamless background river catchment graphic in empty space.
+  Dynamically isolates v1.0 vs v2.06 navigation items based on active page URL.
+-#}
+{% import "partials/nav-item.html" as item with context %}
+{% set class = "md-nav md-nav--primary" %}
+{% if "navigation.tabs" in features %}
+  {% set class = class ~ " md-nav--lifted" %}
+{% endif %}
+{% if "toc.integrate" in features %}
+  {% set class = class ~ " md-nav--integrated" %}
+{% endif %}
+{% set is_v1 = "v1.0/" in page.url %}
+
+<nav class="{{ class }}" aria-label="{{ lang.t('nav') }}" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="{{ config.extra.homepage | d(nav.homepage.url, true) | url }}" title="{{ config.site_name | e }}" class="md-nav__button md-logo" aria-label="{{ config.site_name }}" data-md-component="logo">
+      {% include "partials/logo.html" %}
+    </a>
+    {{ config.site_name }}
+  </label>
+  {% if config.repo_url %}
+    <div class="md-nav__source">
+      {% include "partials/source.html" %}
+    </div>
+  {% endif %}
+  <ul class="md-nav__list" data-md-scrollfix>
+    {% if is_v1 %}
+      {# In v1.0 mode: render only the children of the v1.0 section #}
+      {% for nav_item in nav.items %}
+        {% if "v1.0" in nav_item.title %}
+          {% for v1_sub in nav_item.children %}
+            {% set path = "__nav_v1_" ~ loop.index %}
+            {{ item.render(v1_sub, path, 1) }}
+          {% endfor %}
+        {% endif %}
+      {% endfor %}
+    {% else %}
+      {# In v2.06 mode: render all items EXCEPT v1.0 #}
+      {% for nav_item in nav.items %}
+        {% if "v1.0" not in nav_item.title %}
+          {% set path = "__nav_" ~ loop.index %}
+          {{ item.render(nav_item, path, 1) }}
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+  </ul>
+
+  <!-- Seamless Frameless Left Sidebar River Background -->
+  <div class="sidebar-watershed-container">
+    <canvas id="sidebar-watershed-canvas"></canvas>
+  </div>
+</nav>
