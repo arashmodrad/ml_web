@@ -6,6 +6,13 @@ __pycache__/
 # C extensions
 *.so
 
+# paths
+code_base/*
+assets/*
+# MkDocs build output & linked assets
+site/
+.cache/
+
 # Distribution / packaging
 .Python
 build/
