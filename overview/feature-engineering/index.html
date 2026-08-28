@@ -7,29 +7,31 @@
       
       
       
-        <link rel="canonical" href="https://noaa-owp.github.io/channel-shape-ML/">
+        <link rel="canonical" href="https://noaa-owp.github.io/channel-shape-ML/overview/feature-engineering/">
       
       
+        <link rel="prev" href="../data-sources/">
       
-        <link rel="next" href="overview/">
+      
+        <link rel="next" href="../xai/">
       
       
         
       
       
-      <link rel="icon" href="assets/noaa_digital_logo-2022.png">
+      <link rel="icon" href="../../assets/noaa_digital_logo-2022.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
-        <title>Home - ML Channel Geometry &amp; Hydraulics Parameterization</title>
+        <title>Feature Engineering - ML Channel Geometry &amp; Hydraulics Parameterization</title>
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/main.ec1eaa64.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
       
         
-        <link rel="stylesheet" href="assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -48,15 +50,15 @@
       
     
     
-      <link rel="stylesheet" href="assets/css/custom.css">
+      <link rel="stylesheet" href="../../assets/css/custom.css">
     
-    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
     
     
-  <link href="assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+  <link href="../../assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="../../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
             html.glightbox-open { overflow: initial; height: 100%; }
             .gslide-title { margin-top: 0px; user-select: text; }
             .gslide-desc { color: #666; user-select: text; }
@@ -85,7 +87,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#topwidth" class="md-skip">
+        <a href="#feature-engineering" class="md-skip">
           Skip to content
         </a>
       
@@ -101,10 +103,10 @@
 
 <header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="." title="ML Channel Geometry &amp; Hydraulics Parameterization" class="md-header__button md-logo" aria-label="ML Channel Geometry &amp; Hydraulics Parameterization" data-md-component="logo">
+    <a href="../.." title="ML Channel Geometry &amp; Hydraulics Parameterization" class="md-header__button md-logo" aria-label="ML Channel Geometry &amp; Hydraulics Parameterization" data-md-component="logo">
       <div class="header-dual-logos">
-  <img src="assets/noaa_digital_logo-2022.png" alt="NOAA Logo" class="header-brand-logo noaa">
-  <img src="assets/Lynker-Primary-Logo.png" alt="Lynker Logo" class="header-brand-logo lynker">
+  <img src="../../assets/noaa_digital_logo-2022.png" alt="NOAA Logo" class="header-brand-logo noaa">
+  <img src="../../assets/Lynker-Primary-Logo.png" alt="Lynker Logo" class="header-brand-logo lynker">
 </div>
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -121,7 +123,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Home
+              Feature Engineering
             
           </span>
         </div>
@@ -234,7 +236,7 @@
     <ul class="md-tabs__list">
       <!-- 1. Home Tab -->
       <li class="md-tabs__item">
-        <a href="." class="md-tabs__link md-tabs__link--active" data-tab="home">
+        <a href="../.." class="md-tabs__link" data-tab="home">
           Home
         </a>
       </li>
@@ -242,7 +244,7 @@
       <!-- 2. Pipeline Overview Tab -->
       <li class="md-tabs__item">
         
-          <a href="overview/" class="md-tabs__link" data-tab="overview">
+          <a href="../" class="md-tabs__link md-tabs__link--active" data-tab="overview">
             Pipeline Overview
           </a>
         
@@ -251,7 +253,7 @@
       <!-- 3. TopWidth Tab -->
       <li class="md-tabs__item">
         
-          <a href="tw/" class="md-tabs__link" data-tab="tw">
+          <a href="../../tw/" class="md-tabs__link" data-tab="tw">
             TopWidth
           </a>
         
@@ -260,7 +262,7 @@
       <!-- 4. Depth Tab -->
       <li class="md-tabs__item">
         
-          <a href="y/" class="md-tabs__link" data-tab="y">
+          <a href="../../y/" class="md-tabs__link" data-tab="y">
             Depth
           </a>
         
@@ -269,7 +271,7 @@
       <!-- 5. Shape Tab -->
       <li class="md-tabs__item">
         
-          <a href="r/" class="md-tabs__link" data-tab="r">
+          <a href="../../r/" class="md-tabs__link" data-tab="r">
             Shape
           </a>
         
@@ -278,7 +280,7 @@
       <!-- 6. Roughness Tab -->
       <li class="md-tabs__item">
         
-          <a href="n/" class="md-tabs__link" data-tab="n">
+          <a href="../../n/" class="md-tabs__link" data-tab="n">
             Roughness
           </a>
         
@@ -286,7 +288,7 @@
 
       <!-- 7. References Tab -->
       <li class="md-tabs__item">
-        <a href="references/" class="md-tabs__link" data-tab="references">
+        <a href="../../references/" class="md-tabs__link" data-tab="references">
           References
         </a>
       </li>
@@ -300,26 +302,6 @@
     <div class="md-container" data-md-component="container">
       
 
-<section class="hero-section">
-  <canvas id="neural-watershed-canvas"></canvas>
-  <div class="hero-content">
-    <h1 class="hero-title">Machine Learning-Powered Channel Parameterization</h1>
-    <p class="hero-subtitle">
-      A physics-guided, multi-stage <strong>machine learning pipeline</strong> for predicting
-      bankfull width, depth, cross-section shape, and Manning's roughness
-      at continental scale river reaches.
-    </p>
-    <div class="hero-badges">
-      <span class="hero-badge">2.8M+ Reaches</span>
-      <span class="hero-badge">Explainable AI (XAI)</span>
-      <span class="hero-badge">Hybrid Ensembles</span>
-      <span class="hero-badge">Confidence-Quantified</span>
-      <span class="hero-badge">Version 2.06</span>
-    </div>
-    <a href="overview/" class="hero-cta">Explore the Pipeline →</a>
-  </div>
-</section>
-
 
       
         
@@ -329,9 +311,7 @@
           
             
               
-                
-              
-              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden="">
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
                     
@@ -344,10 +324,10 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="." title="ML Channel Geometry &amp; Hydraulics Parameterization" class="md-nav__button md-logo" aria-label="ML Channel Geometry &amp; Hydraulics Parameterization" data-md-component="logo">
+    <a href="../.." title="ML Channel Geometry &amp; Hydraulics Parameterization" class="md-nav__button md-logo" aria-label="ML Channel Geometry &amp; Hydraulics Parameterization" data-md-component="logo">
       <div class="header-dual-logos">
-  <img src="assets/noaa_digital_logo-2022.png" alt="NOAA Logo" class="header-brand-logo noaa">
-  <img src="assets/Lynker-Primary-Logo.png" alt="Lynker Logo" class="header-brand-logo lynker">
+  <img src="../../assets/noaa_digital_logo-2022.png" alt="NOAA Logo" class="header-brand-logo noaa">
+  <img src="../../assets/Lynker-Primary-Logo.png" alt="Lynker Logo" class="header-brand-logo lynker">
 </div>
     </a>
     ML Channel Geometry &amp; Hydraulics Parameterization
@@ -371,35 +351,10 @@
           
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Home
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="." class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
         
   
   
@@ -415,79 +370,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
-      
-        <li class="md-nav__item">
-  <a href="#topwidth" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        TopWidth
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#depth" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Depth
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#shape" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Shape
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#roughness" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Roughness
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#key-capabilities" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Key Capabilities
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -498,6 +380,8 @@
           
   
   
+    
+  
   
   
     
@@ -519,22 +403,23 @@
     
     
       
+        
+        
+      
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2">
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked="">
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="overview/" class="md-nav__link ">
+            <a href="../" class="md-nav__link ">
               
   
   
@@ -552,13 +437,13 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
             
@@ -578,7 +463,7 @@
   
   
     <li class="md-nav__item">
-      <a href="overview/data-sources/" class="md-nav__link">
+      <a href="../data-sources/" class="md-nav__link">
         
   
   
@@ -603,10 +488,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="overview/feature-engineering/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Feature Engineering
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -622,6 +534,164 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+      
+        <li class="md-nav__item">
+  <a href="#glossary-of-raw-inputs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Glossary of Raw Inputs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#feature-dependency-cascade" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Feature Dependency Cascade
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#multicollinearity-resolution-feature-selection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multicollinearity Resolution &amp; Feature Selection
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Multicollinearity Resolution &amp; Feature Selection">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-spearman-rank-correlation-screening" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Spearman Rank Correlation Screening
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-initial-predictive-utility-assessment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Initial Predictive Utility Assessment
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-information-driven-pruning-retention" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Information-Driven Pruning &amp; Retention
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-downstream-pipeline-ingestion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Downstream Pipeline Ingestion
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#base-hydro-geomorphic-features" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Base Hydro-Geomorphic Features
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stage-1-prediction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage 1 Prediction
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stage-2-derived-prediction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage 2 Derived + Prediction
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stage-3-derived-prediction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage 3 Derived + Prediction
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stage-4-derived-prediction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage 4 Derived + Prediction
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -634,7 +704,7 @@
   
   
     <li class="md-nav__item">
-      <a href="overview/xai/" class="md-nav__link">
+      <a href="../xai/" class="md-nav__link">
         
   
   
@@ -662,7 +732,7 @@
   
   
     <li class="md-nav__item">
-      <a href="overview/study-area/" class="md-nav__link">
+      <a href="../study-area/" class="md-nav__link">
         
   
   
@@ -734,7 +804,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="tw/" class="md-nav__link ">
+            <a href="../../tw/" class="md-nav__link ">
               
   
   
@@ -778,7 +848,7 @@
   
   
     <li class="md-nav__item">
-      <a href="tw/literature/" class="md-nav__link">
+      <a href="../../tw/literature/" class="md-nav__link">
         
   
   
@@ -806,7 +876,7 @@
   
   
     <li class="md-nav__item">
-      <a href="tw/models/" class="md-nav__link">
+      <a href="../../tw/models/" class="md-nav__link">
         
   
   
@@ -834,7 +904,7 @@
   
   
     <li class="md-nav__item">
-      <a href="tw/skill/" class="md-nav__link">
+      <a href="../../tw/skill/" class="md-nav__link">
         
   
   
@@ -862,7 +932,7 @@
   
   
     <li class="md-nav__item">
-      <a href="tw/uncertainty/" class="md-nav__link">
+      <a href="../../tw/uncertainty/" class="md-nav__link">
         
   
   
@@ -890,7 +960,7 @@
   
   
     <li class="md-nav__item">
-      <a href="tw/xai/" class="md-nav__link">
+      <a href="../../tw/xai/" class="md-nav__link">
         
   
   
@@ -962,7 +1032,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="y/" class="md-nav__link ">
+            <a href="../../y/" class="md-nav__link ">
               
   
   
@@ -1006,7 +1076,7 @@
   
   
     <li class="md-nav__item">
-      <a href="y/literature/" class="md-nav__link">
+      <a href="../../y/literature/" class="md-nav__link">
         
   
   
@@ -1034,7 +1104,7 @@
   
   
     <li class="md-nav__item">
-      <a href="y/models/" class="md-nav__link">
+      <a href="../../y/models/" class="md-nav__link">
         
   
   
@@ -1062,7 +1132,7 @@
   
   
     <li class="md-nav__item">
-      <a href="y/skill/" class="md-nav__link">
+      <a href="../../y/skill/" class="md-nav__link">
         
   
   
@@ -1090,7 +1160,7 @@
   
   
     <li class="md-nav__item">
-      <a href="y/uncertainty/" class="md-nav__link">
+      <a href="../../y/uncertainty/" class="md-nav__link">
         
   
   
@@ -1118,7 +1188,7 @@
   
   
     <li class="md-nav__item">
-      <a href="y/xai/" class="md-nav__link">
+      <a href="../../y/xai/" class="md-nav__link">
         
   
   
@@ -1190,7 +1260,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="r/" class="md-nav__link ">
+            <a href="../../r/" class="md-nav__link ">
               
   
   
@@ -1234,7 +1304,7 @@
   
   
     <li class="md-nav__item">
-      <a href="r/literature/" class="md-nav__link">
+      <a href="../../r/literature/" class="md-nav__link">
         
   
   
@@ -1262,7 +1332,7 @@
   
   
     <li class="md-nav__item">
-      <a href="r/models/" class="md-nav__link">
+      <a href="../../r/models/" class="md-nav__link">
         
   
   
@@ -1290,7 +1360,7 @@
   
   
     <li class="md-nav__item">
-      <a href="r/skill/" class="md-nav__link">
+      <a href="../../r/skill/" class="md-nav__link">
         
   
   
@@ -1318,7 +1388,7 @@
   
   
     <li class="md-nav__item">
-      <a href="r/uncertainty/" class="md-nav__link">
+      <a href="../../r/uncertainty/" class="md-nav__link">
         
   
   
@@ -1346,7 +1416,7 @@
   
   
     <li class="md-nav__item">
-      <a href="r/xai/" class="md-nav__link">
+      <a href="../../r/xai/" class="md-nav__link">
         
   
   
@@ -1414,7 +1484,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="n/" class="md-nav__link ">
+            <a href="../../n/" class="md-nav__link ">
               
   
   
@@ -1524,7 +1594,7 @@
   
   
     <li class="md-nav__item">
-      <a href="n/n-single/literature/" class="md-nav__link">
+      <a href="../../n/n-single/literature/" class="md-nav__link">
         
   
   
@@ -1552,7 +1622,7 @@
   
   
     <li class="md-nav__item">
-      <a href="n/n-single/models/" class="md-nav__link">
+      <a href="../../n/n-single/models/" class="md-nav__link">
         
   
   
@@ -1580,7 +1650,7 @@
   
   
     <li class="md-nav__item">
-      <a href="n/n-single/skill/" class="md-nav__link">
+      <a href="../../n/n-single/skill/" class="md-nav__link">
         
   
   
@@ -1608,7 +1678,7 @@
   
   
     <li class="md-nav__item">
-      <a href="n/n-single/uncertainty/" class="md-nav__link">
+      <a href="../../n/n-single/uncertainty/" class="md-nav__link">
         
   
   
@@ -1636,7 +1706,7 @@
   
   
     <li class="md-nav__item">
-      <a href="n/n-single/xai/" class="md-nav__link">
+      <a href="../../n/n-single/xai/" class="md-nav__link">
         
   
   
@@ -1738,7 +1808,7 @@
   
   
     <li class="md-nav__item">
-      <a href="n/n-in/literature/" class="md-nav__link">
+      <a href="../../n/n-in/literature/" class="md-nav__link">
         
   
   
@@ -1766,7 +1836,7 @@
   
   
     <li class="md-nav__item">
-      <a href="n/n-in/models/" class="md-nav__link">
+      <a href="../../n/n-in/models/" class="md-nav__link">
         
   
   
@@ -1794,7 +1864,7 @@
   
   
     <li class="md-nav__item">
-      <a href="n/n-in/skill/" class="md-nav__link">
+      <a href="../../n/n-in/skill/" class="md-nav__link">
         
   
   
@@ -1822,7 +1892,7 @@
   
   
     <li class="md-nav__item">
-      <a href="n/n-in/uncertainty/" class="md-nav__link">
+      <a href="../../n/n-in/uncertainty/" class="md-nav__link">
         
   
   
@@ -1850,7 +1920,7 @@
   
   
     <li class="md-nav__item">
-      <a href="n/n-in/xai/" class="md-nav__link">
+      <a href="../../n/n-in/xai/" class="md-nav__link">
         
   
   
@@ -1952,7 +2022,7 @@
   
   
     <li class="md-nav__item">
-      <a href="n/n-out/literature/" class="md-nav__link">
+      <a href="../../n/n-out/literature/" class="md-nav__link">
         
   
   
@@ -1980,7 +2050,7 @@
   
   
     <li class="md-nav__item">
-      <a href="n/n-out/models/" class="md-nav__link">
+      <a href="../../n/n-out/models/" class="md-nav__link">
         
   
   
@@ -2008,7 +2078,7 @@
   
   
     <li class="md-nav__item">
-      <a href="n/n-out/skill/" class="md-nav__link">
+      <a href="../../n/n-out/skill/" class="md-nav__link">
         
   
   
@@ -2036,7 +2106,7 @@
   
   
     <li class="md-nav__item">
-      <a href="n/n-out/uncertainty/" class="md-nav__link">
+      <a href="../../n/n-out/uncertainty/" class="md-nav__link">
         
   
   
@@ -2064,7 +2134,7 @@
   
   
     <li class="md-nav__item">
-      <a href="n/n-out/xai/" class="md-nav__link">
+      <a href="../../n/n-out/xai/" class="md-nav__link">
         
   
   
@@ -2111,7 +2181,7 @@
   
   
     <li class="md-nav__item">
-      <a href="references/" class="md-nav__link">
+      <a href="../../references/" class="md-nav__link">
         
   
   
@@ -2146,9 +2216,7 @@
             
             
               
-                
-              
-              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" hidden="">
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
                     
@@ -2156,6 +2224,8 @@
 <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
   
   
+  
+    
   
   
     <label class="md-nav__title" for="__toc">
@@ -2165,10 +2235,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
       
         <li class="md-nav__item">
-  <a href="#topwidth" class="md-nav__link">
+  <a href="#glossary-of-raw-inputs" class="md-nav__link">
     <span class="md-ellipsis">
       
-        TopWidth
+        Glossary of Raw Inputs
       
     </span>
   </a>
@@ -2176,10 +2246,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#depth" class="md-nav__link">
+  <a href="#feature-dependency-cascade" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Depth
+        Feature Dependency Cascade
       
     </span>
   </a>
@@ -2187,10 +2257,71 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#shape" class="md-nav__link">
+  <a href="#multicollinearity-resolution-feature-selection" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Shape
+        Multicollinearity Resolution &amp; Feature Selection
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Multicollinearity Resolution &amp; Feature Selection">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-spearman-rank-correlation-screening" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Spearman Rank Correlation Screening
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-initial-predictive-utility-assessment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Initial Predictive Utility Assessment
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-information-driven-pruning-retention" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Information-Driven Pruning &amp; Retention
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-downstream-pipeline-ingestion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Downstream Pipeline Ingestion
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#base-hydro-geomorphic-features" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Base Hydro-Geomorphic Features
       
     </span>
   </a>
@@ -2198,10 +2329,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#roughness" class="md-nav__link">
+  <a href="#stage-1-prediction" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Roughness
+        Stage 1 Prediction
       
     </span>
   </a>
@@ -2209,10 +2340,32 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#key-capabilities" class="md-nav__link">
+  <a href="#stage-2-derived-prediction" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Key Capabilities
+        Stage 2 Derived + Prediction
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stage-3-derived-prediction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage 3 Derived + Prediction
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stage-4-derived-prediction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage 4 Derived + Prediction
       
     </span>
   </a>
@@ -2233,64 +2386,170 @@
               <article class="md-content__inner md-typeset">
                 
                   
-  
-
 
 
   
   
 
 
-  <h1>Home</h1>
-
-<div class="pipeline-cards">
-<div class="pipeline-card">
-<h2 id="topwidth">TopWidth<a class="headerlink" href="#topwidth" title="Permanent link">¶</a></h2>
-<p><strong>Bankfull Channel Width (<span class="arithmatex">\( W \propto Q^b \)</span>)</strong>
-<a href="tw/">Explore →</a></p>
-</div>
-<div class="pipeline-card">
-<h2 id="depth">Depth<a class="headerlink" href="#depth" title="Permanent link">¶</a></h2>
-<p><strong>Bankfull Depth (<span class="arithmatex">\( d \propto Q^f \)</span>)</strong>
-<a href="y/">Explore →</a></p>
-</div>
-<div class="pipeline-card">
-<h2 id="shape">Shape<a class="headerlink" href="#shape" title="Permanent link">¶</a></h2>
-<p><strong>Dingman Shape Exponent (<span class="arithmatex">\( r \)</span>)</strong>
-<a href="r/">Explore →</a></p>
-</div>
-<div class="pipeline-card">
-<h2 id="roughness">Roughness<a class="headerlink" href="#roughness" title="Permanent link">¶</a></h2>
-<p><strong>Manning's <span class="arithmatex">\( n \)</span></strong>
-<a href="n/">Explore →</a></p>
-</div>
-</div>
-<!-- <div class="stage-flow" markdown>
-<pre class="mermaid"><code>graph LR
-    S1[TopWidth] --&gt; S2[Depth]
-    S2 --&gt; S3[Shape]
-    S3 --&gt; S4[Roughness]</code></pre>
-</div> -->
-
-<div class="home-capabilities-container">
-<div class="home-capabilities-left">
-<h2 id="key-capabilities">Key Capabilities<a class="headerlink" href="#key-capabilities" title="Permanent link">¶</a></h2>
-<div class="capabilities-grid">
+<h1 id="feature-engineering">Feature Engineering<a class="headerlink" href="#feature-engineering" title="Permanent link">¶</a></h1>
+<h2 id="glossary-of-raw-inputs">Glossary of Raw Inputs<a class="headerlink" href="#glossary-of-raw-inputs" title="Permanent link">¶</a></h2>
 <ul>
-<li><strong>Physics-Informed Features</strong>: Feature engineering grounded in fluvial geomorphology.</li>
-<li><strong>Hybrid Ensemble</strong>: Attention-augmented deep residual tabular network (PhysicalResTabNet) combined with gradient-boosted decision forest ensemble.</li>
-<li><strong>Continental Coverage</strong>: Inference across 2.8M+ reaches across US territories (SUPERCONUS, AK, HI, PRVI).</li>
-<li><strong>Confidence Quantification</strong>: Ensemble epistemic uncertainty with ML Confidence Score.</li>
-<li><strong>Explainable AI</strong>: Model interpretability via SHAP, PDP/ICE, and Causal DML.</li>
-<li><strong>Topological Regularization</strong>: Graph based deep learning regularization for network continuity.</li>
+<li><code>totdasqkm</code>: Total upstream drainage area (<span class="arithmatex">\(\text{km}^2\)</span>)</li>
+<li><code>slope</code>: Channel bed slope (dimensionless)</li>
+<li><code>arb_sum</code>: Sum of lengths of all upstream flowlines</li>
+<li><code>pathlength</code>: Downstream path length to a sink</li>
+<li><code>terminalfl</code>: Binary indicator (1 if flowline drains into a sink/ocean)</li>
+<li><code>streamorder</code>: Strahler stream order</li>
 </ul>
-</div>
-</div>
-<div class="home-capabilities-right">
-<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="assets/images/workflow.jpg" data-desc-position="bottom"><img alt="ML Pipeline Architecture" loading="lazy" src="assets/images/workflow.jpg"></a></p>
-</div>
-</div>
-<p>This ML pipeline was developed to provide robust, scalable, and physically-consistent estimates of channel geometry and roughness for the National Water Model.</p>
+<h2 id="feature-dependency-cascade">Feature Dependency Cascade<a class="headerlink" href="#feature-dependency-cascade" title="Permanent link">¶</a></h2>
+<pre class="mermaid"><code>graph TD
+    B[Base Features] --&gt; S1[Stage 1: TopWidth]
+    B --&gt; S2[Stage 2: Depth]
+    S1 --&gt; S2
+    B --&gt; S3[Stage 3: Shape]
+    S1 --&gt; S3
+    S2 --&gt; S3
+    B --&gt; S4[Stage 4: Roughness]
+    S1 --&gt; S4
+    S2 --&gt; S4
+    S3 --&gt; S4</code></pre>
+<h2 id="multicollinearity-resolution-feature-selection">Multicollinearity Resolution &amp; Feature Selection<a class="headerlink" href="#multicollinearity-resolution-feature-selection" title="Permanent link">¶</a></h2>
+<p>Geomorphic and hydrographic attributes derived from river networks often exhibit strong mutual correlations (e.g., drainage area, cumulative stream length). If unaddressed, high multicollinearity destabilizes model coefficients, inflates parameter variance, and distorts feature attribution.</p>
+<p>To ensure robust and interpretable models, the framework incorporates an <strong>information-driven multicollinearity resolution protocol</strong> prior to model training:</p>
+<h3 id="1-spearman-rank-correlation-screening">1. Spearman Rank Correlation Screening<a class="headerlink" href="#1-spearman-rank-correlation-screening" title="Permanent link">¶</a></h3>
+<p>The pairwise non-parametric monotonic relationship across all candidate features is evaluated:</p>
+<div class="arithmatex">\[
+|r_s(f_1, f_2)| = \left| \text{corr}_{\text{spearman}}(f_1, f_2) \right|
+\]</div>
+<p>All feature pairs exhibiting high correlation (<span class="arithmatex">\(|r_s| &gt; 0.75\)</span>) are flagged for redundancy resolution.</p>
+<h3 id="2-initial-predictive-utility-assessment">2. Initial Predictive Utility Assessment<a class="headerlink" href="#2-initial-predictive-utility-assessment" title="Permanent link">¶</a></h3>
+<p>To determine which variable to keep in each collinear pair, an initial evaluative gradient-boosted tree probe assesses the relative predictive power of every candidate feature against the target variable. Each feature receives an initial empirical importance score:</p>
+<div class="arithmatex">\[
+\text{imp}(f)
+\]</div>
+<h3 id="3-information-driven-pruning-retention">3. Information-Driven Pruning &amp; Retention<a class="headerlink" href="#3-information-driven-pruning-retention" title="Permanent link">¶</a></h3>
+<p>For every collinear pair <span class="arithmatex">\((f_1, f_2)\)</span> with <span class="arithmatex">\(|r_s| &gt; 0.75\)</span>:</p>
+<ul>
+<li><strong>Retention</strong>: The feature with the higher predictive importance score is preserved.</li>
+<li><strong>Pruning</strong>: The redundant collinear counterpart with lower predictive power is systematically dropped.</li>
+<li><strong>Provenance Logging</strong>: The dropped variable, its collinear partner, the correlation magnitude, and relative importance scores are recorded in the model deployment metadata for transparency and auditability.</li>
+</ul>
+<h3 id="4-downstream-pipeline-ingestion">4. Downstream Pipeline Ingestion<a class="headerlink" href="#4-downstream-pipeline-ingestion" title="Permanent link">¶</a></h3>
+<p>Only the selected, non-redundant feature subset advances to subsequent preprocessing stages (log/log1p transformations, quantile bounds clipping) and final hybrid ensemble model training.</p>
+<hr>
+<h2 id="base-hydro-geomorphic-features">Base Hydro-Geomorphic Features<a class="headerlink" href="#base-hydro-geomorphic-features" title="Permanent link">¶</a></h2>
+<p><strong><code>S_stabilized</code></strong></p>
+<div class="arithmatex">\[
+S_{\text{stabilized}} = \frac{L_{\text{curved}}}{D_{\text{Euclidean}}}
+\]</div>
+<p>Stabilized Sinuosity: Represents channel meandering. Stabilizing short reaches prevents division-by-zero and artificial sinuosity spikes from GIS discretization artifacts [1].</p>
+<p><strong><code>SPI_actual</code></strong></p>
+<div class="arithmatex">\[
+\text{SPI}_{\text{actual}} = \text{totdasqkm} \times \text{slope}
+\]</div>
+<p>Stream Power Index Proxy: Proportional to the total kinetic energy potential of the flow, driving sediment transport and channel-widening capacity [3].</p>
+<p><strong><code>V_bf_proxy</code></strong></p>
+<div class="arithmatex">\[
+V_{\text{bf_proxy}} = \frac{\text{totdasqkm}^{0.27} \times \sqrt{\text{slope} + \epsilon}}{S_{\text{stabilized}}}
+\]</div>
+<p>Bankfull Velocity Proxy: Replaces segment-dependent travel-time. Captures localized flow speed and energy state independently of GIS-segment splits [8].</p>
+<p><strong><code>FCD</code></strong></p>
+<div class="arithmatex">\[
+\text{FCD} = \frac{\text{slope}}{\text{totdasqkm}^{-0.45} + \epsilon}
+\]</div>
+<p>Fluvial Concavity Deviation: Measures local slope deviation from Flint’s Law. Identifies geological knickpoints (high values) and depositional flats (low values) [4].</p>
+<p><strong><code>FS_proxy</code></strong></p>
+<div class="arithmatex">\[
+\text{FS}_{\text{proxy}} = \frac{S_{\text{stabilized}} \times \sqrt{\text{totdasqkm}}}{\text{slope} + \epsilon}
+\]</div>
+<p>Floodplain Storage Proxy: Uses the regional scaling of valley width (<span class="arithmatex">\( \propto \sqrt{A} \)</span>) to estimate lateral floodplain space and storage capacity [1].</p>
+<p><strong><code>HD</code></strong></p>
+<div class="arithmatex">\[
+\text{HD} = \frac{\text{arb_sum}}{\text{totdasqkm}^{0.55} + \epsilon}
+\]</div>
+<p>Hack's Law Deviation: Evaluates drainage basin elongation (<span class="arithmatex">\( L \propto A^{0.55} \)</span>). Captures hydrograph shape variations and peak discharge timing [5].</p>
+<p><strong><code>RP</code></strong></p>
+<div class="arithmatex">\[
+\text{RP} = \frac{\text{pathlength}}{\text{pathlength} + \text{arb_sum} + \epsilon}
+\]</div>
+<p>Relative Position: A scale-independent ratio defining where the reach sits along the headwater-to-outlet continuum.</p>
+<p><strong><code>UCR</code></strong></p>
+<div class="arithmatex">\[
+\text{UCR} = \frac{\text{totdasqkm}}{\sum \text{upstream_totda} + \epsilon}
+\]</div>
+<p>Upstream Convergence Ratio: Identifies major network confluences where rapid changes in water and sediment discharge alter channel width and depth.</p>
+<hr>
+<h2 id="stage-1-prediction">Stage 1 Prediction<a class="headerlink" href="#stage-1-prediction" title="Permanent link">¶</a></h2>
+<p><strong><code>tw_bf_pred</code></strong>
+Predicted Target: Bankfull channel width, scaling as <span class="arithmatex">\( W \propto Q^b \)</span> [2]. Uses the 8 Base Predictors.</p>
+<hr>
+<h2 id="stage-2-derived-prediction">Stage 2 Derived + Prediction<a class="headerlink" href="#stage-2-derived-prediction" title="Permanent link">¶</a></h2>
+<p><strong><code>WDR</code></strong></p>
+<div class="arithmatex">\[
+\text{WDR} = \frac{\text{tw_bf_pred}}{\sqrt{\text{totdasqkm}} + \epsilon}
+\]</div>
+<p>Width-to-Drainage Ratio: Dimensionless metric showing how wide the channel is relative to regional curves. High values indicate shallow, braided, or aggraded channels [2].</p>
+<p><strong><code>WSP</code></strong></p>
+<div class="arithmatex">\[
+\text{WSP} = \text{tw_bf_pred} \times \text{slope}
+\]</div>
+<p>Width-Slope Product: Proportional to the lateral-to-bed shear stress ratio. Helps the model constrain bankfull depth based on available energy [3].</p>
+<p><strong><code>y_bf_pred</code></strong>
+Predicted Target: Bankfull channel depth, scaling as <span class="arithmatex">\( d \propto Q^f \)</span> and constrained by width and aspect ratio [2]. Uses 8 Base + <code>tw_bf_pred</code> + <code>WDR</code> + <code>WSP</code>.</p>
+<hr>
+<h2 id="stage-3-derived-prediction">Stage 3 Derived + Prediction<a class="headerlink" href="#stage-3-derived-prediction" title="Permanent link">¶</a></h2>
+<p><strong><code>AR_channel</code></strong></p>
+<div class="arithmatex">\[
+\text{AR}_{\text{channel}} = \frac{\text{tw_bf_pred}}{\text{y_bf_pred} + \epsilon}
+\]</div>
+<p>Aspect Ratio (W/D): The primary geomorphic classifier. Narrow/deep channels behave differently from wide/shallow channels [3].</p>
+<p><strong><code>HSI</code></strong></p>
+<div class="arithmatex">\[
+\text{HSI} = \frac{\text{tw_bf_pred} \times \text{y_bf_pred}}{\text{totdasqkm} + \epsilon}
+\]</div>
+<p>Hydraulic Scale Index: Compares bankfull cross-sectional area to drainage area, reflecting regional water routing and conveying efficiency [6].</p>
+<p><strong><code>SWR</code></strong></p>
+<div class="arithmatex">\[
+\text{SWR} = \frac{\text{slope} \times \text{y_bf_pred}}{\text{tw_bf_pred} + \epsilon}
+\]</div>
+<p>Shear-to-Width Ratio: A proxy for tractive force distribution. High values indicate high bed-shear relative to bank stability, driving rectangular or bedrock-confined shapes [3].</p>
+<p><strong><code>r_pred</code></strong>
+Predicted Target: Dingman <span class="arithmatex">\( r \)</span> (dimensionless). Defines cross-section shape exponent (<span class="arithmatex">\( r=1 \)</span> triangular, <span class="arithmatex">\( r=2 \)</span> parabolic, <span class="arithmatex">\( r \to \infty \)</span> rectangular) [6]. Uses 8 Base + Stage 1 &amp; 2 outputs + Stage 3 derived features.</p>
+<hr>
+<h2 id="stage-4-derived-prediction">Stage 4 Derived + Prediction<a class="headerlink" href="#stage-4-derived-prediction" title="Permanent link">¶</a></h2>
+<p><strong><code>A_bf</code></strong></p>
+<div class="arithmatex">\[
+A_{\text{bf}} = \left(\frac{\text{r_pred}}{\text{r_pred} + 1}\right) \times \text{tw_bf_pred} \times \text{y_bf_pred}
+\]</div>
+<p>Dingman Bankfull Area: Exact analytical cross-sectional area of a power-law channel [6].</p>
+<p><strong><code>P_bf</code></strong></p>
+<div class="arithmatex">\[
+P_{\text{bf}} = \text{tw_bf_pred} + \left(\frac{2 \times \text{r_pred}}{\text{r_pred} + 1}\right) \times \frac{\text{y_bf_pred}^2}{\text{tw_bf_pred} + \epsilon}
+\]</div>
+<p>Dingman Bankfull Wetted Perimeter: Wetted boundary length calculated analytically from the power-law geometry [6].</p>
+<p><strong><code>R_bf_dingman</code></strong></p>
+<div class="arithmatex">\[
+R_{\text{bf_dingman}} = \frac{A_{\text{bf}}}{P_{\text{bf}} + \epsilon}
+\]</div>
+<p>Dingman Hydraulic Radius: Represents the hydraulic efficiency of the predicted channel shape [6].</p>
+<p><strong><code>RRP</code></strong></p>
+<div class="arithmatex">\[
+\text{RRP} = \frac{1}{R_{\text{bf_dingman}} + \epsilon}
+\]</div>
+<p>Relative Roughness Proxy: Captures the Keulegan effect (<span class="arithmatex">\( n \propto \ln(R/k_s)^{-1} \)</span>). As hydraulic radius increases, relative roughness and Manning’s <span class="arithmatex">\( n \)</span> decrease [8].</p>
+<p><strong><code>MRP</code></strong></p>
+<div class="arithmatex">\[
+\text{MRP} = S_{\text{stabilized}}^2 - 1.0
+\]</div>
+<p>Meander Roughness Penalty: Represents energy loss from channel meandering (Cowan's friction addition method) [7].</p>
+<p><strong><code>u_star</code></strong></p>
+<div class="arithmatex">\[
+u_* = \sqrt{9.81 \times R_{\text{bf_dingman}} \times \text{slope}}
+\]</div>
+<p>Boundary Shear Velocity Proxy: Key parameter for bedform stability. Controls the transition between different roughness regimes [8].</p>
+<p><strong><code>n_pred</code></strong>
+Predicted Target: Manning's <span class="arithmatex">\( n \)</span> (<span class="arithmatex">\( s/\text{m}^{1/3} \)</span>). Flow resistance coefficient used in flood modeling [8]. Uses all preceding inputs and derived features.</p>
 
 
 
@@ -2298,13 +2557,8 @@
 
 
 
-  
-  
 
 
-
-
-  
 
 
 
@@ -2370,16 +2624,16 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.expand", "navigation.top", "navigation.indexes", "content.tabs.link", "search.suggest", "search.highlight", "toc.follow", "content.code.copy", "header.autohide"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.expand", "navigation.top", "navigation.indexes", "content.tabs.link", "search.suggest", "search.highlight", "toc.follow", "content.code.copy", "header.autohide"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="assets/javascripts/bundle.d7400e89.min.js"></script>
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
       
-        <script src="assets/js/neural-watershed.js"></script>
+        <script src="../../assets/js/neural-watershed.js"></script>
       
-        <script src="assets/js/version-select.js"></script>
+        <script src="../../assets/js/version-select.js"></script>
       
-        <script src="javascripts/mathjax.js"></script>
+        <script src="../../javascripts/mathjax.js"></script>
       
         <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
       
