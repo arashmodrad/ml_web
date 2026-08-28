@@ -29,12 +29,11 @@ jobs:
             mike \
             pymdown-extensions
 
-      - name: Configure git for mike
+      - name: Configure git
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Deploy with mike
+      - name: Deploy to GitHub Pages
         run: |
-          mike deploy --push --update-aliases v2.06 latest
-          mike set-default --push latest
+          mkdocs gh-deploy --force
