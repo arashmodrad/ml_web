@@ -67,9 +67,6 @@ plugins:
 # Extras
 # ---------------------------------------------------------------------------
 extra:
-  version:
-    provider: mike
-    default: v2.06
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/NOAA-OWP/channel-shape-ML

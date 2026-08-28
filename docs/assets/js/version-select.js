@@ -1,147 +1,78 @@
 /**
  * Model Release Version Selector Handler
- * Universal base path resolution for GitHub Pages (e.g. /ml_web/ or /channel-shape-ML/) and Localhost.
+ * Uses browser-native anchor resolution for site base URL to ensure 100% reliable
+ * routing across GitHub Pages (any subfolder), custom domains, and localhost.
  */
 document.addEventListener("DOMContentLoaded", function () {
     const select = document.getElementById("header-version-select");
     if (!select) return;
 
-    function getBasePath() {
-        const path = window.location.pathname;
-        if (window.location.hostname.endsWith("github.io")) {
-            const segments = path.split("/").filter(Boolean);
-            if (segments.length > 0) {
-                return "/" + segments[0] + "/";
-            }
-        }
-        return "/";
-    }
+    // Browser resolves relative href to full absolute URL automatically
+    const homeAnchor = document.querySelector('.md-tabs__link[data-tab="home"]') || document.querySelector('a.md-logo');
+    let siteBase = homeAnchor ? homeAnchor.href : window.location.origin + "/";
+    if (!siteBase.endsWith("/")) siteBase += "/";
 
-    const basePath = getBasePath();
-    const path = window.location.pathname;
+    const currentUrl = window.location.href;
+    const isV1 = currentUrl.includes("/v1.0/");
 
-    // Relative path within site
-    let relPath = path;
-    if (basePath !== "/" && relPath.startsWith(basePath)) {
-        relPath = relPath.substring(basePath.length);
-    } else if (relPath.startsWith("/")) {
-        relPath = relPath.substring(1);
-    }
+    // Sync dropdown with active page version
+    select.value = isV1 ? "v1.0" : "v2.06";
 
-    const isV1Url = relPath.startsWith("v1.0/");
-    const isSharedPage = relPath === "" || relPath === "index.html" || relPath.startsWith("references");
-
-    let savedVersion = localStorage.getItem("ml_version");
-    let activeVersion = "v2.06";
-
-    if (isV1Url) {
-        activeVersion = "v1.0";
-        localStorage.setItem("ml_version", "v1.0");
-    } else if (isSharedPage) {
-        if (savedVersion === "v1.0") {
-            activeVersion = "v1.0";
-        } else {
-            activeVersion = "v2.06";
-        }
-    } else {
-        activeVersion = "v2.06";
-        localStorage.setItem("ml_version", "v2.06");
-    }
-
-    // Set dropdown visual value
-    select.value = activeVersion;
-
-    // Dynamically update tab links to match active version and current basePath
-    function updateTabs(version) {
-        const tabHome = document.querySelector('.md-tabs__link[data-tab="home"]');
-        const tabOverview = document.querySelector('.md-tabs__link[data-tab="overview"]');
-        const tabTW = document.querySelector('.md-tabs__link[data-tab="tw"]');
-        const tabY = document.querySelector('.md-tabs__link[data-tab="y"]');
-        const tabR = document.querySelector('.md-tabs__link[data-tab="r"]');
-        const tabN = document.querySelector('.md-tabs__link[data-tab="n"]');
-        const tabRefs = document.querySelector('.md-tabs__link[data-tab="references"]');
-
-        if (tabHome) tabHome.setAttribute("href", basePath);
-        if (tabRefs) tabRefs.setAttribute("href", basePath + "references/");
-
-        if (version === "v1.0") {
-            if (tabOverview) tabOverview.setAttribute("href", basePath + "v1.0/overview/");
-            if (tabTW) tabTW.setAttribute("href", basePath + "v1.0/tw/");
-            if (tabY) tabY.setAttribute("href", basePath + "v1.0/y/");
-            if (tabR) tabR.setAttribute("href", basePath + "v1.0/r/");
-            if (tabN) tabN.setAttribute("href", basePath + "v1.0/n/");
-        } else {
-            if (tabOverview) tabOverview.setAttribute("href", basePath + "overview/");
-            if (tabTW) tabTW.setAttribute("href", basePath + "tw/");
-            if (tabY) tabY.setAttribute("href", basePath + "y/");
-            if (tabR) tabR.setAttribute("href", basePath + "r/");
-            if (tabN) tabN.setAttribute("href", basePath + "n/");
-        }
-    }
-
-    updateTabs(activeVersion);
-
+    // Handle user changing the dropdown
     select.addEventListener("change", function (e) {
         const targetVersion = e.target.value;
-        localStorage.setItem("ml_version", targetVersion);
 
-        if (isSharedPage) {
-            updateTabs(targetVersion);
-            return;
-        }
-
-        if (targetVersion === "v1.0" && !isV1Url) {
-            // Switching from v2.06 to v1.0 on a versioned sub-page
-            if (relPath.startsWith("tw/")) {
-                if (relPath.includes("models")) window.location.href = basePath + "v1.0/tw/models/";
-                else if (relPath.includes("skill")) window.location.href = basePath + "v1.0/tw/skill/";
-                else if (relPath.includes("xai")) window.location.href = basePath + "v1.0/tw/xai/";
-                else window.location.href = basePath + "v1.0/tw/";
-            } else if (relPath.startsWith("y/")) {
-                if (relPath.includes("models")) window.location.href = basePath + "v1.0/y/models/";
-                else if (relPath.includes("skill")) window.location.href = basePath + "v1.0/y/skill/";
-                else if (relPath.includes("xai")) window.location.href = basePath + "v1.0/y/xai/";
-                else window.location.href = basePath + "v1.0/y/";
-            } else if (relPath.startsWith("r/")) {
-                if (relPath.includes("models")) window.location.href = basePath + "v1.0/r/models/";
-                else if (relPath.includes("skill")) window.location.href = basePath + "v1.0/r/skill/";
-                else if (relPath.includes("xai")) window.location.href = basePath + "v1.0/r/xai/";
-                else window.location.href = basePath + "v1.0/r/";
-            } else if (relPath.startsWith("n/")) {
-                window.location.href = basePath + "v1.0/n/";
-            } else if (relPath.startsWith("overview/")) {
-                if (relPath.includes("data-sources")) window.location.href = basePath + "v1.0/overview/data-sources/";
-                else if (relPath.includes("feature-engineering") || relPath.includes("methods")) window.location.href = basePath + "v1.0/overview/methods/";
-                else window.location.href = basePath + "v1.0/overview/";
+        if (targetVersion === "v1.0" && !isV1) {
+            // Switching from v2.06 to v1.0
+            if (currentUrl.includes("/tw/")) {
+                if (currentUrl.includes("models")) window.location.href = siteBase + "v1.0/tw/models/";
+                else if (currentUrl.includes("skill")) window.location.href = siteBase + "v1.0/tw/skill/";
+                else if (currentUrl.includes("xai")) window.location.href = siteBase + "v1.0/tw/xai/";
+                else window.location.href = siteBase + "v1.0/tw/";
+            } else if (currentUrl.includes("/y/")) {
+                if (currentUrl.includes("models")) window.location.href = siteBase + "v1.0/y/models/";
+                else if (currentUrl.includes("skill")) window.location.href = siteBase + "v1.0/y/skill/";
+                else if (currentUrl.includes("xai")) window.location.href = siteBase + "v1.0/y/xai/";
+                else window.location.href = siteBase + "v1.0/y/";
+            } else if (currentUrl.includes("/r/")) {
+                if (currentUrl.includes("models")) window.location.href = siteBase + "v1.0/r/models/";
+                else if (currentUrl.includes("skill")) window.location.href = siteBase + "v1.0/r/skill/";
+                else if (currentUrl.includes("xai")) window.location.href = siteBase + "v1.0/r/xai/";
+                else window.location.href = siteBase + "v1.0/r/";
+            } else if (currentUrl.includes("/n/")) {
+                window.location.href = siteBase + "v1.0/n/";
+            } else if (currentUrl.includes("/overview/")) {
+                if (currentUrl.includes("data-sources")) window.location.href = siteBase + "v1.0/overview/data-sources/";
+                else if (currentUrl.includes("feature-engineering") || currentUrl.includes("methods")) window.location.href = siteBase + "v1.0/overview/methods/";
+                else window.location.href = siteBase + "v1.0/overview/";
             } else {
-                window.location.href = basePath + "v1.0/overview/";
+                window.location.href = siteBase + "v1.0/overview/";
             }
-        } else if (targetVersion === "v2.06" && isV1Url) {
-            // Switching from v1.0 to v2.06 on a versioned sub-page
-            let v2Rel = relPath.replace(/^v1\.0\//, "");
-            if (v2Rel.startsWith("tw/")) {
-                if (v2Rel.includes("models")) window.location.href = basePath + "tw/models/";
-                else if (v2Rel.includes("skill")) window.location.href = basePath + "tw/skill/";
-                else if (v2Rel.includes("xai")) window.location.href = basePath + "tw/xai/";
-                else window.location.href = basePath + "tw/";
-            } else if (v2Rel.startsWith("y/")) {
-                if (v2Rel.includes("models")) window.location.href = basePath + "y/models/";
-                else if (v2Rel.includes("skill")) window.location.href = basePath + "y/skill/";
-                else if (v2Rel.includes("xai")) window.location.href = basePath + "y/xai/";
-                else window.location.href = basePath + "y/";
-            } else if (v2Rel.startsWith("r/")) {
-                if (v2Rel.includes("models")) window.location.href = basePath + "r/models/";
-                else if (v2Rel.includes("skill")) window.location.href = basePath + "r/skill/";
-                else if (v2Rel.includes("xai")) window.location.href = basePath + "r/xai/";
-                else window.location.href = basePath + "r/";
-            } else if (v2Rel.startsWith("n/")) {
-                window.location.href = basePath + "n/";
-            } else if (v2Rel.startsWith("overview/")) {
-                if (v2Rel.includes("data-sources")) window.location.href = basePath + "overview/data-sources/";
-                else if (v2Rel.includes("methods")) window.location.href = basePath + "overview/feature-engineering/";
-                else window.location.href = basePath + "overview/";
+        } else if (targetVersion === "v2.06" && isV1) {
+            // Switching from v1.0 to v2.06
+            if (currentUrl.includes("/tw/")) {
+                if (currentUrl.includes("models")) window.location.href = siteBase + "tw/models/";
+                else if (currentUrl.includes("skill")) window.location.href = siteBase + "tw/skill/";
+                else if (currentUrl.includes("xai")) window.location.href = siteBase + "tw/xai/";
+                else window.location.href = siteBase + "tw/";
+            } else if (currentUrl.includes("/y/")) {
+                if (currentUrl.includes("models")) window.location.href = siteBase + "y/models/";
+                else if (currentUrl.includes("skill")) window.location.href = siteBase + "y/skill/";
+                else if (currentUrl.includes("xai")) window.location.href = siteBase + "y/xai/";
+                else window.location.href = siteBase + "y/";
+            } else if (currentUrl.includes("/r/")) {
+                if (currentUrl.includes("models")) window.location.href = siteBase + "r/models/";
+                else if (currentUrl.includes("skill")) window.location.href = siteBase + "r/skill/";
+                else if (currentUrl.includes("xai")) window.location.href = siteBase + "r/xai/";
+                else window.location.href = siteBase + "r/";
+            } else if (currentUrl.includes("/n/")) {
+                window.location.href = siteBase + "n/";
+            } else if (currentUrl.includes("/overview/")) {
+                if (currentUrl.includes("data-sources")) window.location.href = siteBase + "overview/data-sources/";
+                else if (currentUrl.includes("methods")) window.location.href = siteBase + "overview/feature-engineering/";
+                else window.location.href = siteBase + "overview/";
             } else {
-                window.location.href = basePath;
+                window.location.href = siteBase;
             }
         }
     });
