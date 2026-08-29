@@ -11,7 +11,7 @@ Model evaluation for the **v1.0 Channel Shape ($r$) Parameterization** is conduc
 
 ## Continental Predicted Channel Shape Map
 
-The v1.0 Meta-Learner generates reach-level predictions of the Dingman shape exponent $r$ across the entire National Hydrography Dataset (NHDPlus) network:
+The v1.0 Meta-Learner generates reach-level predictions of the Dingman shape exponent $r$ across the entire Reference Fabric network:
 
 ![CONUS Predicted Bankfull Channel Shape Exponent r Map for HydroSWOT (meta_best model)](../../assets/images/v1.0/r/predicted_r.png){ loading=lazy }
 
@@ -58,14 +58,14 @@ The performance of the three modeling tiers was benchmarked across all independe
 
 ### Quantitative Performance Metrics Comparison
 
-| Model Architecture | Median KGE | KGE $\ge 0.5$ (Good Skill) | Mean NNSE | Median $R^2$ | Description |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| **Voting Ensemble (`vote`)** | $0.405$ | $38.4\%$ | $0.582$ | $0.512$ | Unweighted consensus average across top tuned models. |
-| **Best Single Model (`best`)** | $0.465$ | $46.1\%$ | $0.641$ | $0.578$ | Top-performing individual hyperparameter-tuned algorithm (XGBoost). |
-| **Stacking Meta-Learner (`meta`)** | **$0.520$** | **$54.8\%$** | **$0.718$** | **$0.654$** | **Level-1 meta-regressor trained on base model prediction matrices.** |
+| Model Architecture | CDF Line | Median KGE (50th Percentile) | Benchmark Description |
+| :--- | :---: | :---: | :--- |
+| **Voting Ensemble (`vote`)** | Blue (dashed line) | **$0.41$** | Unweighted average of top tuned algorithms |
+| **Best Single Model (`best`)** | Black (dashed line) | **$0.47$** | Winning individual tuned algorithm (XGBoost) |
+| **Stacking Meta-Learner (`meta`)** | Red (dashed line) | **$0.52$** | **Level-2 meta-regressor trained on out-of-fold predictions** |
 
 ### Key Benchmark Insights:
-1. **Meta-Learner Superiority**: The Stacking Meta-Learner (red curve) shifts the entire CDF to the right, achieving a **median KGE of 0.520**, outperforming both the single best base model ($\text{KGE} = 0.465$) and the simple voting ensemble ($\text{KGE} = 0.405$).
+1. **Meta-Learner Superiority**: The Stacking Meta-Learner (red curve) shifts the entire CDF to the right, achieving a **median KGE of 0.52**, outperforming both the single best base model ($\text{KGE} = 0.47$) and the simple voting ensemble ($\text{KGE} = 0.41$).
 2. **Failure Suppression in Low-Skill Reaches**: In the lower tail ($\text{KGE} < 0.2$), the meta-learner sharply reduces extreme negative errors by selectively relying on resilient tree-based estimators when neural networks encounter out-of-distribution inputs.
 3. **Voting Dilution Effect**: The simple voting ensemble exhibits lower median skill than the single best model, because unweighted averaging allows weaker sub-models to dilute the high-precision predictions of top gradient-boosted trees. The meta-learner overcomes this limitation through adaptive non-linear weighting.
 
@@ -102,5 +102,5 @@ Evaluating shape exponent sensitivity against hydroclimatic forcing confirms tha
 ## Model Pipeline Navigation
 
 * **[Overview & Dingman Geometry](index.md)** — Fundamentals of continuous channel power-law geometry and $r = f/b$ derivation.
-* **[Model Architecture & Meta-Learners](models.md)** — Machine learning workflows, AutoEncoder feature reduction, and stacking algorithms.
+* **[Model Architecture & Meta-Learners](models.md)** — Machine learning workflows, elbow method & PCA feature reduction, and stacking algorithms.
 * **[Explainability (XAI)](xai.md)** — SHAP feature ranking, environmental driver attribution, and physical control mechanisms.

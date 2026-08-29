@@ -1,11 +1,11 @@
 ---
 title: Model Architecture & Meta-Learners
-description: Multi-tier machine learning pipeline, AutoEncoder feature reduction, and meta-learner ensemble architecture for channel shape exponent r in v1.0.
+description: Multi-tier machine learning pipeline, elbow method feature reduction, PCA decomposition, and meta-learner ensemble architecture for channel shape exponent r in v1.0.
 ---
 
 # Model Architecture — Machine Learning & Meta-Learners
 
-Estimating the continuous Dingman channel shape exponent ($r$) across millions of ungauged river reaches requires an architecture that captures non-linear relationships across diverse physiographic, climatic, and geologic regimes. The **v1.0 Shape Modeling Pipeline** implements a multi-tier machine learning architecture that integrates high-dimensional feature selection, unsupervised AutoEncoders, tuned gradient-boosted ensembles, and a **Stacking Meta-Learner**.
+Estimating the continuous Dingman channel shape exponent ($r$) across millions of ungauged river reaches requires an architecture that captures non-linear relationships across diverse physiographic, climatic, and geologic regimes. The **v1.0 Shape Modeling Pipeline** implements a multi-tier machine learning architecture that integrates expert knowledge screening, recursive feature elimination via the elbow method, Principal Component Analysis (PCA), tuned gradient-boosted ensembles, and a **Stacking Meta-Learner**.
 
 ---
 
@@ -13,7 +13,7 @@ Estimating the continuous Dingman channel shape exponent ($r$) across millions o
 
 ```mermaid
 flowchart TD
-    subgraph DATA ["1. Input Environmental Covariates (~400 Features)"]
+    subgraph DATA ["1. Input Environmental Covariates (116 Features)"]
         F1["Reference Hydrofabric\n(Stream order, Arbolate sum, Length)"]
         F2["Soil & Lithology\n(Clay %, K<sub>sat</sub>, &theta;<sub>s</sub>)"]
         F3["DEM Topography\n(Elevation, Slope, NED Diversity)"]
@@ -21,9 +21,11 @@ flowchart TD
         F5["Climate & NWM 2.1\n(Precipitation, PET, Flood quartiles)"]
     end
 
-    subgraph REDUCTION ["2. Dimensionality Reduction (~400 &rarr; 60 Features)"]
-        RFE["Recursive Feature Elimination\n(Iterative Pruning Loop)"]
-        AE["Grouped Denoising AutoEncoder\n(Latent Compression)"]
+    subgraph REDUCTION ["2. Dimensionality Reduction (116 &rarr; 60 Features)"]
+        EXP["Expert Domain Pre-Screening\n(Eliminate unphysical & noisy variables)"]
+        RFE["Recursive Feature Elimination & Elbow Method\n(Optimal complexity balance)"]
+        PCA["Principal Component Analysis (PCA)\n(Orthogonal decomposition of collinear blocks)"]
+        EXP --> RFE --> PCA
     end
 
     subgraph BASE ["3. Base ML Model Selection & Tuning"]
@@ -71,32 +73,28 @@ $$
 \hat{r}_{\text{meta}} = \mathcal{G}\left(\hat{r}_1(X), \hat{r}_2(X), \dots, \hat{r}_M(X); \Theta_{\text{meta}}\right)
 $$
 
-The meta-learner recognizes the specific hydro-physiographic conditions where certain base models excel or falter (e.g., deep neural networks in high-density humid networks versus tree-based models in arid ephemeral washes), dynamically reweighting model contributions to maximize continental Kling-Gupta Efficiency ($\text{KGE}$).
+The meta-learner recognizes the specific hydro-physiographic conditions where certain base models excel or falter (e.g., neural networks in high-density humid networks versus tree-based models in arid ephemeral washes), dynamically reweighting model contributions to maximize continental Kling-Gupta Efficiency ($\text{KGE}$).
 
 ---
 
 ## Feature Space & Dimensionality Reduction
 
-The raw input dataset incorporates over 400 catchment, climate, and topographic attributes. To prevent the curse of dimensionality, resolve multicollinearity, and eliminate noisy predictors, feature reduction is executed in two coupled stages:
+The raw input dataset incorporates 116 catchment, climate, and topographic attributes. To prevent the curse of dimensionality, resolve multicollinearity, and eliminate noisy predictors, feature reduction is executed in three coupled stages:
 
-### 1. Recursive Feature Elimination (RFE) & Peak Validation Loop
-The model is initially trained on all candidate features. In an iterative loop, the single least informative feature (evaluated by permutation importance and tree split gain) is pruned, and the model is retrained. This process repeats until out-of-bag validation accuracy reaches its empirical peak, identifying the core non-redundant feature subset.
+### 1. Expert Knowledge Screening
+Candidate predictors are evaluated against established geomorphological and hydraulic principles. Non-informative, unstable, or redundant surrogates are eliminated prior to model training.
 
-### 2. Grouped Denoising AutoEncoders (DAE)
-The remaining features are organized into physical covariate clusters (e.g., soil hydraulic parameters, topographic slope derivatives, land-cover percentages) and passed through a **Denoising AutoEncoder** with symmetric bottle-neck layers:
+### 2. Recursive Feature Elimination & Elbow Method
+The model is trained across subsets of candidate features ranked by importance. Features are recursively dropped while tracking validation metrics ($\text{KGE}$, $\text{NNSE}$). The **Elbow Method** is applied to find the optimal trade-off point between model parsimony and predictive skill.
 
-```mermaid
-flowchart LR
-    INPUT["Correlated Cluster Features\n(x &isin; &reals;<sup>D</sup>)"] --> NOISE["Noise Injection\n(&atilde; = x + &delta;)"]
-    NOISE --> ENC["Encoder Layers\n(Dense + ReLU + Dropout)"]
-    ENC --> LATENT["Latent Representation\n(z &isin; &reals;<sup>d</sup>, d &Lt; D)"]
-    LATENT --> DEC["Decoder Layers\n(Dense + Sigmoid / Linear)"]
-    DEC --> RECON["Reconstructed Features\n(x&#770; &isin; &reals;<sup>D</sup>)"]
+### 3. Principal Component Analysis (PCA)
+For thematic sub-domains exhibiting high internal correlation (e.g., multi-recurrence flood frequency distributions, soil textural profiles), **Principal Component Analysis (PCA)** is performed to extract orthogonal components (PC0, PC1) that preserve dominant physical variance while eliminating multicollinearity:
 
-    class LATENT highlight-blue;
-```
+$$
+\mathbf{Z} = \mathbf{X} \mathbf{W}
+$$
 
-The compressed latent embeddings ($z \in \mathbb{R}^d$) retain maximum physical variance while eliminating collinearity, yielding a streamlined feature vector of **60 final predictors**.
+This produces the final parsimonious matrix of **60 optimized predictors** for continental ML training.
 
 ---
 
@@ -118,8 +116,8 @@ The compressed latent embeddings ($z \in \mathbb{R}^d$) retain maximum physical 
 
 To guarantee model generalizability across 3.5+ million reaches in CONUS, the training pipeline enforces four strict regularization safeguards:
 
-1. **Stratified Spatial $k$-Fold Cross-Validation**:
-   The 3,543 HYDRoSWOT field stations reside across 1,432 distinct river systems. Cross-validation folds are partitioned by river basin and HUC-4 boundaries to prevent spatial autocorrelation leakage between upstream and downstream monitoring sites.
+1. **10-Fold Cross-Validation**:
+   The 3,543 HYDRoSWOT field stations across 1,432 distinct river systems are partitioned across 10 folds, evaluating predictions strictly out-of-fold (OOF) to test generalization to unmonitored reaches.
 2. **Early Stopping with Validation Plateaus**:
    Iterative gradient boosting and deep learning models monitor a dedicated holdout validation split, halting training when validation loss fails to improve after 20 consecutive iterations.
 3. **Deep Learning Dropout & Weight Decay**:

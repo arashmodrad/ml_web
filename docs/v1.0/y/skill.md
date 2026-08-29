@@ -51,113 +51,106 @@ The map below illustrates Normalized Nash-Sutcliffe Efficiency ($NNSE$) scores f
 
 ---
 
-## Multi-Tier Ensemble Comparison: CDF Analysis
+## Multi-Tier Ensemble Evaluation: CDF Analysis
 
-To demonstrate the quantitative advantage of the stacked **Meta-Learner** over simpler ensembling techniques, Cumulative Distribution Functions (CDFs) of $NNSE$ scores were computed across all testing stations:
+Cumulative Distribution Functions (CDFs) of Normalized Nash-Sutcliffe Efficiency ($NNSE$) scores were evaluated across all independent testing stations:
 
 ![CDF Comparison of NNSE Scores for Depth Parameter f across Ensemble Tiers](../../assets/images/v1.0/y/Best_Model_norm_f_CDF_f_Y_Testing_NNSE.png){ loading=lazy }
 
-| Ensemble Tier | Median NNSE ($q_{50}$) | 90th Percentile NNSE | Stations with $NNSE > 0.80$ |
-| :--- | :---: | :---: | :---: |
-| **Tier 1: Best Individual Model (XGBoost)** | $0.842$ | $0.931$ | $74.6\%$ |
-| **Tier 2: Voting Ensemble** | $0.865$ | $0.942$ | $80.1\%$ |
-| **Tier 3: Meta-Learner (Stacking)** | $\mathbf{0.891}$ | $\mathbf{0.963}$ | $\mathbf{87.4\%}$ |
+### CDF Performance Highlights
 
-!!! success "Why the Meta-Learner Dominates"
-    The CDF curve for the **Meta-Learner** is shifted significantly to the right relative to both the Voting Ensemble and Best Individual Model. By conditioning level-2 weights on regional physiography and base-model error distributions, the Meta-Learner effectively suppresses severe failure modes, dramatically reducing the lower tail of low-skill predictions ($NNSE < 0.60$).
+* **Continental Median Skill**: The median station performance reaches **$\text{NNSE} \approx 0.94$** (50th percentile red dashed marker).
+* **Reliability Threshold ($\text{NNSE} \ge 0.66$)**: Over **$88\%$ of all testing stations** exceed the $\text{NNSE} = 0.66$ benchmark (blue dashed marker) for high-accuracy hydrodynamic modeling.
+* **Top-Tier Precision**: Over **$60\%$ of stations** achieve $\text{NNSE} \ge 0.95$, reflecting near-perfect depth rating curve representation.
 
 ---
 
 ## Maximum Flow ($Q_{\max}$) Diagnostic Evaluation
 
-A common failure mode of empirical hydraulic geometry models is severe underestimation during extreme, out-of-bank, or record peak discharge events. We evaluated model performance specifically at the **maximum observed historical discharge ($Q_{\max}$)** for each testing station:
+A critical test of empirical and machine-learned hydraulic geometry is performance during extreme peak discharges. Depth predictions were evaluated specifically at the **maximum observed historical discharge ($Q_{\max}$)** for each testing station:
 
 ![Actual vs Predicted Depth at Maximum Observed Flow (Qmax)](../../assets/images/v1.0/y/Best_Model_Sub_f_scatter_type1_Y_act_max_f_Y_Testing.png){ loading=lazy }
 
 ### Diagnostics at Extreme Flows
 
-1. **High Linearity Along 1:1 Line**: The depth model retains strong correlation ($R^2 = 0.84$) even when tested at the maximum historical discharge recorded at each gage.
-2. **Stream Scale Performance**:
-    * **1st through 8th Order Streams**: Tightly clustered along the 1:1 line with zero-centered residual bias.
-    * **9th and 10th Order Large Rivers (e.g., Lower Mississippi, Columbia)**: Exhibit slight dispersion. This is primarily attributable to data scarcity in HYDRoSWOT for continental mega-rivers rather than algorithmic deficiency.
-3. **No Systematic Saturation**: Unlike unregularized models that plateau at high stages, the log-space power-law formulation ($Y = c \cdot Q^f$) enables physically unbounded, asymptotic scaling during extreme flood events.
+1. **Exceptional Correlation ($R^2 = 0.93$)**: As shown in the diagnostic scatter, the model achieves **$R^2 = 0.93$** along the 1:1 line at peak historical flow stages ($Q_{\max}$).
+2. **Stream Scale Consistency**: High linearity is maintained across small upland reaches and large alluvial mainstems without systematic over- or under-prediction.
+3. **No Saturation Plateauing**: The power-law formulation ($Y = c \cdot Q^f$) allows continuous, physically unbounded depth expansion during extreme flood stages.
 
 ---
 
 ## Performance Stratified by Environmental Quantiles
 
-To verify that the model does not suffer from regional bias across physical gradients, model residuals and $NNSE$ were analyzed across quantiles of key environmental drivers:
+To verify model stability across continental environmental gradients, goodness-of-fit was evaluated across quartiles/quantiles of major physical drivers:
 
 ![Model Performance Across Quantiles of Influential Environmental Variables](../../assets/images/v1.0/y/Fig5_y.png){ loading=lazy }
+*Figure 2: Performance metrics ($R^2$ and depth distributions) evaluated across quantiles of channel slope, bankfull discharge, elevation, and base flow index ([Modaresi Rad et al., 2024](https://doi.org/10.1029/2024JH000173)).*
 
-### Insights Across Environmental Gradients
+### Quantile Performance Details
 
-* **Upstream Drainage Area ($A_{\text{up}}$)**: Consistent high skill across small headwater catchments ($<10\,\text{km}^2$), intermediate mid-reach basins ($100\text{--}1,000\,\text{km}^2$), and large mainstems ($>10,000\,\text{km}^2$).
-* **Channel Slope ($S$)**: Model performance remains stable across gentle valley floors ($S < 0.001$) and steep alpine reaches ($S > 0.05$).
-* **Mean Annual Precipitation (MAP)**: High skill is maintained across arid regimes ($\text{MAP} < 300\,\text{mm/yr}$) through humid tropical regimes ($\text{MAP} > 2,000\,\text{mm/yr}$).
-* **Soil Hydraulic Conductivity ($K_{\text{sat}}$) & Clay %**: Robust prediction across permeable coarse gravel beds and cohesive fine-grained alluvial channels.
+* **Channel Slope**: $R^2$ ranges from $0.65$ in moderate gradient streams to $0.86$ in low-slope valleys ($0.0\text{--}0.001$).
+* **Bankfull Discharge ($Q_{\text{bf}}$)**: $R^2$ increases steadily with stream scale, from $0.32$ in headwater trickles ($0\text{--}53\text{ m}^3/\text{s}$) to $0.76$ in large channels ($303\text{--}15,466\text{ m}^3/\text{s}$).
+* **Elevation**: $R^2$ ranges from $0.67$ to $0.86$, peaking ($R^2 \approx 0.86$) across interior lowland plains ($121\text{--}216\text{ m}$).
+* **Base Flow Index (BFI)**: Strong predictive skill ($R^2 = 0.70\text{--}0.86$) across all baseflow contribution regimes.
 
 ---
 
 ## Literature Benchmarking & Comparative Evaluation
 
-We benchmarked the v1.0 Depth model against widely used published continental and regional hydraulic geometry frameworks:
+We benchmarked the v1.0 Depth model against published continental regional curves and recent machine learning frameworks:
 
-### 1. Regional Regression Baseline: Blackburn-Lynch et al. (2017)
+### 1. Regional Regression Baseline: Blackburn-Lynch et al. (2017) Across 20 HLRs
 
-Blackburn-Lynch et al. (2017) developed regional power-law curves stratified across the 20 **Hydrologic Landscape Regions (HLRs)** of the United States. Below is the performance comparison across all 20 HLRs:
+[Blackburn-Lynch et al. (2017)](https://doi.org/10.1111/1752-1688.12567) developed regional power-law curves stratified across the 20 **Hydrologic Landscape Regions (HLRs)** of the United States.
 
 ![Performance Comparison with Blackburn-Lynch et al. (2017) Across 20 HLRs](../../assets/images/v1.0/y/Fig7.png){ loading=lazy }
+*Figure 3: Goodness-of-Fit comparison between the proposed ML model and Blackburn-Lynch et al. (2017) regional regressions across all 20 Hydrologic Landscape Regions ([Modaresi Rad et al., 2024](https://doi.org/10.1029/2024JH000173)).*
 
-```
-Performance Comparison across Hydrologic Landscape Regions:
-┌──────────────────────────────────────────────────────────────────┐
-│ ■ ML Meta-Learner (v1.0)   ■ Blackburn-Lynch et al. (2017)       │
-├──────────────────────────────────────────────────────────────────┤
-│ HLR 1-5  (Northeast & Midwest Plains)   : +34% KGE Improvement   │
-│ HLR 6-10 (Semi-Arid & Southern Plains)  : +41% KGE Improvement   │
-│ HLR 11-15 (Southwest Playas & Mountains): +48% KGE Improvement   │
-│ HLR 16-20 (Pacific & Northwest Mountain): +39% KGE Improvement   │
-└──────────────────────────────────────────────────────────────────┘
-```
+#### Overall Benchmark Against Blackburn-Lynch (2017)
 
-* The ML Meta-Learner **statistically outperforms regional regression equations in all 20 HLRs**.
-* Regional curves impose static regional boundaries, causing sharp artificial discontinuities at HLR borders. The ML pipeline provides smooth, continuous, physics-conditioned predictions across basin boundaries.
+| Regime & Evaluation | Metric | Blackburn-Lynch (2017) | Proposed ML Model (Ours) |
+| :--- | :---: | :---: | :---: |
+| **Bankfull Depth ($Y_{\text{bf}}$)** | $R^2$ | $-0.72$ | **$0.80$** |
+| | $\text{KGE}$ | $-0.42$ | **$0.76$** |
+| | $\text{NRMSE}$ | $0.17$ | **$0.08$** |
+| **In-Channel Depth ($Y_{\text{in}}$)** | $R^2$ | $-0.45$ | **$0.77$** |
+| | $\text{KGE}$ | $-2.42$ | **$0.74$** |
+| | $\text{NRMSE}$ | $0.16$ | **$0.08$** |
+
+#### Regional Performance Across HLRs (Figure 7e)
+
+* **Proposed ML Model (Grey Bars)**: $R^2$ maintains high stability between **$0.59$** (HLR 19) and **$0.78$** (HLR 15), with continental $\text{median } R^2 \approx 0.68$.
+* **Blackburn-Lynch (Black Dots)**: Shows substantial regional instability with negative and near-zero $R^2$ in multiple regions ($\text{median } R^2 \approx 0.35$).
+* The proposed ML model **statistically outperforms Blackburn-Lynch regional equations across 19 of the 20 HLRs**.
 
 ---
 
-### 2. Global Equations & Modern ML Benchmarks: Bieger (2015) & Doyle (2023)
+### 2. Global Equations & Modern ML Benchmarks: Andreadis (2013) & Doyle (2023)
 
-We further benchmarked against the global bankfull depth equations of **Bieger et al. (2015)** and the machine learning model of **Doyle et al. (2023)**:
+The proposed ML model was benchmarked against global discharge-based depth equations ([Andreadis et al., 2013](https://doi.org/10.1002/wrcr.20440)) and modern machine learning models ([Doyle et al., 2023](https://doi.org/10.1029/2022WR033621)):
 
 ![Benchmarking Against Global Equations and Doyle et al. (2023) ML Models](../../assets/images/v1.0/y/Fig10.png){ loading=lazy }
+*Figure 4: Scatter distributions and Goodness-of-Fit metrics ($R^2, \text{KGE}, \text{NRMSE}$) comparing the proposed ML model against Andreadis et al. (2013) and Doyle et al. (2023) ([Modaresi Rad et al., 2024](https://doi.org/10.1029/2024JH000173)).*
 
-| Model / Framework | Target Formulation | Continental RMSE (m) | Median KGE | Median NNSE |
+#### Comparative Performance Matrix (Figure 10)
+
+| Model / Approach | Target Regime | $R^2$ | $\text{KGE}$ | $\text{NRMSE}$ |
 | :--- | :--- | :---: | :---: | :---: |
-| **Bieger et al. (2015)** | Global Drainage Area Power-Law | $1.42\,\text{m}$ | $0.48$ | $0.62$ |
-| **Blackburn-Lynch et al. (2017)** | Regional HLR Power-Laws | $1.18\,\text{m}$ | $0.59$ | $0.71$ |
-| **Doyle et al. (2023)** | Single Random Forest (Direct Depth) | $0.84\,\text{m}$ | $0.73$ | $0.81$ |
-| **v1.0 Stacking Meta-Learner (Ours)** | **Multi-Tier FHG Ensemble ($Y = c \cdot Q^f$)** | $\mathbf{0.56\,\text{m}}$ | $\mathbf{0.86}$ | $\mathbf{0.89}$ |
-
-!!! tip "Key Takeaway"
-    The v1.0 Multi-Tier Meta-Learner reduces continental depth Root Mean Squared Error (RMSE) by **over 60% compared to classical equations** and **33% compared to recent single-model ML approaches**, while providing full continuous stage-discharge flexibility.
+| **Global Discharge Based** ([Andreadis et al., 2013](https://doi.org/10.1002/wrcr.20440)) | Bankfull ($Y_{\text{bf}}$)<br/>In-Channel ($Y_{\text{in}}$) | $-0.84$<br/>$0.36$ | $-3.00$<br/>$-1.63$ | $0.22$<br/>$0.12$ |
+| **ML Model** ([Doyle et al., 2023](https://doi.org/10.1029/2022WR033621)) | Bankfull ($Y_{\text{bf}}$)<br/>In-Channel ($Y_{\text{in}}$) | $0.46$<br/>$0.32$ | $0.59$<br/>$-3.56$ | $0.14$<br/>$0.20$ |
+| **Proposed ML Model (CONUS-FHG v1.0)** | **Bankfull ($Y_{\text{bf}}$)**<br/>**In-Channel ($Y_{\text{in}}$)** | **$0.80$**<br/>**$0.77$** | **$0.76$**<br/>**$0.74$** | **$0.08$**<br/>**$0.08$** |
 
 ---
 
-## Physiographic Province & Division Analysis
+### 3. Physiographic Division & Province Evaluation (Figure S13)
 
-To evaluate geomorphic generalizability across continental terrain types, performance was partitioned across major **USGS Physiographic Divisions**:
+Model generalizability was evaluated across US Physiographic Divisions (8 divisions) and Physiographic Provinces (23 provinces):
 
 ![Model Performance Partitioned by Physiographic Provinces and Divisions](../../assets/images/v1.0/y/Fig_S13.png){ loading=lazy }
+*Figure 5: Performance comparison of the proposed ML model against Blackburn-Lynch et al. (2017) and Bieger et al. (2015) across Physiographic Provinces and Divisions ([Modaresi Rad et al., 2024](https://doi.org/10.1029/2024JH000173)).*
 
-| Physiographic Division | Dominant Geomorphic Regime | Median NNSE | Performance Summary |
-| :--- | :--- | :---: | :--- |
-| **Appalachian Highlands** | Ridge-and-valley, dissected plateaus | $0.91$ | Exceptional fit; stable bedrock-alluvial equilibrium |
-| **Interior Plains** | Glaciated till, low-relief alluvial plains | $0.90$ | High consistency; classic downstream Leopold-Maddock scaling |
-| **Atlantic & Gulf Coastal Plain** | Unconsolidated sands, low-gradient wetlands | $0.87$ | Good skill; slight variance in low-confinement swamp reaches |
-| **Rocky Mountain System** | High-relief, step-pool alpine canyons | $0.86$ | Strong performance; captures steep-slope velocity trade-offs |
-| **Pacific Mountain System** | Active tectonic, high-precipitation valleys | $0.85$ | High skill; captures steep coastal mountain hydrologic responses |
-| **Intermontane Plateaus** | Arid canyons, ephemeral sand-bed channels | $0.82$ | Solid performance; robust despite extreme transmission losses |
+* **Physiographic Provinces (Figure S13c)**: Proposed ML model $R^2$ consistently ranges from $0.60\text{--}0.85$ across provinces, outperforming Blackburn-Lynch et al. (2017) in nearly every province.
+* **Physiographic Divisions (Figure S13d)**: Proposed ML model $R^2$ remains consistently high ($R^2 \approx 0.65\text{--}0.85$) across all 8 major divisions, significantly outperforming Bieger et al. (2015) regional estimates.
 
 ---
 

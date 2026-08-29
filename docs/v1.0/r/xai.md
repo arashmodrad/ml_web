@@ -3,7 +3,7 @@ title: Explainable AI & Physical Controls
 description: SHAP global feature attribution, hydroclimatic interaction analysis, and physical controls governing channel cross-sectional shape exponent r in v1.0.
 ---
 
-# Explainable AI (XAI) & Physical Controls — Channel Shape ($r$)
+# Explainable AI (XAI) & Physical Controls
 
 To ensure that the **v1.0 Channel Shape ($r$) Model** aligns with established principles of fluvial geomorphology and hydraulic regime theory, we apply **SHAP (SHapley Additive exPlanations)** based on cooperative game theory. SHAP attributions decompose model predictions into individual feature contributions, revealing how catchment, climate, and hydrographic factors govern cross-sectional curvature across the continental river network.
 
@@ -107,5 +107,5 @@ In alluvial plains, channel cross-sectional form reflects the balance between bo
 ## Model Pipeline Navigation
 
 * **[Overview & Dingman Geometry](index.md)** — Fundamentals of continuous channel power-law geometry and $r = f/b$ derivation.
-* **[Model Architecture & Meta-Learners](models.md)** — Machine learning workflows, AutoEncoder feature reduction, and stacking algorithms.
+* **[Model Architecture & Meta-Learners](models.md)** — Machine learning workflows, elbow method & PCA feature reduction, and stacking algorithms.
 * **[Model Skill & Validation](skill.md)** — Continental validation against HYDRoSWOT ADCP surveys, Kling-Gupta Efficiency CDFs, and stream-order bias analysis.

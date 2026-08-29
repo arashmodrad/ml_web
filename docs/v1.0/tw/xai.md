@@ -28,146 +28,152 @@ This formulation satisfies four essential game-theoretic properties:
 
 ---
 
-## Global Feature Importance Ranking
+## Global Feature Importance & Elbow Optimization
 
-The global importance of each hydro-geomorphic feature was evaluated across all CONUS training reaches by calculating the mean absolute Shapley value:
-
-$$I_j = \frac{1}{N} \sum_{i=1}^N |\phi_j(x_i)|$$
+The global importance of each hydro-geomorphic feature was evaluated across all CONUS training reaches by calculating the mean absolute Shapley value ($|\phi_j|$):
 
 ![Global SHAP Feature Importance Ranking for TopWidth Model](../../assets/images/v1.0/tw/Fig4_tw.png){ loading=lazy }
-*Figure 1: Global TreeSHAP feature importance ranking and summary beeswarm plot for the v1.0 TopWidth model ([Modaresi Rad et al., 2024](https://doi.org/10.1029/2024JH000173)). Points represent individual stream reaches, with color indicating raw feature value (red = high, blue = low) and x-position indicating positive or negative impact on predicted top width.*
+*Figure 1: (a) Global TreeSHAP feature importance ranking and summary beeswarm plot for the v1.0 TopWidth model. Points represent individual stream reaches, with color indicating raw feature value (red = high, blue = low) and x-axis indicating impact on predicted top width. (b) Recursive feature elimination using the Elbow Method tracking model $R^2$, showing optimal parsimony at 15 features ([Modaresi Rad et al., 2024](https://doi.org/10.1029/2024JH000173)).*
 
 ```mermaid
 flowchart TD
-    subgraph DRIVERS ["Dominant Hydro-Geomorphic Controls"]
+    subgraph DRIVERS ["Dominant TopWidth Predictors (Top 15 Subset)"]
         direction TB
         QBF["<b>1. Bankfull Discharge (Q<sub>bf</sub>)</b><br/>Primary volumetric driver of channel-forming capacity"]
-        PC0["<b>2. Flood Frequency PC0</b><br/>Hydrograph peak skewness & multi-decadal recurrence (NWM 2.1)"]
-        TWI["<b>3. Topographic Wetness Index (TWI)</b><br/>Valley saturation, groundwater convergence & floodplain width"]
-        SM["<b>4. Long-Term Soil Moisture (&theta;)</b><br/>Bank vegetation density, root cohesion & shear resistance"]
-        SCALE["<b>5. Drainage Scale (A & arb_sum)</b><br/>Spatial accumulation of runoff and sediment load"]
-        SLOPE["<b>6. Channel Bed Slope (S)</b><br/>Energy gradient governing lateral widening vs. vertical incision"]
-        SOIL["<b>7. Soil Texture (% Clay, K<sub>sat</sub>)</b><br/>Geotechnical cohesion and bank erodibility"]
+        PC0["<b>2. NWM Flood pc0</b><br/>Hydrograph peak skewness & flood recurrence moments"]
+        TWI["<b>3. Topographic Wetness Index (TWI)</b><br/>Valley saturation, groundwater convergence & floodplain extent"]
+        AET["<b>4. Actual Evapotranspiration (AET)</b><br/>Catchment water balance & vegetated runoff regulation"]
+        ARB["<b>5. Arbolate Sum (arbolatesu)</b><br/>Cumulative upstream hydrographic network length"]
+        HUM["<b>6. Human pc2 & Water Table Depth</b><br/>Anthropogenic landscape modification & groundwater table proximity"]
+        ENV["<b>7. Bedrock Depth & Elevation Metrics</b><br/>Geologic confinement & gravitational potential energy"]
     end
 
-    classDef default fill:#1e293b,stroke:#475569,stroke-width:1.5px,color:#f8fafc;
-    classDef primary fill:#0284c7,stroke:#38bdf8,stroke-width:2px,color:#ffffff;
-    classDef secondary fill:#059669,stroke:#34d399,stroke-width:2px,color:#ffffff;
-    class QBF,PC0 primary;
-    class TWI,SM secondary;
+    class DRIVERS highlight-blue;
+    class QBF highlight-blue;
+    class PC0 highlight-blue;
+    class TWI highlight-teal;
+    class AET highlight-teal;
+    class ARB highlight-teal;
+    class HUM highlight-orange;
+    class ENV highlight-orange;
 ```
 
-### Physical Interpretation of Top Drivers
+### Top 15 Predictors Ranked by SHAP Value
 
-| Rank | Feature | Physical & Hydro-Geomorphic Mechanism | SHAP Value Trend |
+| Rank | Feature Name | Category | SHAP Directionality & Hydraulic Mechanism |
 | :---: | :--- | :--- | :--- |
-| **1** | **Bankfull Discharge ($Q_{bf}$)** | Governs the total kinetic energy and volumetric flow available to shape channel boundaries during dominant 1.5–2 year flood events. | High $Q_{bf}$ strongly increases top width ($\phi > 0$). |
-| **2** | **Flood Frequency PC0** | First principal component of NWM 2.1 flood frequency moments; captures hydrograph peak flashiness and multi-year flood variance. | Flashy, peak-heavy flow regimes promote wider, multi-threaded active channels. |
-| **3** | **Topographic Wetness Index (TWI)** | $\text{TWI} = \ln(a / \tan \beta)$ reflects valley-floor width, saturated zone extent, and lateral hydraulic convergence. | High TWI environments feature expansive alluvial valleys and wider channels. |
-| **4** | **Soil Moisture ($\theta$)** | Multi-year mean soil moisture regulates riparian forest density and root biomass, dictating bank tensile strength and erosion resistance. | Arid soils (low $\theta$) correlate with wider, unconfined channels; humid soils (high $\theta$) narrow channels. |
-| **5** | **Drainage Area ($A$) / Arbolate Sum** | Fundamental scaling metrics governing cumulative upstream water and sediment delivery. | Follows classical power-law scaling ($W \propto A^{0.4 - 0.5}$). |
-| **6** | **Channel Slope ($S$)** | Governs unit stream power ($\omega = \gamma Q S / W$). High slope channels incise vertically rather than widening laterally. | Steep slopes correlate with narrower, confined channels ($\phi < 0$). |
-| **7** | **Clay Fraction & Saturated Conductivity ($K_{sat}$)**| High clay content imparts geotechnical cohesion, resisting lateral bank failure and keeping channels narrow and deep. | High clay content reduces top width ($\phi < 0$). |
+| **1** | **Bankfull Discharge** | Hydrology | **Dominant positive driver**. High $Q_{\text{bf}}$ (red dots) provides the primary kinetic energy to widen channel margins ($\text{SHAP} > +500$). |
+| **2** | **NWM Flood pc0** | Flow Dynamics | First principal component of NWM 2.1 flood frequency moments; captures peak flood flashiness and multi-year flood volume. |
+| **3** | **Topographic Wetness Index (TWI)** | Geomorphometry | $\text{TWI} = \ln(a / \tan \beta)$ reflects unconfined valley-floor accommodation space; high TWI promotes wider channels. |
+| **4** | **Actual Evapotranspiration (AET)** | Hydroclimate | High AET in vegetated catchments modulates runoff volume and channel boundary maintenance. |
+| **5** | **Arbolatesu** | Hydrography | Cumulative upstream network length; scales with cumulative discharge and sediment transport capacity. |
+| **6** | **Human pc2** | Landscape | Principal component capturing anthropogenic land use, urban imperviousness, and altered floodplain connectivity. |
+| **7** | **Water Table Depth** | Groundwater | Shallow water tables (high saturation) maintain wider active channel corridors; deep water tables suppress width. |
+| **8** | **PET** | Climate | Potential Evapotranspiration; reflects atmospheric evaporative demand and climatic aridity gradients. |
+| **9** | **Bedrock Depth** | Geology | Deep alluvial overburden allows unrestricted lateral channel migration, whereas shallow bedrock restricts widening. |
+| **10** | **NWM Flood pc1** | Flow Dynamics | Second principal component of NWM flood quantiles; captures moderate-recurrence flood pulse characteristics. |
+| **11** | **Totdasqkm** | Drainage Scale | Total upstream drainage area ($\text{km}^2$); fundamental scaling metric following classical $W \propto A^{0.4\text{--}0.5}$ relations. |
+| **12** | **Precipitation pc0** | Climate | Principal component of continental precipitation depth and storm intensity distributions. |
+| **13** | **Elevation** | Terrain | Absolute reach elevation; separates lowland alluvial rivers from steep, confined alpine streams. |
+| **14** | **NWM Flood pc2** | Flow Dynamics | Third principal component of NWM flood quantiles; captures high-frequency, low-magnitude pulse dynamics. |
+| **15** | **Elevation Difference** | Terrain | Reach-level relief; steep drops concentrate flow energy vertically rather than laterally. |
+
+### Elbow Method Feature Space Optimization
+
+As shown in **Figure 1b**, training the ML regressor across varying feature subset sizes demonstrates clear elbow behavior:
+
+* At **116 features**, the model exhibits excess collinearity and noise, achieving $R^2 \approx 54\%$.
+* Recursive feature dropping tracking validation skill concentrates predictive power into the top orthogonal predictors.
+* The performance curve reaches its optimal plateau at **15 features ($R^2 \approx 81\%$)**, highlighted by the red dashed line. Removing features below 15 causes model skill to decline ($R^2 < 77\%$).
 
 ---
 
-## SHAP Interaction & Dependency Analyses
+## SHAP Interaction & Dependency Analysis
 
-SHAP interaction values ($\phi_{i, j}$) decompose the combined effect of two variables into their main effects and non-linear joint interactions:
-
-$$\phi_{i, j}(x) = \sum_{S \subseteq F \setminus \{i, j\}} \frac{|S|! \, (|F| - |S| - 2)!}{2 |F|!} \left[ f_x(S \cup \{i, j\}) - f_x(S \cup \{i\}) - f_x(S \cup \{j\}) + f_x(S) \right]$$
+To examine non-linear threshold effects, SHAP interaction values decouple the primary feature response from joint multi-variable dependencies:
 
 ![SHAP Interaction and Dependency Analyses for Key Environmental Drivers](../../assets/images/v1.0/tw/Fig6_tw.png){ loading=lazy }
-*Figure 2: SHAP dependency and interaction plots showing non-linear physical relationships among soil moisture, TWI, flood frequency PC0, and channel slope ([Modaresi Rad et al., 2024](https://doi.org/10.1029/2024JH000173)).*
+*Figure 2: SHAP dependency and interaction plot for Topographic Wetness Index (TWI), colored by Bankfull Discharge ($Q_{\text{bf}}$) ([Modaresi Rad et al., 2024](https://doi.org/10.1029/2024JH000173)).*
 
-### 1. Soil Moisture $\times$ Bankfull Width Sensitivity
+### Topographic Wetness Index $\times$ Bankfull Discharge Interaction
 
 ```mermaid
-flowchart LR
-    subgraph ARID ["Arid / Semi-Arid Regimes (Low Soil Moisture)"]
-        direction TB
-        A1["Sparse Riparian Vegetation<br/>Low Root Cohesion"]
-        A2["Flashy Ephemeral Flood Pulses"]
-        A3["<b>High Width Exponent (b &gt; 0.50)</b><br/>Wide, Shallow Braided Channels"]
-        A1 --> A2 --> A3
+flowchart TD
+    subgraph CONFINED ["1. Steep / Confined Valleys (TWI < 810)"]
+        C1["Low Valley Accommodation Space<br/>Structural Lateral Confinement"]
+        C2["<b>Negative SHAP Contribution (-50 to 0 m)</b><br/>Flow Energy Directed into Bed Shear"]
+        C1 --> C2
     end
 
-    subgraph HUMID ["Humid Regimes (High Soil Moisture)"]
-        direction TB
-        H1["Dense Riparian Canopy<br/>High Root Tensile Strength"]
-        H2["Steady Baseflow-Dominated Runoff"]
-        H3["<b>Low Width Exponent (b &approx; 0.35 - 0.45)</b><br/>Narrow, Deep Stable Channels"]
-        H1 --> H2 --> H3
+    subgraph UNCONFINED ["2. Broad Alluvial Valleys (TWI > 810)"]
+        U1["High Saturated Convergence<br/>Expansive Floodplain Valley Floor"]
+        U2["<b>Positive SHAP Contribution (+20 to +150 m)</b><br/>Multi-Threaded & Broad Alluvial Widths"]
+        U1 --> U2
     end
 
-    ARID ~~~ HUMID
+    CONFINED ~~~ UNCONFINED
 
-    classDef default fill:#1e293b,stroke:#475569,stroke-width:1.5px,color:#f8fafc;
-    classDef arid fill:#b45309,stroke:#f59e0b,stroke-width:2px,color:#ffffff;
-    classDef humid fill:#047857,stroke:#10b981,stroke-width:2px,color:#ffffff;
-    class ARID arid;
-    class HUMID humid;
+    class CONFINED highlight-blue;
+    class UNCONFINED highlight-teal;
+    class C1 highlight-blue;
+    class C2 highlight-blue;
+    class U1 highlight-teal;
+    class U2 highlight-teal;
 ```
 
-* **Physical Insight**: In arid and semi-arid regions (low soil moisture $\theta < 0.15$), streams lack continuous root reinforcement along their banks. High flash-flood peaks easily erode unconsolidated sands and gravels, driving rapid lateral widening and yielding high width scaling exponents ($b > 0.50$).
-* Conversely, in humid climates ($\theta > 0.35$), dense root networks and cohesive fine-grained soils stabilize channel margins, forcing flow increases to be accommodated primarily through vertical scour and velocity acceleration ($b \approx 0.35 - 0.45$).
+#### Physical Mechanisms Revealed:
 
-### 2. Topographic Wetness Index (TWI) $\times$ Flood Frequency PC0
-
-* In flat, broad valley bottoms (high TWI $> 8.5$), elevated flood frequency PC0 values cause dramatic channel widening as peak discharges spread across unconfined alluvial deposits.
-* In steep, V-shaped bedrock canyons (low TWI $< 5.0$), even severe flood events cannot widen the channel laterally due to structural valley confinement, directing energy into bed scouring.
-
-### 3. Channel Bed Slope $\times$ Drainage Scale
-
-* For small headwater catchments ($A < 20\text{ km}^2$), steep slopes ($S > 0.03$) suppress channel width by maximizing vertical shear stress.
-* For lowland river reaches ($S < 0.001$), top width expands rapidly with drainage area as lateral bank erosion and meander migration dominate over bed degradation.
+1. **Threshold at $\text{TWI} \approx 810$**:
+   * For steep, narrow valleys ($\text{TWI} < 810$), SHAP values remain negative ($-50\text{ to }0\text{ m}$), indicating that structural lateral confinement prevents channel expansion even during high flow events.
+   * At $\text{TWI} \approx 810$, the relationship exhibits a sharp positive transition, where valley floors widen sufficiently to allow unconstrained lateral bank migration.
+2. **Amplification by Bankfull Discharge**:
+   * Above $\text{TWI} > 810$, reaches with high bankfull discharge ($Q_{\text{bf}} > 500\text{ m}^3/\text{s}$, pink/red points) experience dramatic positive width adjustments ($\text{SHAP} > +50\text{ to }+150\text{ m}$), reflecting large alluvial meander belts and multi-thread active channel corridors.
 
 ---
 
 ## Local Case Study Explanations
 
-To illustrate how the ensemble model adapts to regional geomorphic contexts, consider three distinct continental archetypes:
+To illustrate how the model adapts across contrasting continental geomorphic settings:
 
 ```mermaid
 flowchart TD
     subgraph APPALACHIAN ["Humid Appalachian Headwater (Order 2)"]
-        A_IN["High Soil Moisture (&theta; = 0.38)<br/>Steep Slope (S = 0.025)<br/>High Clay Cohesion (28%)"]
-        A_SHAP["SHAP Attributions:<br/>&bull; Slope: -1.8 m<br/>&bull; Soil Moisture: -1.2 m<br/>&bull; Clay: -0.9 m"]
-        A_OUT["<b>Predicted Width: 4.8 m</b><br/><i>Narrow, Confined Mountain Bed</i>"]
+        A_IN["Low TWI (720)<br/>High Elevation (850 m)<br/>Low Q<sub>bf</sub> (12 m&sup3;/s)"]
+        A_SHAP["SHAP Attributions:<br/>&bull; TWI: -12.4 m<br/>&bull; Elevation: -8.2 m<br/>&bull; Q<sub>bf</sub>: +15.1 m"]
+        A_OUT["<b>Predicted Bankfull Width: 6.8 m</b><br/><i>Narrow, Structurally Confined Bed</i>"]
         A_IN --> A_SHAP --> A_OUT
     end
 
-    subgraph DESERT ["Arid Great Basin Wash (Order 2)"]
-        D_IN["Low Soil Moisture (&theta; = 0.08)<br/>High Flash Flood PC0 (+2.4)<br/>Low Clay Cohesion (6%)"]
-        D_SHAP["SHAP Attributions:<br/>&bull; Flood PC0: +4.2 m<br/>&bull; Soil Moisture: +2.8 m<br/>&bull; Low Cohesion: +1.9 m"]
-        D_OUT["<b>Predicted Width: 18.5 m</b><br/><i>Wide, Unconfined Ephemeral Wash</i>"]
-        D_IN --> D_SHAP --> D_OUT
-    end
-
     subgraph MIDWEST ["Midwestern Alluvial River (Order 6)"]
-        M_IN["High Drainage Area (A = 8,400 km&sup2;)<br/>High Bankfull Flow (Q<sub>bf</sub> = 420 m&sup3;/s)<br/>High TWI (9.2)"]
-        M_SHAP["SHAP Attributions:<br/>&bull; Q<sub>bf</sub>: +32.4 m<br/>&bull; TWI: +8.5 m<br/>&bull; Drainage Area: +14.2 m"]
-        M_OUT["<b>Predicted Width: 88.6 m</b><br/><i>Expansive Alluvial Floodway</i>"]
+        M_IN["High TWI (1,150)<br/>High Arbolate Sum (4,200 km)<br/>High Q<sub>bf</sub> (620 m&sup3;/s)"]
+        M_SHAP["SHAP Attributions:<br/>&bull; Q<sub>bf</sub>: +48.2 m<br/>&bull; TWI: +24.5 m<br/>&bull; Arbolate Sum: +18.6 m"]
+        M_OUT["<b>Predicted Bankfull Width: 96.2 m</b><br/><i>Broad, Unconfined Alluvial Corridor</i>"]
         M_IN --> M_SHAP --> M_OUT
     end
 
-    classDef default fill:#1e293b,stroke:#475569,stroke-width:1.5px,color:#f8fafc;
-    classDef card1 fill:#1e3a8a,stroke:#3b82f6,stroke-width:2px,color:#ffffff;
-    classDef card2 fill:#78350f,stroke:#d97706,stroke-width:2px,color:#ffffff;
-    classDef card3 fill:#064e3b,stroke:#059669,stroke-width:2px,color:#ffffff;
-    class APPALACHIAN card1;
-    class DESERT card2;
-    class MIDWEST card3;
+    class APPALACHIAN highlight-blue;
+    class MIDWEST highlight-teal;
+    class A_IN highlight-blue;
+    class A_SHAP highlight-blue;
+    class A_OUT highlight-blue;
+    class M_IN highlight-teal;
+    class M_SHAP highlight-teal;
+    class M_OUT highlight-teal;
 ```
 
 ---
 
-## Fluvial Geomorphic Consistency
-
 !!! success "Verification Against Classical Fluvial Theory"
     The XAI analyses rigorously confirm that the machine learning pipeline adheres to established physical principles:
 
-    1. **Leopold & Maddock (1953)**: Power-law downstream scaling governed by discharge and drainage area.
+    1. **Leopold & Maddock (1953)**: Power-law downstream scaling governed by volumetric discharge and drainage area.
     2. **Schumm (1960)**: Narrowing and deepening of channels in response to high sediment clay/silt fractions and cohesive bank boundaries.
     3. **Hack (1957) & Flint (1974)**: Slope-area concavity relationships governing channel energy distribution and valley confinement.
-    4. **Millar (2005)**: Direct influence of riparian bank vegetation and root biomass on channel width-to-depth ratios.
+
+---
+
+## Section Navigation
+
+- [TopWidth v1.0 Overview](index.md) — Problem statement, FHG power-law equations, and key findings.
+- [Model Architectures](models.md) — 50 baseline algorithms, Bayesian optimization, and Meta-Learner stacking.
+- [Model Skill & Continental Validation](skill.md) — Evaluation across 3,543 USGS stations, HLR comparisons, and literature benchmarking.
