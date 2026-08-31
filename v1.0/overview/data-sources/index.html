@@ -591,17 +591,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#gauge-network-spatial-coverage-analysis" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Gauge Network &amp; Spatial Coverage Analysis
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#environmental-predictor-catalog-116-candidate-features" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1472,17 +1461,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#gauge-network-spatial-coverage-analysis" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Gauge Network &amp; Spatial Coverage Analysis
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#environmental-predictor-catalog-116-candidate-features" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1663,7 +1641,7 @@
 
 
 <h1 id="data-sources-quality-assurance">Data Sources &amp; Quality Assurance<a class="headerlink" href="#data-sources-quality-assurance" title="Permanent link">¶</a></h1>
-<p>The <strong>CONUS-FHG v1.0</strong> framework integrates field-measured hydraulic geometry from the USGS HYDRoSWOT database with continental-scale environmental predictor datasets spanning hydrology, topography, geology, soil physics, and climate. This page details the source data catalogs, quality assurance workflows, hydraulic continuity fitting, and Principal Component Analysis (PCA) decompositions.</p>
+<p>The <strong>V1.0</strong> framework integrates field-measured hydraulic geometry from the USGS HYDRoSWOT database with continental-scale environmental predictor datasets spanning hydrology, topography, geology, soil physics, and climate. This page details the source data catalogs, quality assurance workflows, hydraulic continuity fitting, and Principal Component Analysis (PCA) decompositions.</p>
 <hr>
 <h2 id="usgs-hydroswot-hydraulic-geometry-database">USGS HYDRoSWOT Hydraulic Geometry Database<a class="headerlink" href="#usgs-hydroswot-hydraulic-geometry-database" title="Permanent link">¶</a></h2>
 <p>The primary observational foundation for training and validating the hydraulic geometry models is the USGS <strong>HYDRoacoustic dataset in support of the Surface Water Oceanographic Topography satellite mission (HYDRoSWOT)</strong> (Canova et al., 2016).</p>
@@ -1680,8 +1658,8 @@
     end
 
     subgraph FIT ["Continuity-Constrained Fitting"]
-        F1["&lt;b&gt;Johnson et al. (2023) Framework:&lt;/b&gt;&lt;br/&gt;Fit W = a&amp;middot;Q&lt;sup&gt;b&lt;/sup&gt;, Y = c&amp;middot;Q&lt;sup&gt;f&lt;/sup&gt;, V = k&amp;middot;Q&lt;sup&gt;m&lt;/sup&gt;&lt;br/&gt;Subject to: a&amp;middot;c&amp;middot;k = 1.0 and b+f+m = 1.0"]
-        F2["&lt;b&gt;Goodness-of-Fit Threshold:&lt;/b&gt; R&lt;sup&gt;2&lt;/sup&gt; &amp;ge; 0.80"]
+        F1["&lt;br/&gt;Fit W = a&amp;middot;Q&lt;sup&gt;b&lt;/sup&gt;, Y = c&amp;middot;Q&lt;sup&gt;f&lt;/sup&gt;, V = k&amp;middot;Q&lt;sup&gt;m&lt;/sup&gt;&lt;br/&gt;Subject to: a&amp;middot;c&amp;middot;k = 1.0 and b+f+m = 1.0"]
+        F2["&lt;b&gt;Goodness-of-Fit Threshold:&lt;/b&gt; R&lt;sup&gt;2&lt;/sup&gt; &amp;ge; 0.60"]
     end
 
     subgraph FINAL ["Curated Training Dataset"]
@@ -1708,7 +1686,7 @@
 2. <strong>Dynamic Range</strong>: A minimum discharge dynamic ratio of <span class="arithmatex">\(Q_{\text{max}} / Q_{\text{min}} \ge 3.0\)</span> is enforced to ensure valid power-law exponent estimation.
 3. <strong>Hydraulic Regimes</strong>: Removal of stations subject to severe tidal backwater, impoundment backwater from downstream dams, or frequent morphological avulsions.</p>
 <h3 id="continuity-constrained-ahg-power-law-fitting">Continuity-Constrained AHG Power-Law Fitting<a class="headerlink" href="#continuity-constrained-ahg-power-law-fitting" title="Permanent link">¶</a></h3>
-<p>Following the framework of Johnson et al. (2023), power-law curves are simultaneously optimized across all three hydraulic parameters while enforcing strict mass conservation:</p>
+<p>Power-law curves are simultaneously optimized across all three hydraulic parameters while enforcing strict mass conservation:</p>
 <p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../../assets/images/v1.0/overview/ADCP_fit.png" data-desc-position="bottom"><img alt="Hydraulic Geometry Power-Law Continuity Optimization Fitting" loading="lazy" src="../../../assets/images/v1.0/overview/ADCP_fit.png"></a></p>
 <div class="arithmatex">\[
 \min_{a, b, c, f, k, m} \sum_{i=1}^N \left[ \left(\ln W_i - \ln(a Q_i^b)\right)^2 + \left(\ln Y_i - \ln(c Q_i^f)\right)^2 + \left(\ln V_i - \ln(k Q_i^m)\right)^2 \right]
@@ -1717,22 +1695,14 @@
 <div class="arithmatex">\[
 b + f + m = 1.0 \quad \text{and} \quad \ln(a) + \ln(c) + \ln(k) = 0.0 \implies a \cdot c \cdot k = 1.0
 \]</div>
-<p>Only stations achieving a coefficient of determination <span class="arithmatex">\(R^2 \ge 0.80\)</span> are retained for ML training.</p>
+<p>Only stations achieving a coefficient of determination <span class="arithmatex">\(R^2 \ge 0.60\)</span> are retained for ML training.</p>
 <h3 id="spatial-distribution-of-training-stations">Spatial Distribution of Training Stations<a class="headerlink" href="#spatial-distribution-of-training-stations" title="Permanent link">¶</a></h3>
 <p>The curated dataset contains <strong>3,543 stations</strong> situated across <strong>1,432 distinct river systems</strong>:</p>
 <p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../../assets/images/v1.0/overview/ADCP_trainning_data.png" data-desc-position="bottom"><img alt="Spatial Distribution and Gauge Density of ADCP Training Data" loading="lazy" src="../../../assets/images/v1.0/overview/ADCP_trainning_data.png"></a></p>
 <p>Station marker sizing illustrates the clustering density of gauges within contiguous hydrographic networks. Clustered gauges allow the machine learning pipeline to evaluate spatial autocorrelation and topological continuity along longitudinal river corridors.</p>
 <hr>
-<h2 id="gauge-network-spatial-coverage-analysis">Gauge Network &amp; Spatial Coverage Analysis<a class="headerlink" href="#gauge-network-spatial-coverage-analysis" title="Permanent link">¶</a></h2>
-<p>Supplementary Figure S1 illustrates the comprehensive spatial density and network connectivity of the training gauges across CONUS hydrologic regions:</p>
-<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../../assets/images/v1.0/overview/Fig_S1.png" data-desc-position="bottom"><img alt="Supplementary Figure S1: Gauge Network Density and Regional Distribution" loading="lazy" src="../../../assets/images/v1.0/overview/Fig_S1.png"></a></p>
-<div class="admonition info">
-<p class="admonition-title">Spatial Representation across Hydrologic Landscape Regions (HLRs)</p>
-<p>The training dataset encompasses all 20 Hydrologic Landscape Regions of CONUS (Wolock et al., 2004). Dense clusters occur in the Midwest, Southeast, and Mid-Atlantic, while arid Western basins and steep Pacific Northwest catchments ensure robust representation of extreme hydro-climatic regimes.</p>
-</div>
-<hr>
 <h2 id="environmental-predictor-catalog-116-candidate-features">Environmental Predictor Catalog (116 Candidate Features)<a class="headerlink" href="#environmental-predictor-catalog-116-candidate-features" title="Permanent link">¶</a></h2>
-<p>A comprehensive suite of <strong>116 candidate environmental predictors</strong> was compiled across six primary thematic categories for all 3,543 training gauge locations and continental NHDPlusV2 / NextGen flowlines:</p>
+<p>A comprehensive suite of <strong>116 candidate environmental predictors</strong> was compiled across six primary thematic categories for all 3,543 training gauge locations and continental Reference Fabric / NextGen flowlines:</p>
 <table>
 <thead>
 <tr>
@@ -1759,7 +1729,7 @@ b + f + m = 1.0 \quad \text{and} \quad \ln(a) + \ln(c) + \ln(k) = 0.0 \implies a
 </tr>
 <tr>
 <td style="text-align: left;"><strong>Topography &amp; Network</strong></td>
-<td style="text-align: left;"><strong>USGS 3DEP DEM &amp; NHDPlusV2</strong></td>
+<td style="text-align: left;"><strong>USGS 3DEP DEM &amp; Reference Fabric</strong></td>
 <td style="text-align: left;">Reach slope (<span class="arithmatex">\(S\)</span>), upstream drainage area (<span class="arithmatex">\(A\)</span>), Strahler stream order, arbolate sum, channel elevation, catchment relief ratio, physiographic diversity.</td>
 </tr>
 <tr>
@@ -1776,8 +1746,8 @@ b + f + m = 1.0 \quad \text{and} \quad \ln(a) + \ln(c) + \ln(k) = 0.0 \implies a
 </table>
 <hr>
 <h2 id="principal-component-analysis-pca-decompositions">Principal Component Analysis (PCA) Decompositions<a class="headerlink" href="#principal-component-analysis-pca-decompositions" title="Permanent link">¶</a></h2>
-<p>To investigate the multi-collinearity structure of the 116 candidate predictors and guide AutoEncoder compression, Principal Component Analysis (PCA) was performed across each environmental domain. Supplementary Figures S2 through S12 detail the scree plots, eigenvector loadings, and geographic spatial patterns:</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:11"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"><input id="__tabbed_1_2" name="__tabbed_1" type="radio"><input id="__tabbed_1_3" name="__tabbed_1" type="radio"><input id="__tabbed_1_4" name="__tabbed_1" type="radio"><input id="__tabbed_1_5" name="__tabbed_1" type="radio"><input id="__tabbed_1_6" name="__tabbed_1" type="radio"><input id="__tabbed_1_7" name="__tabbed_1" type="radio"><input id="__tabbed_1_8" name="__tabbed_1" type="radio"><input id="__tabbed_1_9" name="__tabbed_1" type="radio"><input id="__tabbed_1_10" name="__tabbed_1" type="radio"><input id="__tabbed_1_11" name="__tabbed_1" type="radio"><div class="tabbed-labels"><label for="__tabbed_1_1">StreamCat Catchment (Fig S2)</label><label for="__tabbed_1_2">Soil Physical Texture (Fig S3)</label><label for="__tabbed_1_3">Topography &amp; Relief (Fig S4)</label><label for="__tabbed_1_4">NWM Flood Frequency (Fig S5)</label><label for="__tabbed_1_5">Riparian Land Cover (Fig S6)</label><label for="__tabbed_1_6">Climate &amp; Water Balance (Fig S7)</label><label for="__tabbed_1_7">Vegetation Dynamics (Fig S8)</label><label for="__tabbed_1_8">Geology &amp; Lithology (Fig S9)</label><label for="__tabbed_1_9">Network Topology (Fig S10)</label><label for="__tabbed_1_10">Flow Duration &amp; Flashiness (Fig S11)</label><label for="__tabbed_1_11">Integrated Multi-Source (Fig S12)</label></div>
+<p>To eliminate multicollinearity among the 116 candidate predictors and compress thematic feature sub-domains into orthogonal predictors, Principal Component Analysis (PCA) was performed across each environmental domain. Supplementary Figures S2 through S12 detail the scree plots, eigenvector loadings, and geographic spatial patterns:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:11"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"><input id="__tabbed_1_2" name="__tabbed_1" type="radio"><input id="__tabbed_1_3" name="__tabbed_1" type="radio"><input id="__tabbed_1_4" name="__tabbed_1" type="radio"><input id="__tabbed_1_5" name="__tabbed_1" type="radio"><input id="__tabbed_1_6" name="__tabbed_1" type="radio"><input id="__tabbed_1_7" name="__tabbed_1" type="radio"><input id="__tabbed_1_8" name="__tabbed_1" type="radio"><input id="__tabbed_1_9" name="__tabbed_1" type="radio"><input id="__tabbed_1_10" name="__tabbed_1" type="radio"><input id="__tabbed_1_11" name="__tabbed_1" type="radio"><div class="tabbed-labels"><label for="__tabbed_1_1">StreamCat Catchment</label><label for="__tabbed_1_2">Soil Physical Texture</label><label for="__tabbed_1_3">Topography &amp; Relief</label><label for="__tabbed_1_4">NWM Flood Frequency</label><label for="__tabbed_1_5">Riparian Land Cover</label><label for="__tabbed_1_6">Climate &amp; Water Balance</label><label for="__tabbed_1_7">Vegetation Dynamics</label><label for="__tabbed_1_8">Geology &amp; Lithology</label><label for="__tabbed_1_9">Network Topology</label><label for="__tabbed_1_10">Flow Duration &amp; Flashiness</label><label for="__tabbed_1_11">Hydrological Landscape Regions (HLR)</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <h3 id="catchment-landscape-land-use-pca">Catchment Landscape &amp; Land Use PCA<a class="headerlink" href="#catchment-landscape-land-use-pca" title="Permanent link">¶</a></h3>
@@ -1831,14 +1801,14 @@ b + f + m = 1.0 \quad \text{and} \quad \ln(a) + \ln(c) + \ln(k) = 0.0 \implies a
 </div>
 <div class="tabbed-block">
 <h3 id="integrated-continental-eigenvector-spectrum">Integrated Continental Eigenvector Spectrum<a class="headerlink" href="#integrated-continental-eigenvector-spectrum" title="Permanent link">¶</a></h3>
-<p>Full-spectrum PCA integrating all 116 candidate predictors. Highlights the concentration of variance across the first 15–20 principal components, establishing the mathematical rationale for AutoEncoder compression.</p>
+<p>Full-spectrum of HLR codes.</p>
 <p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../../assets/images/v1.0/overview/Fig_S12.png" data-desc-position="bottom"><img alt="Supplementary Figure S12: Integrated Continental Multi-Source Eigenvector Spectrum" loading="lazy" src="../../../assets/images/v1.0/overview/Fig_S12.png"></a></p>
 </div>
 </div>
 </div>
 <hr>
 <h2 id="summary-of-data-harmonization">Summary of Data Harmonization<a class="headerlink" href="#summary-of-data-harmonization" title="Permanent link">¶</a></h2>
-<p>By reconciling field-measured ADCP hydraulic geometry from HYDRoSWOT with multi-source environmental descriptors, the CONUS-FHG v1.0 data pipeline provides a clean, continuous, and physically consistent dataset for machine learning. </p>
+<p>By reconciling field-measured ADCP hydraulic geometry from HYDRoSWOT with multi-source environmental descriptors, the v1.0 data pipeline provides a clean, continuous, and physically consistent dataset for machine learning. </p>
 <p>Next: Explore how these 116 predictors are compressed and modeled in <a href="../methods/">Methods &amp; Feature Engineering</a>.</p>
 
 
@@ -1884,7 +1854,7 @@ b + f + m = 1.0 \quad \text{and} \quad \ln(a) + \ln(c) + \ln(k) = 0.0 \implies a
     <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
       Material for MkDocs
     </a>
-    — developed by <strong>Arash Modaresi Rad</strong>
+    developed by <strong>Arash Modaresi Rad</strong>
   
 </div>
       

@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════════════════
-   ML Channel Geometry & Roughness — Professional Design System
+   ML Channel Geometry & Roughness, Professional Design System
    ═══════════════════════════════════════════════════════════════════════════ */
 
 /* ── Global Tokens & Typography ───────────────────────────────────────────── */
@@ -614,7 +614,7 @@ body,
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   HOME PAGE — CAPABILITIES & WORKFLOW LAYOUT (Tight & Cohesive)
+   HOME PAGE CAPABILITIES & WORKFLOW LAYOUT (Tight & Cohesive)
    ═══════════════════════════════════════════════════════════════════════════ */
 .home-capabilities-container {
   display: grid;
@@ -752,7 +752,7 @@ body,
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   SEAMLESS SIDEBAR RIVER CATCHMENT BACKGROUND (NO FRAMES OR BORDERS)
+   SEAMLESS SIDEBAR RIVER CATCHMENT BACKGROUND
    ═══════════════════════════════════════════════════════════════════════════ */
 .sidebar-watershed-container {
   position: relative;
@@ -785,7 +785,7 @@ body,
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   CLEAN, TRANSPARENT MERMAID DIAGRAM STYLING (NO GRAY BOXES)
+   MERMAID DIAGRAM STYLING
    ═══════════════════════════════════════════════════════════════════════════ */
 pre.mermaid,
 .mermaid {

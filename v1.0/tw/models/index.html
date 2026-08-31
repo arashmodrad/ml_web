@@ -87,7 +87,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#topwidth-model-architectures-optimization-v10" class="md-skip">
+        <a href="#topwidth-model-architectures-optimization" class="md-skip">
           Skip to content
         </a>
       
@@ -676,23 +676,6 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Target Formulation &amp; Physical Constraining">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#power-law-parameterization" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Power-Law Parameterization
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
         <li class="md-nav__item">
@@ -703,23 +686,6 @@
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="Machine Learning Algorithms">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#base-learner-characteristics" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Base Learner Characteristics
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -764,10 +730,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#final-60-feature-thematic-breakdown" class="md-nav__link">
+  <a href="#final-30-feature-thematic-breakdown" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Final 60-Feature Thematic Breakdown
+        Final 30-Feature Thematic Breakdown
       
     </span>
   </a>
@@ -787,23 +753,6 @@
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="Hyperparameter Optimization Strategy">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#optimal-hyperparameter-ranges" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Optimal Hyperparameter Ranges
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -1327,23 +1276,6 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Target Formulation &amp; Physical Constraining">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#power-law-parameterization" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Power-Law Parameterization
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
         <li class="md-nav__item">
@@ -1354,23 +1286,6 @@
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="Machine Learning Algorithms">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#base-learner-characteristics" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Base Learner Characteristics
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -1415,10 +1330,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#final-60-feature-thematic-breakdown" class="md-nav__link">
+  <a href="#final-30-feature-thematic-breakdown" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Final 60-Feature Thematic Breakdown
+        Final 30-Feature Thematic Breakdown
       
     </span>
   </a>
@@ -1438,23 +1353,6 @@
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="Hyperparameter Optimization Strategy">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#optimal-hyperparameter-ranges" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Optimal Hyperparameter Ranges
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -1478,56 +1376,56 @@
   
 
 
-<h1 id="topwidth-model-architectures-optimization-v10">TopWidth: Model Architectures &amp; Optimization (v1.0)<a class="headerlink" href="#topwidth-model-architectures-optimization-v10" title="Permanent link">¶</a></h1>
-<p>The v1.0 TopWidth modeling framework uses a robust multi-model machine learning architecture to predict Feature Hydraulic Geometry (FHG) parameters across CONUS river networks (<a href="https://doi.org/10.1029/2024JH000173">Modaresi Rad et al., 2024</a>). To capture non-linear interactions across diverse physiographic settings while preventing overfitting, the pipeline integrates feature selection, dimensionality reduction, hyperparameter optimization, and a two-tier <strong>stacked meta-learner</strong>.</p>
+<h1 id="topwidth-model-architectures-optimization">TopWidth: Model Architectures &amp; Optimization<a class="headerlink" href="#topwidth-model-architectures-optimization" title="Permanent link">¶</a></h1>
+<p>The v1.0 TopWidth modeling framework uses a robust multi-model machine learning architecture to predict At Station Hydraulic Geometry (AHG) parameters across CONUS river networks (<a href="https://doi.org/10.1029/2024JH000173">Modaresi Rad et al., 2024</a>). To capture non-linear interactions across diverse physiographic settings while preventing overfitting, the pipeline integrates feature selection, dimensionality reduction, hyperparameter optimization, and a two-tier <strong>stacked meta-learner</strong>.</p>
 <hr>
 <h2 id="target-formulation-physical-constraining">Target Formulation &amp; Physical Constraining<a class="headerlink" href="#target-formulation-physical-constraining" title="Permanent link">¶</a></h2>
-<h3 id="power-law-parameterization">Power-Law Parameterization<a class="headerlink" href="#power-law-parameterization" title="Permanent link">¶</a></h3>
-<p>Top width (<span class="arithmatex">\(W\)</span>) varies with discharge (<span class="arithmatex">\(Q\)</span>) according to Leopold &amp; Maddock's (1953) power-law formulation:</p>
-<div class="arithmatex">\[W = a \cdot Q^b \iff \ln(W) = \ln(a) + b \cdot \ln(Q)\]</div>
-<p>Direct regression on raw power-law parameters can suffer from heteroscedasticity and multi-order magnitude spreads. To ensure numerical stability and strictly enforce non-negative physical bounds (<span class="arithmatex">\(a &gt; 0\)</span> and <span class="arithmatex">\(0 &lt; b &lt; 1\)</span>):</p>
+<p>The v1.0 TopWidth modeling framework predicts both dimensional channel widths and dimensionless hydraulic geometry scaling parameters:</p>
 <ol>
 <li>
-<p><strong>Coefficient Transformation</strong>:
-   The width coefficient <span class="arithmatex">\(a\)</span> spans orders of magnitude across small headwaters to major rivers. Models are trained to predict the natural log-transformed target:
-   $<span class="arithmatex">\(y_a = \ln(a) \implies \hat{a} = \exp(\hat{y}_a)\)</span>$</p>
+<p><strong>In-Channel &amp; Bankfull Width Targets</strong>:</p>
+<blockquote>
+<p><br> <strong>In-Channel Width (<span class="arithmatex">\(TW_{\text{in}}\)</span>)</strong>: Evaluated at the <strong>100% AEP discharge</strong> (<span class="arithmatex">\(Q_{\text{100\% AEP}}\)</span>, 1-year mean annual flow).
+<br> <strong>Bankfull Width (<span class="arithmatex">\(TW_{\text{bf}}\)</span>)</strong>: Evaluated at the <strong>50% AEP discharge</strong> (<span class="arithmatex">\(Q_{\text{50\% AEP}}\)</span>, 2-year channel-forming flood).
+<br> Target transformation: Log-transformed (<span class="arithmatex">\(\ln(TW)\)</span>) to normalize right-skewed width distributions across stream orders:
+     <span class="arithmatex">\(y_{TW} = \ln(TW) \implies \widehat{TW} = \exp(\hat{y}_{TW})\)</span></p>
+</blockquote>
 </li>
 <li>
-<p><strong>Exponent Bounding</strong>:
-   The width exponent <span class="arithmatex">\(b\)</span> represents the sensitivity of width to changes in discharge. For stable in-channel flow, <span class="arithmatex">\(b\)</span> is bounded in the unit interval <span class="arithmatex">\((0, 1)\)</span> via logit or linear-bounded scaling:
-   $<span class="arithmatex">\(y_b = \ln\left(\frac{b}{1 - b}\right) \iff b = \frac{1}{1 + \exp(-y_b)}\)</span>$</p>
+<p><strong>AHG Power-Law Scaling Exponent (<span class="arithmatex">\(b\)</span>)</strong>:</p>
+<blockquote>
+<p><br> Fitted across multi-flow ADCP surveys under mass continuity (<span class="arithmatex">\(b + f + m = 1.0\)</span>).
+<br> Bounded in <span class="arithmatex">\((0, 1)\)</span> via logit transformation and used specifically with depth exponent <span class="arithmatex">\(f\)</span> to derive the continuous Dingman shape parameter (<span class="arithmatex">\(r = f/b\)</span>):
+     <span class="arithmatex">\(y_b = \ln\left(\frac{b}{1 - b}\right) \iff b = \frac{1}{1 + \exp(-y_b)}\)</span></p>
+</blockquote>
 </li>
 </ol>
-<pre class="mermaid"><code>flowchart LR
-    subgraph RAW ["Observation Space"]
-        ADCP["USGS HYDRoSWOT&lt;br/&gt;ADCP Surveys (W, Q)"]
-        FIT["FHG Power-Law Fit&lt;br/&gt;&lt;code&gt;W = a &amp;middot; Q&lt;sup&gt;b&lt;/sup&gt;&lt;/code&gt;"]
-        ADCP --&gt; FIT
+<pre class="mermaid"><code>flowchart TD
+    subgraph OBS ["1. USGS HYDRoSWOT ADCP Field Measurements"]
+        ADCP["&lt;b&gt;3,543 Field Stations&lt;/b&gt;&lt;br/&gt;Observed multi-flow cross-sectional surveys &amp; stage-discharge rating curves"]
     end
 
-    subgraph TRANS ["Target Transformation"]
-        LOG_A["Log-Space Coefficient&lt;br/&gt;&lt;code&gt;y&lt;sub&gt;a&lt;/sub&gt; = ln(a)&lt;/code&gt;"]
-        BOUND_B["Bounded Exponent&lt;br/&gt;&lt;code&gt;y&lt;sub&gt;b&lt;/sub&gt; &amp;in; (0, 1)&lt;/code&gt;"]
-        FIT --&gt; LOG_A
-        FIT --&gt; BOUND_B
+    subgraph FLOW ["2. NWIS Flow Threshold Extraction"]
+        direction LR
+        Q100["&lt;b&gt;100% AEP Flow (Q&lt;sub&gt;100%&lt;/sub&gt;)&lt;/b&gt;&lt;br/&gt;In-Channel Mean Annual Flow&lt;br/&gt;&lt;i&gt;Derives TW&lt;sub&gt;in&lt;/sub&gt; Label&lt;/i&gt;"]
+        Q50["&lt;b&gt;50% AEP Flow (Q&lt;sub&gt;50%&lt;/sub&gt;)&lt;/b&gt;&lt;br/&gt;Bankfull 2-Yr Flow&lt;br/&gt;&lt;i&gt;Derives TW&lt;sub&gt;bf&lt;/sub&gt; Label&lt;/i&gt;"]
+        AHG_FIT["&lt;b&gt;AHG Continuity Fitting&lt;/b&gt;&lt;br/&gt;W = a &amp;middot; Q&lt;sup&gt;b&lt;/sup&gt;&lt;br/&gt;&lt;i&gt;Derives Exponent b Label&lt;/i&gt;"]
     end
 
-    subgraph ML ["ML Learning Engine"]
-        MODELS["Ensemble Base Learners &amp;&lt;br/&gt;Stacked Meta-Learner"]
-        LOG_A --&gt; MODELS
-        BOUND_B --&gt; MODELS
+    subgraph ML_TARGETS ["3. Multi-Tier ML Engine"]
+        direction LR
+        ML_IN["&lt;b&gt;Predict In-Channel TW&lt;/b&gt;&lt;br/&gt;&lt;code&gt;TW&lt;sub&gt;in&lt;/sub&gt; = exp(ŷ&lt;sub&gt;in&lt;/sub&gt;)&lt;/code&gt;"]
+        ML_BF["&lt;b&gt;Predict Bankfull TW&lt;/b&gt;&lt;br/&gt;&lt;code&gt;TW&lt;sub&gt;bf&lt;/sub&gt; = exp(ŷ&lt;sub&gt;bf&lt;/sub&gt;)&lt;/code&gt;"]
+        ML_B["&lt;b&gt;Predict Exponent b&lt;/b&gt;&lt;br/&gt;&lt;code&gt;b = logit&lt;sup&gt;-1&lt;/sup&gt;(ŷ&lt;sub&gt;b&lt;/sub&gt;)&lt;/code&gt;&lt;br/&gt;&lt;i&gt;(For Dingman r = f / b)&lt;/i&gt;"]
     end
 
-    subgraph OUTPUT ["Physical Parameter Space"]
-        A_PRED["Predicted &amp;acirc;&lt;br/&gt;&lt;code&gt;&amp;acirc; = exp(ŷ&lt;sub&gt;a&lt;/sub&gt;)&lt;/code&gt;"]
-        B_PRED["Predicted b&amp;#770;&lt;br/&gt;&lt;code&gt;0 &lt; b&amp;#770; &lt; 1&lt;/code&gt;"]
-        MODELS --&gt; A_PRED
-        MODELS --&gt; B_PRED
-    end
+    OBS ==&gt; FLOW ==&gt; ML_TARGETS
 
-    classDef default fill:#1e293b,stroke:#475569,stroke-width:1.5px,color:#f8fafc;
-    classDef highlight fill:#0284c7,stroke:#38bdf8,stroke-width:2px,color:#ffffff;
-    class ML highlight;</code></pre>
+    class OBS highlight-blue;
+    class FLOW highlight-blue;
+    class ML_IN highlight-teal;
+    class ML_BF highlight-orange;
+    class ML_B highlight-blue;</code></pre>
 <hr>
 <h2 id="machine-learning-algorithms">Machine Learning Algorithms<a class="headerlink" href="#machine-learning-algorithms" title="Permanent link">¶</a></h2>
 <p>To explore structural model diversity, five distinct non-linear machine learning algorithms were trained and benchmarked alongside a stacked meta-learner:</p>
@@ -1565,49 +1463,6 @@
     classDef default fill:#1e293b,stroke:#475569,stroke-width:1.5px,color:#f8fafc;
     classDef highlight fill:#c2410c,stroke:#fb923c,stroke-width:2px,color:#ffffff;
     class META highlight;</code></pre>
-<h3 id="base-learner-characteristics">Base Learner Characteristics<a class="headerlink" href="#base-learner-characteristics" title="Permanent link">¶</a></h3>
-<table>
-<thead>
-<tr>
-<th style="text-align: left;">Algorithm</th>
-<th style="text-align: left;">Architectural Paradigm</th>
-<th style="text-align: left;">Key Strengths in Fluvial Parameterization</th>
-<th style="text-align: left;">Regularization &amp; Safeguards</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left;"><strong>XGBoost</strong></td>
-<td style="text-align: left;">Gradient-Boosted Decision Trees (GBDT)</td>
-<td style="text-align: left;">Depth-wise tree growth capturing intricate non-linear interactions among terrain slope, stream power, and drainage area.</td>
-<td style="text-align: left;">Shrinkage (<span class="arithmatex">\(\eta\)</span>), column subsampling (<code>colsample_bytree</code>), L1 (<span class="arithmatex">\(\alpha\)</span>) and L2 (<span class="arithmatex">\(\lambda\)</span>) leaf penalties.</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>ExtraTrees</strong></td>
-<td style="text-align: left;">Extremely Randomized Trees</td>
-<td style="text-align: left;">Randomizes split thresholds at each node; provides superior variance suppression and resilience against noise in ADCP field surveys.</td>
-<td style="text-align: left;">Minimum sample split, maximum feature subsets (<span class="arithmatex">\(\sqrt{p}\)</span>), bootstrap bagging.</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>LightGBM</strong></td>
-<td style="text-align: left;">Leaf-wise GBDT with Histogram Binning</td>
-<td style="text-align: left;">Accelerated training on large tabular datasets with gradient-based one-side sampling (GOSS).</td>
-<td style="text-align: left;">Maximum leaf limit, minimum data per leaf, feature sub-sampling.</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>CatBoost</strong></td>
-<td style="text-align: left;">Oblivious Trees with Ordered Target Encoding</td>
-<td style="text-align: left;">Symmetrical decision trees that prevent gradient estimation bias and handle complex regional environmental distributions.</td>
-<td style="text-align: left;"><span class="arithmatex">\(L_2\)</span> regularization, random subspace projection, bagging temperature.</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>Random Forest</strong></td>
-<td style="text-align: left;">Bootstrap Aggregating (Bagging)</td>
-<td style="text-align: left;">Robust non-parametric baseline that captures macro-geomorphic boundaries without overfitting extreme values.</td>
-<td style="text-align: left;">Tree depth caps, minimum leaf samples, out-of-bag variance estimation.</td>
-</tr>
-</tbody>
-</table>
 <hr>
 <h2 id="two-tier-stacked-meta-learner-architecture">Two-Tier Stacked Meta-Learner Architecture<a class="headerlink" href="#two-tier-stacked-meta-learner-architecture" title="Permanent link">¶</a></h2>
 <p>Rather than relying on any single algorithm, the v1.0 pipeline employs a <strong>Stacked Generalization (Stacking)</strong> framework:</p>
@@ -1627,22 +1482,24 @@
 </ol>
 <hr>
 <h2 id="feature-selection-dimensionality-reduction">Feature Selection &amp; Dimensionality Reduction<a class="headerlink" href="#feature-selection-dimensionality-reduction" title="Permanent link">¶</a></h2>
-<p>The raw environmental feature catalog contained over <strong>400 candidate variables</strong> spanning hydro-climatology (Daymet), catchment topography (DEM), stream network topology (NHDPlusV2), soil physics (POLARIS / SSURGO), and flow statistics (NWM 2.1).</p>
+<p>The raw environmental feature catalog contained 116 candidate variables spanning hydro-climatology (PRISM/Daymet), catchment topography (DEM), stream network topology (Reference Fabric), soil physics (POLARIS / SSURGO), and flow statistics (NWM 2.1).</p>
 <p>To eliminate redundant collinearity and build a robust model, a four-stage feature pruning pipeline was applied:</p>
 <pre class="mermaid"><code>flowchart TD
-    RAW["&lt;b&gt;Raw Candidate Feature Catalog&lt;/b&gt;&lt;br/&gt;&amp;gt; 400 environmental &amp; hydro-climatic variables"]
-    STEP1["&lt;b&gt;Stage 1: Spearman Rank Screening&lt;/b&gt;&lt;br/&gt;Flag collinear pairs with |r&lt;sub&gt;s&lt;/sub&gt;| &amp;gt; 0.75; prune lower-utility predictors"]
-    STEP2["&lt;b&gt;Stage 2: Recursive Feature Elimination (RFE)&lt;/b&gt;&lt;br/&gt;Iterative backward pruning using GBDT feature importance until peak validation skill"]
-    STEP3["&lt;b&gt;Stage 3: Denoising AutoEncoder (DAE)&lt;/b&gt;&lt;br/&gt;Compress correlated thematic clusters (soils, climate) into dense latent representations"]
-    FINAL["&lt;b&gt;Final Selected Feature Subset (60 Features)&lt;/b&gt;&lt;br/&gt;Optimal parsimonious input space for continental generalization"]
+    RAW["&lt;b&gt;Raw Candidate Feature Catalog&lt;/b&gt;&lt;br/&gt;116 environmental &amp; hydro-climatic variables"]
+    STEP1["&lt;b&gt;Stage 1: Expert Knowledge Screening&lt;/b&gt;&lt;br/&gt;Pre-screen variables based on hydrological &amp; geomorphic principles"]
+    STEP2["&lt;b&gt;Stage 2: Recursive Feature Elimination &amp; Elbow Method&lt;/b&gt;&lt;br/&gt;Iterative backward pruning by importance &amp;bull; Identify optimal complexity via elbow curve"]
+    STEP3["&lt;b&gt;Stage 3: Principal Component Analysis (PCA)&lt;/b&gt;&lt;br/&gt;Compress collinear thematic sub-domains (flood frequency, soil profiles) into orthogonal components"]
+    FINAL["&lt;b&gt;Final Selected Feature Subset (30 Features)&lt;/b&gt;&lt;br/&gt;Optimal parsimonious input space for continental generalization"]
 
     RAW --&gt; STEP1 --&gt; STEP2 --&gt; STEP3 --&gt; FINAL
 
-    classDef default fill:#1e293b,stroke:#475569,stroke-width:1.5px,color:#f8fafc;
-    classDef highlight fill:#059669,stroke:#34d399,stroke-width:2px,color:#ffffff;
-    class FINAL highlight;</code></pre>
-<h3 id="final-60-feature-thematic-breakdown">Final 60-Feature Thematic Breakdown<a class="headerlink" href="#final-60-feature-thematic-breakdown" title="Permanent link">¶</a></h3>
-<p>The selected 60 predictors span 7 critical hydro-geomorphic domains:</p>
+    class RAW highlight-blue;
+    class STEP1 highlight-blue;
+    class STEP2 highlight-orange;
+    class STEP3 highlight-teal;
+    class FINAL highlight-orange;</code></pre>
+<h3 id="final-30-feature-thematic-breakdown">Final 30-Feature Thematic Breakdown<a class="headerlink" href="#final-30-feature-thematic-breakdown" title="Permanent link">¶</a></h3>
+<p>The selected 30 predictors span 7 critical hydro-geomorphic domains:</p>
 <ol>
 <li><strong>Hydro-Climatology</strong>: Mean annual precipitation, potential evapotranspiration (PET), seasonality index, aridity index.</li>
 <li><strong>Network Topology &amp; Scale</strong>: Upstream drainage area (<code>totdasqkm</code>), Strahler stream order, arbolate sum (<code>arb_sum</code>), downstream path length.</li>
@@ -1654,77 +1511,40 @@
 </ol>
 <hr>
 <h2 id="hyperparameter-optimization-strategy">Hyperparameter Optimization Strategy<a class="headerlink" href="#hyperparameter-optimization-strategy" title="Permanent link">¶</a></h2>
-<p>Hyperparameters were systematically tuned using Bayesian Optimization with 10-fold spatial cross-validation to prevent spatial autocorrelation artifacts.</p>
-<pre class="mermaid"><code>gantt
-    title Hyperparameter Search &amp; Validation Workflow
-    dateFormat  X
-    axisFormat %s
-    section Data Partitioning
-    Spatial Stratification &amp; 10-Fold Split : 0, 2
-    section Hyperparameter Tuning
-    Bayesian Search (500 iterations)      : 2, 6
-    Early Stopping &amp; Loss Convergence      : 4, 7
-    section Meta-Learning
-    Out-of-Fold Meta-Feature Stacking     : 7, 9
-    Final Meta-Learner Regularization      : 9, 10</code></pre>
-<h3 id="optimal-hyperparameter-ranges">Optimal Hyperparameter Ranges<a class="headerlink" href="#optimal-hyperparameter-ranges" title="Permanent link">¶</a></h3>
-<table>
-<thead>
-<tr>
-<th style="text-align: left;">Hyperparameter</th>
-<th style="text-align: left;">Search Space</th>
-<th style="text-align: left;">Optimal Configuration (XGBoost)</th>
-<th style="text-align: left;">Optimal Configuration (CatBoost)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left;"><strong>Max Tree Depth</strong></td>
-<td style="text-align: left;"><span class="arithmatex">\([3, 12]\)</span></td>
-<td style="text-align: left;"><span class="arithmatex">\(7\)</span></td>
-<td style="text-align: left;"><span class="arithmatex">\(6\)</span> (symmetric)</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>Learning Rate (<span class="arithmatex">\(\eta\)</span>)</strong></td>
-<td style="text-align: left;"><span class="arithmatex">\([0.01, 0.20]\)</span></td>
-<td style="text-align: left;"><span class="arithmatex">\(0.035\)</span></td>
-<td style="text-align: left;"><span class="arithmatex">\(0.040\)</span></td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>Subsample Ratio</strong></td>
-<td style="text-align: left;"><span class="arithmatex">\([0.50, 1.00]\)</span></td>
-<td style="text-align: left;"><span class="arithmatex">\(0.80\)</span></td>
-<td style="text-align: left;"><span class="arithmatex">\(0.85\)</span></td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>Colsample / Feature Ratio</strong></td>
-<td style="text-align: left;"><span class="arithmatex">\([0.40, 1.00]\)</span></td>
-<td style="text-align: left;"><span class="arithmatex">\(0.70\)</span></td>
-<td style="text-align: left;"><span class="arithmatex">\(0.75\)</span></td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>L1 Regularization (<span class="arithmatex">\(\alpha\)</span>)</strong></td>
-<td style="text-align: left;"><span class="arithmatex">\([0.0, 10.0]\)</span></td>
-<td style="text-align: left;"><span class="arithmatex">\(1.25\)</span></td>
-<td style="text-align: left;">—</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>L2 Regularization (<span class="arithmatex">\(\lambda\)</span>)</strong></td>
-<td style="text-align: left;"><span class="arithmatex">\([0.0, 20.0]\)</span></td>
-<td style="text-align: left;"><span class="arithmatex">\(3.50\)</span></td>
-<td style="text-align: left;"><span class="arithmatex">\(4.00\)</span></td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>Early Stopping Rounds</strong></td>
-<td style="text-align: left;"><span class="arithmatex">\([20, 100]\)</span></td>
-<td style="text-align: left;"><span class="arithmatex">\(50\)</span></td>
-<td style="text-align: left;"><span class="arithmatex">\(50\)</span></td>
-</tr>
-</tbody>
-</table>
+<p>Hyperparameters were systematically tuned using Bayesian Optimization across 10-fold cross-validation with out-of-fold (OOF) evaluation.</p>
+<pre class="mermaid"><code>flowchart TD
+    subgraph P1 ["1. 10-Fold Cross-Validation Partitioning"]
+        direction LR
+        S1["&lt;b&gt;3,543 Field Stations&lt;/b&gt;&lt;br/&gt;Partitioned across 10 cross-validation folds"]
+        S2["&lt;b&gt;Out-of-Fold Evaluation&lt;/b&gt;&lt;br/&gt;Ensures all stations are evaluated out-of-bag"]
+    end
+
+    subgraph P2 ["2. Bayesian Hyperparameter Optimization"]
+        direction LR
+        B1["&lt;b&gt;TPE Bayesian Search&lt;/b&gt;&lt;br/&gt;100 iterations over learning rate, tree depth, and subsample ratios"]
+        B2["&lt;b&gt;Early Stopping Regularization&lt;/b&gt;&lt;br/&gt;Halt after 50 rounds without validation skill gain"]
+    end
+
+    subgraph P3 ["3. Multi-Tier Meta-Learner Stacking"]
+        direction LR
+        M1["&lt;b&gt;Out-of-Fold (OOF) Stacking&lt;/b&gt;&lt;br/&gt;Generate uncorrupted Level-1 meta-feature predictions"]
+        M2["&lt;b&gt;Final Meta-Learner Regularization&lt;/b&gt;&lt;br/&gt;Train Level-2 meta-regressor to optimize multi-model blending"]
+    end
+
+    P1 ==&gt; P2 ==&gt; P3
+
+    class P1 highlight-blue;
+    class P2 highlight-blue;
+    class P3 highlight-teal;
+    class S1 highlight-blue;
+    class S2 highlight-blue;
+    class B1 highlight-blue;
+    class B2 highlight-blue;
+    class M1 highlight-teal;
+    class M2 highlight-orange;</code></pre>
 <div class="admonition tip">
-<p class="admonition-title">Spatial Cross-Validation Safeguard</p>
-<p>Standard random <span class="arithmatex">\(K\)</span>-fold cross-validation can artificially inflate validation metrics due to spatial proximity between neighboring USGS gaging stations. The v1.0 pipeline used <strong>spatially stratified watershed block validation</strong> (grouping gages by HUC-4/HUC-6 basins) to ensure true out-of-sample generalization to completely unmonitored basins.</p>
+<p class="admonition-title">Out-of-Fold Cross-Validation Safeguard</p>
+<p>To ensure robust generalization across unseen reaches, 10-fold cross-validation is used across all candidate models. Predictions for meta-learning are strictly generated out-of-fold (OOF), preventing any information leakage between training and testing partitions.</p>
 </div>
 
 
@@ -1770,7 +1590,7 @@
     <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
       Material for MkDocs
     </a>
-    — developed by <strong>Arash Modaresi Rad</strong>
+    developed by <strong>Arash Modaresi Rad</strong>
   
 </div>
       

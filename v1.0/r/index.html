@@ -87,7 +87,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#shape-r-v10-parameterization-overview" class="md-skip">
+        <a href="#shape-r-parameterization-overview" class="md-skip">
           Skip to content
         </a>
       
@@ -1132,10 +1132,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
       
         <li class="md-nav__item">
-  <a href="#the-missing-bathymetry-challenge" class="md-nav__link">
+  <a href="#derivation-of-channel-shape-r-from-hydraulic-geometry-exponents" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The Missing Bathymetry Challenge
+        Derivation of Channel Shape (\(r\)) from Hydraulic Geometry Exponents
       
     </span>
   </a>
@@ -1199,17 +1199,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#analytical-geometry-properties" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Analytical Geometry Properties
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#morphological-classification-summary" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1251,24 +1240,35 @@
   
 
 
-<h1 id="shape-r-v10-parameterization-overview">Shape (<span class="arithmatex">\(r\)</span>) — v1.0 Parameterization Overview<a class="headerlink" href="#shape-r-v10-parameterization-overview" title="Permanent link">¶</a></h1>
+<h1 id="shape-r-parameterization-overview">Shape (<span class="arithmatex">\(r\)</span>) Parameterization Overview<a class="headerlink" href="#shape-r-parameterization-overview" title="Permanent link">¶</a></h1>
 <p>In 1D and 2D hydrodynamic routing models (such as <strong>HEC-RAS</strong> and the <strong>NextGen National Water Model</strong>), the cross-sectional shape of a river channel controls the relationship between water surface elevation, conveyance area, wetted perimeter, and mean velocity. In the <strong>v1.0 ML Parameterization Framework</strong>, channel cross-sectional geometry is continuously parameterized using the power-law formulation introduced by <strong>Dingman (2007)</strong>, derived directly from machine-learned hydraulic geometry exponents.</p>
 <hr>
-<h2 id="the-missing-bathymetry-challenge">The Missing Bathymetry Challenge<a class="headerlink" href="#the-missing-bathymetry-challenge" title="Permanent link">¶</a></h2>
-<p>Standard Digital Elevation Models (DEMs), such as USGS 3DEP LiDAR and NED, are derived from airborne sensors that cannot penetrate the water surface during normal or baseflow conditions. Consequently, DEMs accurately capture subaerial floodplain topography but exhibit a <strong>missing bathymetry gap</strong> below the bankfull water surface.</p>
+<h2 id="derivation-of-channel-shape-r-from-hydraulic-geometry-exponents">Derivation of Channel Shape (<span class="arithmatex">\(r\)</span>) from Hydraulic Geometry Exponents<a class="headerlink" href="#derivation-of-channel-shape-r-from-hydraulic-geometry-exponents" title="Permanent link">¶</a></h2>
+<p>In 1D and 2D hydraulic modeling, cross-sectional conveyance volume is governed by the channel shape exponent <span class="arithmatex">\(r\)</span>. In the <strong>v1.0 ML Framework</strong>, <span class="arithmatex">\(r\)</span> is derived directly from the relationship between at-a-station depth scaling exponent <span class="arithmatex">\(f\)</span> and width scaling exponent <span class="arithmatex">\(b\)</span> (<span class="arithmatex">\(r = f/b\)</span>) fitted from <strong>USGS HYDRoSWOT ADCP</strong> field measurements without requiring LiDAR bathymetry:</p>
 <pre class="mermaid"><code>flowchart LR
-    subgraph DEM ["Airborne LiDAR / DEM Surface"]
-        FP1["Left Floodplain\n(LiDAR Verified)"] --- WS["Flat Water Surface\n(Sensor Blind Spot)"] --- FP2["Right Floodplain\n(LiDAR Verified)"]
+    subgraph ADCP ["USGS HYDRoSWOT ADCP Soundings"]
+        DATA["&lt;b&gt;3,543 Field Stations&lt;/b&gt;&lt;br/&gt;Observed Stage-Discharge, Width, Depth &amp; Velocity Profiling"]
     end
 
-    subgraph BATH ["ML-Derived Submerged Bathymetry"]
-        BED["Dingman Power-Law Bed Profile: z(x) = Y&lt;sub&gt;m&lt;/sub&gt;* &amp;middot; (2x / W*)&lt;sup&gt;r&lt;/sup&gt;\nParameter r derived from FHG exponents f / b"]
+    subgraph EXP ["AHG Power-Law Exponents"]
+        AHG["&lt;b&gt;Continuity Exponents:&lt;/b&gt;&lt;br/&gt;• Width scaling: b (W &amp;prop; Q&lt;sup&gt;b&lt;/sup&gt;)&lt;br/&gt;• Depth scaling: f (Y &amp;prop; Q&lt;sup&gt;f&lt;/sup&gt;)&lt;br/&gt;&lt;i&gt;Continuity: b + f + m = 1.0&lt;/i&gt;"]
     end
 
-    WS -. "Missing In-Channel Bathymetry" .-&gt; BED
-    class WS highlight-blue;
+    subgraph META ["Meta-Learner &amp; ML Framework"]
+        ML_DERIVE["&lt;b&gt;Shape Exponent Derivation:&lt;/b&gt;&lt;br/&gt;r = f / b&lt;br/&gt;Generalization across 2.8M+ CONUS COMIDs"]
+    end
+
+    subgraph BED_SHAPE ["Dingman Power-Law Bathymetry"]
+        BED["&lt;b&gt;Continuous Cross-Sectional Geometry:&lt;/b&gt;&lt;br/&gt;z(x) = Y&lt;sub&gt;m&lt;/sub&gt;* &amp;middot; (2x / W*)&lt;sup&gt;r&lt;/sup&gt;&lt;br/&gt;Parameterizes full in-channel shape across flow regimes"]
+    end
+
+    ADCP ==&gt; EXP ==&gt; META ==&gt; BED_SHAPE
+
+    class DATA highlight-blue;
+    class AHG highlight-blue;
+    class ML_DERIVE highlight-orange;
     class BED highlight-teal;</code></pre>
-<p>Without accounting for submerged channel geometry, hydraulic models underestimate cross-sectional conveyance volume, leading to premature overbank flooding, distorted travel times, and inaccurate stage-discharge rating curves in FEMA Flood Insurance Studies (FIS) and continental Flood Inundation Mapping (FIM).</p>
+<p>By linking the rate of channel widening (<span class="arithmatex">\(b\)</span>) and deepening (<span class="arithmatex">\(f\)</span>) with flow to the cross-sectional geometry, the ML pipeline provides physically continuous channel profiles across all CONUS reaches.</p>
 <hr>
 <h2 id="dingman-continuous-power-law-formulation">Dingman Continuous Power-Law Formulation<a class="headerlink" href="#dingman-continuous-power-law-formulation" title="Permanent link">¶</a></h2>
 <p>Dingman (2007) parameterized symmetrical river cross-sections using a generalized continuous power-law function. The vertical height of the channel bed <span class="arithmatex">\(z\)</span> above the channel thalweg (assumed to occur at the channel centerline <span class="arithmatex">\(x = 0\)</span>) is defined across the bankfull width <span class="arithmatex">\(W^*\)</span> as:</p>
@@ -1300,7 +1300,7 @@ y(x) = Y_m^* \left[1 - \left|\frac{2x}{W^*}\right|^r\right]
 <p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../assets/images/v1.0/r/R_best_model.png" data-desc-position="bottom"><img alt="CONUS Model Predicted Channel Shape Exponent Distribution and Morphological Cross-Section Geometries" loading="lazy" src="../../assets/images/v1.0/r/R_best_model.png"></a></p>
 <hr>
 <h2 id="hydraulic-geometry-linkage-connecting-ahg-to-exponent-r">Hydraulic Geometry Linkage: Connecting AHG to Exponent <span class="arithmatex">\(r\)</span><a class="headerlink" href="#hydraulic-geometry-linkage-connecting-ahg-to-exponent-r" title="Permanent link">¶</a></h2>
-<p>In the classical <strong>At-a-station Hydraulic Geometry (AHG)</strong> framework established by Leopold &amp; Maddock (1953) and extended to <strong>Feature Hydraulic Geometry (FHG)</strong> by Johnson et al. (2023), channel width (<span class="arithmatex">\(W\)</span>), mean depth (<span class="arithmatex">\(Y\)</span>), and mean velocity (<span class="arithmatex">\(V\)</span>) scale with discharge (<span class="arithmatex">\(Q\)</span>) as power-law functions:</p>
+<p>In the classical <strong>At-a-station Hydraulic Geometry (AHG)</strong> framework established by Leopold &amp; Maddock (1953), channel width (<span class="arithmatex">\(W\)</span>), mean depth (<span class="arithmatex">\(Y\)</span>), and mean velocity (<span class="arithmatex">\(V\)</span>) scale with discharge (<span class="arithmatex">\(Q\)</span>) as power-law functions:</p>
 <div class="arithmatex">\[
 W = a \cdot Q^b, \quad Y = c \cdot Q^f, \quad V = k \cdot Q^m
 \]</div>
@@ -1324,73 +1324,8 @@ W \propto Y^{b/f} \iff Y \propto W^{f/b}
 \]</div>
 <p>Comparing exponents between Dingman's geometric power law (<span class="arithmatex">\(W \propto y^{1/r}\)</span>) and the hydraulic geometry stage relation (<span class="arithmatex">\(W \propto Y^{b/f}\)</span>) yields the exact fundamental physical relationship:</p>
 <div class="arithmatex">\[
-\boxed{r = \frac{f}{b}}
+r = \frac{f}{b}
 \]</div>
-<div class="admonition note">
-<p class="admonition-title">Physical Significance of the Ratio <span class="arithmatex">\(f / b\)</span></p>
-<ul>
-<li>When <strong><span class="arithmatex">\(f &gt; b\)</span></strong> (<span class="arithmatex">\(r &gt; 1\)</span>): Vertical depth changes outpace lateral widening with increasing discharge. This occurs when channel banks are cohesive, vegetated, or laterally confined.</li>
-<li>When <strong><span class="arithmatex">\(b &gt; f\)</span></strong> (<span class="arithmatex">\(r &lt; 1\)</span>): Lateral widening outpaces depth growth. This is characteristic of unconfined alluvial fans, arid braided rivers, and non-cohesive sandy washes.</li>
-<li>When <strong><span class="arithmatex">\(f \approx 2b\)</span></strong> (<span class="arithmatex">\(r \approx 2\)</span>): The channel maintains an equilibrium parabolic geometry, matching standard alluvial regime theory.</li>
-</ul>
-</div>
-<hr>
-<h2 id="analytical-geometry-properties">Analytical Geometry Properties<a class="headerlink" href="#analytical-geometry-properties" title="Permanent link">¶</a></h2>
-<p>A major computational advantage of the continuous Dingman formulation is that key cross-sectional properties can be computed <strong>analytically</strong> without requiring discretized numerical cross-section integration:</p>
-<table>
-<thead>
-<tr>
-<th style="text-align: left;">Geometric Parameter</th>
-<th style="text-align: left;">Analytical Formula</th>
-<th style="text-align: left;"><span class="arithmatex">\(r=1.0\)</span> (Triangle)</th>
-<th style="text-align: left;"><span class="arithmatex">\(r=1.75\)</span> (Lane B)</th>
-<th style="text-align: left;"><span class="arithmatex">\(r=2.0\)</span> (Parabola)</th>
-<th style="text-align: left;"><span class="arithmatex">\(r \to \infty\)</span> (Rectangle)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left;"><strong>Bankfull Area (<span class="arithmatex">\(A^*\)</span>)</strong></td>
-<td style="text-align: left;"><span class="arithmatex">\(A^* = \left(\frac{r}{r+1}\right) W^* Y_m^*\)</span></td>
-<td style="text-align: left;"><span class="arithmatex">\(0.500 \cdot W^* Y_m^*\)</span></td>
-<td style="text-align: left;"><span class="arithmatex">\(0.636 \cdot W^* Y_m^*\)</span></td>
-<td style="text-align: left;"><span class="arithmatex">\(0.667 \cdot W^* Y_m^*\)</span></td>
-<td style="text-align: left;"><span class="arithmatex">\(1.000 \cdot W^* Y_m^*\)</span></td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>Mean Hydraulic Depth (<span class="arithmatex">\(\bar{Y}^*\)</span>)</strong></td>
-<td style="text-align: left;"><span class="arithmatex">\(\bar{Y}^* = \left(\frac{r}{r+1}\right) Y_m^*\)</span></td>
-<td style="text-align: left;"><span class="arithmatex">\(0.500 \cdot Y_m^*\)</span></td>
-<td style="text-align: left;"><span class="arithmatex">\(0.636 \cdot Y_m^*\)</span></td>
-<td style="text-align: left;"><span class="arithmatex">\(0.667 \cdot Y_m^*\)</span></td>
-<td style="text-align: left;"><span class="arithmatex">\(1.000 \cdot Y_m^*\)</span></td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>Cross-Sectional Shape Factor (<span class="arithmatex">\(\lambda\)</span>)</strong></td>
-<td style="text-align: left;"><span class="arithmatex">\(\lambda = \frac{r}{r+1}\)</span></td>
-<td style="text-align: left;"><span class="arithmatex">\(0.500\)</span></td>
-<td style="text-align: left;"><span class="arithmatex">\(0.636\)</span></td>
-<td style="text-align: left;"><span class="arithmatex">\(0.667\)</span></td>
-<td style="text-align: left;"><span class="arithmatex">\(1.000\)</span></td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>Wetted Perimeter (<span class="arithmatex">\(P^*\)</span>)</strong></td>
-<td style="text-align: left;"><span class="arithmatex">\(P^* \approx W^* + \frac{2r}{r+1} \frac{(Y_m^*)^2}{W^*}\)</span></td>
-<td style="text-align: left;"><span class="arithmatex">\(W^* + \frac{(Y_m^*)^2}{W^*}\)</span></td>
-<td style="text-align: left;"><span class="arithmatex">\(W^* + 1.273 \frac{(Y_m^*)^2}{W^*}\)</span></td>
-<td style="text-align: left;"><span class="arithmatex">\(W^* + 1.333 \frac{(Y_m^*)^2}{W^*}\)</span></td>
-<td style="text-align: left;"><span class="arithmatex">\(W^* + 2Y_m^*\)</span></td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>Hydraulic Radius (<span class="arithmatex">\(R^*\)</span>)</strong></td>
-<td style="text-align: left;"><span class="arithmatex">\(R^* = \frac{A^*}{P^*}\)</span></td>
-<td style="text-align: left;"><span class="arithmatex">\(\frac{0.500 W^* Y_m^*}{W^* + (Y_m^*)^2/W^*}\)</span></td>
-<td style="text-align: left;"><span class="arithmatex">\(\frac{0.636 W^* Y_m^*}{W^* + 1.273 (Y_m^*)^2/W^*}\)</span></td>
-<td style="text-align: left;"><span class="arithmatex">\(\frac{0.667 W^* Y_m^*}{W^* + 1.333 (Y_m^*)^2/W^*}\)</span></td>
-<td style="text-align: left;"><span class="arithmatex">\(\frac{W^* Y_m^*}{W^* + 2Y_m^*}\)</span></td>
-</tr>
-</tbody>
-</table>
 <hr>
 <h2 id="morphological-classification-summary">Morphological Classification Summary<a class="headerlink" href="#morphological-classification-summary" title="Permanent link">¶</a></h2>
 <table>
@@ -1437,9 +1372,9 @@ W \propto Y^{b/f} \iff Y \propto W^{f/b}
 <hr>
 <h2 id="model-pipeline-navigation">Model Pipeline Navigation<a class="headerlink" href="#model-pipeline-navigation" title="Permanent link">¶</a></h2>
 <ul>
-<li><strong><a href="models/">Model Architecture &amp; Meta-Learners</a></strong> — Multi-tier machine learning framework, AutoEncoder feature reduction, and meta-learner stacking.</li>
-<li><strong><a href="skill/">Model Skill &amp; Validation</a></strong> — Continental validation against HYDRoSWOT ADCP surveys, Kling-Gupta Efficiency CDFs, and stream-order bias analysis.</li>
-<li><strong><a href="xai/">Explainability &amp; Physical Controls (XAI)</a></strong> — SHAP global importance ranking, hydroclimatic interaction plots, and geomorphic sensitivity analysis.</li>
+<li><strong><a href="models/">Model Architecture &amp; Meta-Learners</a></strong>: Multi-tier machine learning framework, elbow method &amp; PCA feature reduction, and meta-learner stacking.</li>
+<li><strong><a href="skill/">Model Skill &amp; Validation</a></strong>: Continental validation against HYDRoSWOT ADCP surveys, Kling-Gupta Efficiency CDFs, and stream-order bias analysis.</li>
+<li><strong><a href="xai/">Explainability &amp; Physical Controls (XAI)</a></strong>: SHAP global importance ranking, hydroclimatic interaction plots, and geomorphic sensitivity analysis.</li>
 </ul>
 
 
@@ -1485,7 +1420,7 @@ W \propto Y^{b/f} \iff Y \propto W^{f/b}
     <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
       Material for MkDocs
     </a>
-    — developed by <strong>Arash Modaresi Rad</strong>
+    developed by <strong>Arash Modaresi Rad</strong>
   
 </div>
       

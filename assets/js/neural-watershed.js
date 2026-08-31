@@ -1,17 +1,9 @@
 /**
- * Neural Watershed — Realistic Sinuous River Network Animation v6
- * 
- * Features:
- * - Natural sinuous river geometry with non-crossing planar topology (mathematical segment intersection verification).
- * - Organic spatial distribution: soft basin boundary steering (no squashed flat sides on left/right edges).
- * - "Rain Cloud" Cursor: moving mouse over stream branches spawns fresh raindrop particles flowing downstream.
- * - Single-node gold focus: exactly ONE closest node illuminates in gold at a time.
- * - Full Light/Dark theme color adaptation.
- * - Velocity proportional to stream order.
+ * Neural Watershed
  */
 
 (function () {
-  // ── Theme Palettes ──
+  // Theme Palettes
   const PALETTES = {
     dark: {
       edgeMinor: 'rgba(0, 191, 165, 0.25)',
@@ -43,7 +35,7 @@
     return document.body.getAttribute('data-md-color-scheme') === 'default';
   }
 
-  // ── 2D Segment Intersection Check (Prevents crossing flowlines) ──
+  // 2D Segment Intersection Check (Prevents crossing flowlines)
   function ccw(A, B, C) {
     return (C.y - A.y) * (B.x - A.x) > (B.y - A.y) * (C.x - A.x);
   }
@@ -56,7 +48,7 @@
   }
 
   // =========================================================================
-  // 1. HERO WATERSHED ENGINE (HOMEPAGE — 100% ORIGINAL v6 CODE & PARAMETERS)
+  // 1. HERO WATERSHED ENGINE (HOMEPAGE 100% ORIGINAL v6 CODE & PARAMETERS)
   // =========================================================================
   function initHeroWatershed(canvas) {
     let ctx = canvas.getContext('2d');

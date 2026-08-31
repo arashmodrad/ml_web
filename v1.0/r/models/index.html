@@ -3,7 +3,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Multi-tier machine learning pipeline, AutoEncoder feature reduction, and meta-learner ensemble architecture for channel shape exponent r in v1.0.">
+        <meta name="description" content="Multi-tier machine learning pipeline, elbow method feature reduction, PCA decomposition, and meta-learner ensemble architecture for channel shape exponent r in v1.0.">
       
       
       
@@ -1073,10 +1073,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#1-recursive-feature-elimination-rfe-peak-validation-loop" class="md-nav__link">
+  <a href="#1-expert-knowledge-screening" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. Recursive Feature Elimination (RFE) &amp; Peak Validation Loop
+        1. Expert Knowledge Screening
       
     </span>
   </a>
@@ -1084,10 +1084,21 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#2-grouped-denoising-autoencoders-dae" class="md-nav__link">
+  <a href="#2-recursive-feature-elimination-elbow-method" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. Grouped Denoising AutoEncoders (DAE)
+        2. Recursive Feature Elimination &amp; Elbow Method
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-principal-component-analysis-pca" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Principal Component Analysis (PCA)
       
     </span>
   </a>
@@ -1385,10 +1396,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#1-recursive-feature-elimination-rfe-peak-validation-loop" class="md-nav__link">
+  <a href="#1-expert-knowledge-screening" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. Recursive Feature Elimination (RFE) &amp; Peak Validation Loop
+        1. Expert Knowledge Screening
       
     </span>
   </a>
@@ -1396,10 +1407,21 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#2-grouped-denoising-autoencoders-dae" class="md-nav__link">
+  <a href="#2-recursive-feature-elimination-elbow-method" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. Grouped Denoising AutoEncoders (DAE)
+        2. Recursive Feature Elimination &amp; Elbow Method
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-principal-component-analysis-pca" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Principal Component Analysis (PCA)
       
     </span>
   </a>
@@ -1464,12 +1486,12 @@
   
 
 
-<h1 id="model-architecture-machine-learning-meta-learners">Model Architecture — Machine Learning &amp; Meta-Learners<a class="headerlink" href="#model-architecture-machine-learning-meta-learners" title="Permanent link">¶</a></h1>
-<p>Estimating the continuous Dingman channel shape exponent (<span class="arithmatex">\(r\)</span>) across millions of ungauged river reaches requires an architecture that captures non-linear relationships across diverse physiographic, climatic, and geologic regimes. The <strong>v1.0 Shape Modeling Pipeline</strong> implements a multi-tier machine learning architecture that integrates high-dimensional feature selection, unsupervised AutoEncoders, tuned gradient-boosted ensembles, and a <strong>Stacking Meta-Learner</strong>.</p>
+<h1 id="model-architecture-machine-learning-meta-learners">Model Architecture: Machine Learning &amp; Meta-Learners<a class="headerlink" href="#model-architecture-machine-learning-meta-learners" title="Permanent link">¶</a></h1>
+<p>Estimating the continuous Dingman channel shape exponent (<span class="arithmatex">\(r\)</span>) across millions of ungauged river reaches requires an architecture that captures non-linear relationships across diverse physiographic, climatic, and geologic regimes. The <strong>v1.0 Shape Modeling Pipeline</strong> implements a multi-tier machine learning architecture that integrates expert knowledge screening, recursive feature elimination via the elbow method, Principal Component Analysis (PCA), tuned gradient-boosted ensembles, and a <strong>Stacking Meta-Learner</strong>.</p>
 <hr>
 <h2 id="machine-learning-framework-overview">Machine Learning Framework Overview<a class="headerlink" href="#machine-learning-framework-overview" title="Permanent link">¶</a></h2>
 <pre class="mermaid"><code>flowchart TD
-    subgraph DATA ["1. Input Environmental Covariates (~400 Features)"]
+    subgraph DATA ["1. Input Environmental Covariates (116 Features)"]
         F1["Reference Hydrofabric\n(Stream order, Arbolate sum, Length)"]
         F2["Soil &amp; Lithology\n(Clay %, K&lt;sub&gt;sat&lt;/sub&gt;, &amp;theta;&lt;sub&gt;s&lt;/sub&gt;)"]
         F3["DEM Topography\n(Elevation, Slope, NED Diversity)"]
@@ -1477,9 +1499,11 @@
         F5["Climate &amp; NWM 2.1\n(Precipitation, PET, Flood quartiles)"]
     end
 
-    subgraph REDUCTION ["2. Dimensionality Reduction (~400 &amp;rarr; 60 Features)"]
-        RFE["Recursive Feature Elimination\n(Iterative Pruning Loop)"]
-        AE["Grouped Denoising AutoEncoder\n(Latent Compression)"]
+    subgraph REDUCTION ["2. Dimensionality Reduction (116 &amp;rarr; 30 Features)"]
+        EXP["Expert Domain Pre-Screening\n(Eliminate unphysical &amp; noisy variables)"]
+        RFE["Recursive Feature Elimination &amp; Elbow Method\n(Optimal complexity balance)"]
+        PCA["Principal Component Analysis (PCA)\n(Orthogonal decomposition of collinear blocks)"]
+        EXP --&gt; RFE --&gt; PCA
     end
 
     subgraph BASE ["3. Base ML Model Selection &amp; Tuning"]
@@ -1516,23 +1540,20 @@
 <div class="arithmatex">\[
 \hat{r}_{\text{meta}} = \mathcal{G}\left(\hat{r}_1(X), \hat{r}_2(X), \dots, \hat{r}_M(X); \Theta_{\text{meta}}\right)
 \]</div>
-<p>The meta-learner recognizes the specific hydro-physiographic conditions where certain base models excel or falter (e.g., deep neural networks in high-density humid networks versus tree-based models in arid ephemeral washes), dynamically reweighting model contributions to maximize continental Kling-Gupta Efficiency (<span class="arithmatex">\(\text{KGE}\)</span>).</p>
+<p>The meta-learner recognizes the specific hydro-physiographic conditions where certain base models excel or falter (e.g., neural networks in high-density humid networks versus tree-based models in arid ephemeral washes), dynamically reweighting model contributions to maximize continental Kling-Gupta Efficiency (<span class="arithmatex">\(\text{KGE}\)</span>).</p>
 <hr>
 <h2 id="feature-space-dimensionality-reduction">Feature Space &amp; Dimensionality Reduction<a class="headerlink" href="#feature-space-dimensionality-reduction" title="Permanent link">¶</a></h2>
-<p>The raw input dataset incorporates over 400 catchment, climate, and topographic attributes. To prevent the curse of dimensionality, resolve multicollinearity, and eliminate noisy predictors, feature reduction is executed in two coupled stages:</p>
-<h3 id="1-recursive-feature-elimination-rfe-peak-validation-loop">1. Recursive Feature Elimination (RFE) &amp; Peak Validation Loop<a class="headerlink" href="#1-recursive-feature-elimination-rfe-peak-validation-loop" title="Permanent link">¶</a></h3>
-<p>The model is initially trained on all candidate features. In an iterative loop, the single least informative feature (evaluated by permutation importance and tree split gain) is pruned, and the model is retrained. This process repeats until out-of-bag validation accuracy reaches its empirical peak, identifying the core non-redundant feature subset.</p>
-<h3 id="2-grouped-denoising-autoencoders-dae">2. Grouped Denoising AutoEncoders (DAE)<a class="headerlink" href="#2-grouped-denoising-autoencoders-dae" title="Permanent link">¶</a></h3>
-<p>The remaining features are organized into physical covariate clusters (e.g., soil hydraulic parameters, topographic slope derivatives, land-cover percentages) and passed through a <strong>Denoising AutoEncoder</strong> with symmetric bottle-neck layers:</p>
-<pre class="mermaid"><code>flowchart LR
-    INPUT["Correlated Cluster Features\n(x &amp;isin; &amp;reals;&lt;sup&gt;D&lt;/sup&gt;)"] --&gt; NOISE["Noise Injection\n(&amp;atilde; = x + &amp;delta;)"]
-    NOISE --&gt; ENC["Encoder Layers\n(Dense + ReLU + Dropout)"]
-    ENC --&gt; LATENT["Latent Representation\n(z &amp;isin; &amp;reals;&lt;sup&gt;d&lt;/sup&gt;, d &amp;Lt; D)"]
-    LATENT --&gt; DEC["Decoder Layers\n(Dense + Sigmoid / Linear)"]
-    DEC --&gt; RECON["Reconstructed Features\n(x&amp;#770; &amp;isin; &amp;reals;&lt;sup&gt;D&lt;/sup&gt;)"]
-
-    class LATENT highlight-blue;</code></pre>
-<p>The compressed latent embeddings (<span class="arithmatex">\(z \in \mathbb{R}^d\)</span>) retain maximum physical variance while eliminating collinearity, yielding a streamlined feature vector of <strong>60 final predictors</strong>.</p>
+<p>The raw input dataset incorporates 116 catchment, climate, and topographic attributes. To prevent the curse of dimensionality, resolve multicollinearity, and eliminate noisy predictors, feature reduction is executed in three coupled stages:</p>
+<h3 id="1-expert-knowledge-screening">1. Expert Knowledge Screening<a class="headerlink" href="#1-expert-knowledge-screening" title="Permanent link">¶</a></h3>
+<p>Candidate predictors are evaluated against established geomorphological and hydraulic principles. Non-informative, unstable, or redundant surrogates are eliminated prior to model training.</p>
+<h3 id="2-recursive-feature-elimination-elbow-method">2. Recursive Feature Elimination &amp; Elbow Method<a class="headerlink" href="#2-recursive-feature-elimination-elbow-method" title="Permanent link">¶</a></h3>
+<p>The model is trained across subsets of candidate features ranked by importance. Features are recursively dropped while tracking validation metrics (<span class="arithmatex">\(\text{KGE}\)</span>, <span class="arithmatex">\(\text{NNSE}\)</span>). The <strong>Elbow Method</strong> is applied to find the optimal trade-off point between model parsimony and predictive skill.</p>
+<h3 id="3-principal-component-analysis-pca">3. Principal Component Analysis (PCA)<a class="headerlink" href="#3-principal-component-analysis-pca" title="Permanent link">¶</a></h3>
+<p>For thematic sub-domains exhibiting high internal correlation (e.g., multi-recurrence flood frequency distributions, soil textural profiles), <strong>Principal Component Analysis (PCA)</strong> is performed to extract orthogonal components (PC0, PC1) that preserve dominant physical variance while eliminating multicollinearity:</p>
+<div class="arithmatex">\[
+\mathbf{Z} = \mathbf{X} \mathbf{W}
+\]</div>
+<p>This produces the final parsimonious matrix of <strong>30 optimized predictors</strong> for continental ML training.</p>
 <hr>
 <h2 id="input-feature-groups">Input Feature Groups<a class="headerlink" href="#input-feature-groups" title="Permanent link">¶</a></h2>
 <table>
@@ -1585,8 +1606,8 @@
 <h2 id="overfitting-prevention-cross-validation-protocol">Overfitting Prevention &amp; Cross-Validation Protocol<a class="headerlink" href="#overfitting-prevention-cross-validation-protocol" title="Permanent link">¶</a></h2>
 <p>To guarantee model generalizability across 3.5+ million reaches in CONUS, the training pipeline enforces four strict regularization safeguards:</p>
 <ol>
-<li><strong>Stratified Spatial <span class="arithmatex">\(k\)</span>-Fold Cross-Validation</strong>:
-   The 3,543 HYDRoSWOT field stations reside across 1,432 distinct river systems. Cross-validation folds are partitioned by river basin and HUC-4 boundaries to prevent spatial autocorrelation leakage between upstream and downstream monitoring sites.</li>
+<li><strong>10-Fold Cross-Validation</strong>:
+   The 3,543 HYDRoSWOT field stations across 1,432 distinct river systems are partitioned across 10 folds, evaluating predictions strictly out-of-fold (OOF) to test generalization to unmonitored reaches.</li>
 <li><strong>Early Stopping with Validation Plateaus</strong>:
    Iterative gradient boosting and deep learning models monitor a dedicated holdout validation split, halting training when validation loss fails to improve after 20 consecutive iterations.</li>
 <li><strong>Deep Learning Dropout &amp; Weight Decay</strong>:
@@ -1597,9 +1618,9 @@
 <hr>
 <h2 id="model-pipeline-navigation">Model Pipeline Navigation<a class="headerlink" href="#model-pipeline-navigation" title="Permanent link">¶</a></h2>
 <ul>
-<li><strong><a href="../">Overview &amp; Dingman Geometry</a></strong> — Fundamentals of continuous channel power-law geometry and <span class="arithmatex">\(r = f/b\)</span> derivation.</li>
-<li><strong><a href="../skill/">Model Skill &amp; Validation</a></strong> — Empirical validation against field observations, CDF comparisons, and regional diagnostic maps.</li>
-<li><strong><a href="../xai/">Explainability (XAI)</a></strong> — SHAP global feature attributions, soil moisture sensitivity, and geomorphic control mechanisms.</li>
+<li><strong><a href="../">Overview &amp; Dingman Geometry</a></strong>: Fundamentals of continuous channel power-law geometry and <span class="arithmatex">\(r = f/b\)</span> derivation.</li>
+<li><strong><a href="../skill/">Model Skill &amp; Validation</a></strong>: Empirical validation against field observations, CDF comparisons, and regional diagnostic maps.</li>
+<li><strong><a href="../xai/">Explainability (XAI)</a></strong>: SHAP global feature attributions, soil moisture sensitivity, and geomorphic control mechanisms.</li>
 </ul>
 
 
@@ -1645,7 +1666,7 @@
     <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
       Material for MkDocs
     </a>
-    — developed by <strong>Arash Modaresi Rad</strong>
+    developed by <strong>Arash Modaresi Rad</strong>
   
 </div>
       

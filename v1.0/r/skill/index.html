@@ -1145,17 +1145,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#geomorphic-scaling-sensitivity-analysis" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Geomorphic Scaling &amp; Sensitivity Analysis
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#model-pipeline-navigation" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1435,17 +1424,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#geomorphic-scaling-sensitivity-analysis" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Geomorphic Scaling &amp; Sensitivity Analysis
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#model-pipeline-navigation" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1476,55 +1454,12 @@
   
 
 
-<h1 id="model-skill-validation-channel-shape-r">Model Skill &amp; Validation — Channel Shape (<span class="arithmatex">\(r\)</span>)<a class="headerlink" href="#model-skill-validation-channel-shape-r" title="Permanent link">¶</a></h1>
+<h1 id="model-skill-validation-channel-shape-r">Model Skill &amp; Validation: Channel Shape (<span class="arithmatex">\(r\)</span>)<a class="headerlink" href="#model-skill-validation-channel-shape-r" title="Permanent link">¶</a></h1>
 <p>Model evaluation for the <strong>v1.0 Channel Shape (<span class="arithmatex">\(r\)</span>) Parameterization</strong> is conducted using the USGS <strong>HYDRoSWOT</strong> acoustic Doppler current profiler (ADCP) database across 3,543 field monitoring stations spanning 1,432 distinct river systems across the Contiguous United States (CONUS).</p>
 <hr>
 <h2 id="continental-predicted-channel-shape-map">Continental Predicted Channel Shape Map<a class="headerlink" href="#continental-predicted-channel-shape-map" title="Permanent link">¶</a></h2>
-<p>The v1.0 Meta-Learner generates reach-level predictions of the Dingman shape exponent <span class="arithmatex">\(r\)</span> across the entire National Hydrography Dataset (NHDPlus) network:</p>
+<p>The v1.0 Meta-Learner generates reach-level predictions of the Dingman shape exponent <span class="arithmatex">\(r\)</span> across the entire Reference Fabric network:</p>
 <p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../../assets/images/v1.0/r/predicted_r.png" data-desc-position="bottom"><img alt="CONUS Predicted Bankfull Channel Shape Exponent r Map for HydroSWOT (meta_best model)" loading="lazy" src="../../../assets/images/v1.0/r/predicted_r.png"></a></p>
-<p>The continental distribution of predicted <span class="arithmatex">\(r\)</span> values reflects distinct hydro-physiographic and geomorphic regimes across 5 quantile intervals:</p>
-<table>
-<thead>
-<tr>
-<th style="text-align: left;">Quantile Class</th>
-<th style="text-align: left;">Exponent Range (<span class="arithmatex">\(r\)</span>)</th>
-<th style="text-align: left;">Primary Geographic Regions</th>
-<th style="text-align: left;">Fluvial &amp; Hydraulic Characteristics</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left;"><strong>Purple</strong></td>
-<td style="text-align: left;"><span class="arithmatex">\([0.80, 1.29]\)</span></td>
-<td style="text-align: left;">Intermountain West, Cascade Range, Rocky Mountains, arid Southwest washes, Appalachian ridges</td>
-<td style="text-align: left;">Steep bedrock-confined gorges, incised headwaters, and ephemeral washes. High bed-to-bank slope gradients drive triangular-to-convex profiles (<span class="arithmatex">\(r \approx 1\)</span>).</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>Cyan</strong></td>
-<td style="text-align: left;"><span class="arithmatex">\((1.29, 1.48]\)</span></td>
-<td style="text-align: left;">Mountain foothills, Ozark Plateau, New England uplands</td>
-<td style="text-align: left;">Transitional gravel-bed streams with moderate lateral confinement and moderate bank vegetation.</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>Pale Green</strong></td>
-<td style="text-align: left;"><span class="arithmatex">\((1.48, 1.65]\)</span></td>
-<td style="text-align: left;">Upper Midwest interior plains, Piedmont transitional valleys</td>
-<td style="text-align: left;">Mixed alluvial channels with moderate silt-clay bank cohesion transitioning toward regime equilibrium.</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>Orange</strong></td>
-<td style="text-align: left;"><span class="arithmatex">\((1.65, 1.92]\)</span></td>
-<td style="text-align: left;">Corn Belt, Ohio River Basin, lower Missouri tributaries</td>
-<td style="text-align: left;">Stable alluvial threshold channels aligning with <strong>Lane Type B (<span class="arithmatex">\(r \approx 1.75\)</span>)</strong> and near-parabolic geometries (<span class="arithmatex">\(r \approx 1.8\text{--}1.9\)</span>).</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>Red</strong></td>
-<td style="text-align: left;"><span class="arithmatex">\((1.92, 2.91]\)</span></td>
-<td style="text-align: left;">Lower Mississippi Alluvial Valley, Gulf Coastal Plain, Mid-Atlantic lowlands</td>
-<td style="text-align: left;">High clay-silt cohesion banks, low channel slopes, and broad floodplains. Parabolic to flat-bottomed trapezoidal channels (<span class="arithmatex">\(r \ge 2.0\)</span>).</td>
-</tr>
-</tbody>
-</table>
 <hr>
 <h2 id="observed-vs-predicted-validation-distributions">Observed vs. Predicted Validation Distributions<a class="headerlink" href="#observed-vs-predicted-validation-distributions" title="Permanent link">¶</a></h2>
 <p>Evaluating the machine learning predictions against ground truth measurements reveals how the model regularizes raw empirical fits into physically stable parameters:</p>
@@ -1538,14 +1473,14 @@ Raw station fits derived from unconstrained AHG equations (<span class="arithmat
 <li>
 <h3 id="model-predicted-distribution">Model Predicted Distribution<a class="headerlink" href="#model-predicted-distribution" title="Permanent link">¶</a></h3>
 <p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../../assets/images/v1.0/r/predicted_r_val.png" data-desc-position="bottom"><img alt="Predicted r values for HydroSWOT (meta_best model)" loading="lazy" src="../../../assets/images/v1.0/r/predicted_r_val.png"></a>
-The v1.0 Meta-Learner regularizes predicted shape exponents into a robust physical range (<span class="arithmatex">\(r \in [0.8, 3.0]\)</span>), preserving natural spatial gradients while eliminating numerical singularities.</p>
+The v1.0 Meta-Learner regularizes predicted shape exponents, preserving natural spatial gradients while eliminating numerical singularities.</p>
 </li>
 </ul>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Physical Regularization of Upper-Bound Shape Exponents</p>
 <p>In raw field data, a channel with nearly vertical banks produces an extremely small width exponent (<span class="arithmatex">\(b \to 0\)</span>), driving the unconstrained mathematical ratio <span class="arithmatex">\(r = f/b\)</span> to astronomical values (<span class="arithmatex">\(r &gt; 10^4\)</span>). </p>
-<p>However, as Dingman (2007) demonstrated, the geometric profile difference between <span class="arithmatex">\(r = 4.0\)</span> and <span class="arithmatex">\(r = 100,000\)</span> is negligible (both represent essentially flat-bottomed rectangular box channels). By constraining predictions within <span class="arithmatex">\(0.8 \le r \le 3.0\)</span>, the ML model avoids catastrophic numerical instabilities in hydrodynamic solvers while preserving the exact hydraulic conveyance and hydraulic radius properties.</p>
+<p>However, as Dingman (2007) demonstrated, the geometric profile difference between <span class="arithmatex">\(r = 4.0\)</span> and <span class="arithmatex">\(r = 100,000\)</span> is negligible (both represent essentially flat-bottomed rectangular box channels). By constraining predictions within <span class="arithmatex">\(0 \le r \le 4.0\)</span>, the ML model avoids catastrophic numerical instabilities in hydrodynamic solvers while preserving the exact hydraulic conveyance and hydraulic radius properties.</p>
 </div>
 <hr>
 <h2 id="meta-learner-skill-benchmark-kge-cdf-analysis">Meta-Learner Skill Benchmark (KGE CDF Analysis)<a class="headerlink" href="#meta-learner-skill-benchmark-kge-cdf-analysis" title="Permanent link">¶</a></h2>
@@ -1556,43 +1491,35 @@ The v1.0 Meta-Learner regularizes predicted shape exponents into a robust physic
 <thead>
 <tr>
 <th style="text-align: left;">Model Architecture</th>
-<th style="text-align: left;">Median KGE</th>
-<th style="text-align: left;">KGE <span class="arithmatex">\(\ge 0.5\)</span> (Good Skill)</th>
-<th style="text-align: left;">Mean NNSE</th>
-<th style="text-align: left;">Median <span class="arithmatex">\(R^2\)</span></th>
-<th style="text-align: left;">Description</th>
+<th style="text-align: center;">CDF Line</th>
+<th style="text-align: center;">Median KGE (50th Percentile)</th>
+<th style="text-align: left;">Benchmark Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td style="text-align: left;"><strong>Voting Ensemble (<code>vote</code>)</strong></td>
-<td style="text-align: left;"><span class="arithmatex">\(0.405\)</span></td>
-<td style="text-align: left;"><span class="arithmatex">\(38.4\%\)</span></td>
-<td style="text-align: left;"><span class="arithmatex">\(0.582\)</span></td>
-<td style="text-align: left;"><span class="arithmatex">\(0.512\)</span></td>
-<td style="text-align: left;">Unweighted consensus average across top tuned models.</td>
+<td style="text-align: center;">Blue (dashed line)</td>
+<td style="text-align: center;"><strong><span class="arithmatex">\(0.41\)</span></strong></td>
+<td style="text-align: left;">Unweighted average of top tuned algorithms</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>Best Single Model (<code>best</code>)</strong></td>
-<td style="text-align: left;"><span class="arithmatex">\(0.465\)</span></td>
-<td style="text-align: left;"><span class="arithmatex">\(46.1\%\)</span></td>
-<td style="text-align: left;"><span class="arithmatex">\(0.641\)</span></td>
-<td style="text-align: left;"><span class="arithmatex">\(0.578\)</span></td>
-<td style="text-align: left;">Top-performing individual hyperparameter-tuned algorithm (XGBoost).</td>
+<td style="text-align: center;">Black (dashed line)</td>
+<td style="text-align: center;"><strong><span class="arithmatex">\(0.47\)</span></strong></td>
+<td style="text-align: left;">Winning individual tuned algorithm (XGBoost)</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>Stacking Meta-Learner (<code>meta</code>)</strong></td>
-<td style="text-align: left;"><strong><span class="arithmatex">\(0.520\)</span></strong></td>
-<td style="text-align: left;"><strong><span class="arithmatex">\(54.8\%\)</span></strong></td>
-<td style="text-align: left;"><strong><span class="arithmatex">\(0.718\)</span></strong></td>
-<td style="text-align: left;"><strong><span class="arithmatex">\(0.654\)</span></strong></td>
-<td style="text-align: left;"><strong>Level-1 meta-regressor trained on base model prediction matrices.</strong></td>
+<td style="text-align: center;">Red (dashed line)</td>
+<td style="text-align: center;"><strong><span class="arithmatex">\(0.52\)</span></strong></td>
+<td style="text-align: left;"><strong>Level-2 meta-regressor trained on out-of-fold predictions</strong></td>
 </tr>
 </tbody>
 </table>
 <h3 id="key-benchmark-insights">Key Benchmark Insights:<a class="headerlink" href="#key-benchmark-insights" title="Permanent link">¶</a></h3>
 <ol>
-<li><strong>Meta-Learner Superiority</strong>: The Stacking Meta-Learner (red curve) shifts the entire CDF to the right, achieving a <strong>median KGE of 0.520</strong>, outperforming both the single best base model (<span class="arithmatex">\(\text{KGE} = 0.465\)</span>) and the simple voting ensemble (<span class="arithmatex">\(\text{KGE} = 0.405\)</span>).</li>
+<li><strong>Meta-Learner Superiority</strong>: The Stacking Meta-Learner (red curve) shifts the entire CDF to the right, achieving a <strong>median KGE of 0.52</strong>, outperforming both the single best base model (<span class="arithmatex">\(\text{KGE} = 0.47\)</span>) and the simple voting ensemble (<span class="arithmatex">\(\text{KGE} = 0.41\)</span>).</li>
 <li><strong>Failure Suppression in Low-Skill Reaches</strong>: In the lower tail (<span class="arithmatex">\(\text{KGE} &lt; 0.2\)</span>), the meta-learner sharply reduces extreme negative errors by selectively relying on resilient tree-based estimators when neural networks encounter out-of-distribution inputs.</li>
 <li><strong>Voting Dilution Effect</strong>: The simple voting ensemble exhibits lower median skill than the single best model, because unweighted averaging allows weaker sub-models to dilute the high-precision predictions of top gradient-boosted trees. The meta-learner overcomes this limitation through adaptive non-linear weighting.</li>
 </ol>
@@ -1602,27 +1529,19 @@ The v1.0 Meta-Learner regularizes predicted shape exponents into a robust physic
 <p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../../assets/images/v1.0/r/r-trends.png" data-desc-position="bottom"><img alt="Regional and Downstream Scale Trends in Width and Depth Predictability" loading="lazy" src="../../../assets/images/v1.0/r/r-trends.png"></a></p>
 <h3 id="diagnostic-interpretations">Diagnostic Interpretations:<a class="headerlink" href="#diagnostic-interpretations" title="Permanent link">¶</a></h3>
 <ol>
-<li><strong>Width Sensitivity in Large Mainstems ("Worst in wider rivers")</strong>:</li>
-<li>The top-left panel highlights stations with low predictive skill (<span class="arithmatex">\(R^2 &lt; 0.3\)</span> for top width <span class="arithmatex">\(\text{TW}\)</span>).</li>
-<li>These low-performing sites are concentrated on very wide rivers (<span class="arithmatex">\(W^* &gt; 100\text{ m}\)</span>) where the HYDRoSWOT training database contains sparse observations. In contrast, medium-to-small channels (<span class="arithmatex">\(W^* &lt; 50\text{ m}\)</span>) exhibit dense clustering and high predictive accuracy (<span class="arithmatex">\(R^2 &gt; 0.7\)</span>).</li>
-<li><strong>Scale-Invariant Depth Predictability ("No trend in depth")</strong>:</li>
-<li>The bottom row evaluates prediction skill for bankfull depth (<span class="arithmatex">\(Y\)</span>).</li>
-<li>Low-skill stations (<span class="arithmatex">\(R^2 &lt; 0.3\)</span>) are uniformly and sparsely distributed with <strong>no systematic scale or geographic bias</strong>. Depth scaling (<span class="arithmatex">\(Y \propto Q^f\)</span>) remains consistent from 1st-order headwaters to 9th-order continental trunk rivers.</li>
+<li><strong>Width Sensitivity in Large Mainstems ("Worst in wider rivers")</strong>:
+   <br> The top-left panel highlights stations with low predictive skill (<span class="arithmatex">\(R^2 &lt; 0.3\)</span> for top width <span class="arithmatex">\(\text{TW}\)</span>).
+   <br> These low-performing sites are concentrated on very wide rivers (<span class="arithmatex">\(W^* &gt; 100\text{ m}\)</span>) where the HYDRoSWOT training database contains sparse observations. In contrast, medium-to-small channels (<span class="arithmatex">\(W^* &lt; 50\text{ m}\)</span>) exhibit dense clustering and high predictive accuracy (<span class="arithmatex">\(R^2 &gt; 0.7\)</span>).</li>
+<li><strong>Scale-Invariant Depth Predictability ("No trend in depth")</strong>:
+   <br> The bottom row evaluates prediction skill for bankfull depth (<span class="arithmatex">\(Y\)</span>).
+   <br> Low-skill stations (<span class="arithmatex">\(R^2 &lt; 0.3\)</span>) are uniformly and sparsely distributed with <strong>no systematic scale or geographic bias</strong>. Depth scaling (<span class="arithmatex">\(Y \propto Q^f\)</span>) remains consistent from 1st-order headwaters to 9th-order continental trunk rivers.</li>
 </ol>
-<hr>
-<h2 id="geomorphic-scaling-sensitivity-analysis">Geomorphic Scaling &amp; Sensitivity Analysis<a class="headerlink" href="#geomorphic-scaling-sensitivity-analysis" title="Permanent link">¶</a></h2>
-<p>Evaluating shape exponent sensitivity against hydroclimatic forcing confirms that the model captures physical regime boundaries:</p>
-<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../../assets/images/v1.0/r/r_analysis.png" data-desc-position="bottom"><img alt="SHAP Dependence &amp; Soil Moisture Interaction Analysis for Channel Shape r" loading="lazy" src="../../../assets/images/v1.0/r/r_analysis.png"></a></p>
-<ul>
-<li><strong>Arid / Flashy Regimes</strong>: Low maximum soil moisture (<span class="arithmatex">\(\text{SM}_{\max} &lt; 0.35\)</span>) and low catchment runoff (<span class="arithmatex">\(\text{RunoffCat} &lt; 150\text{ mm}\)</span>, blue cluster) consistently produce positive SHAP contributions, reinforcing wider, flatter channel morphologies.</li>
-<li><strong>Humid / Vegetated Regimes</strong>: High soil moisture (<span class="arithmatex">\(\text{SM}_{\max} &gt; 0.42\)</span>) and heavy runoff (<span class="arithmatex">\(\text{RunoffCat} &gt; 450\text{ mm}\)</span>, pink/red cluster) drive strong negative SHAP contributions, reflecting deep, cohesive parabolic channels held stable by dense root networks.</li>
-</ul>
 <hr>
 <h2 id="model-pipeline-navigation">Model Pipeline Navigation<a class="headerlink" href="#model-pipeline-navigation" title="Permanent link">¶</a></h2>
 <ul>
-<li><strong><a href="../">Overview &amp; Dingman Geometry</a></strong> — Fundamentals of continuous channel power-law geometry and <span class="arithmatex">\(r = f/b\)</span> derivation.</li>
-<li><strong><a href="../models/">Model Architecture &amp; Meta-Learners</a></strong> — Machine learning workflows, AutoEncoder feature reduction, and stacking algorithms.</li>
-<li><strong><a href="../xai/">Explainability (XAI)</a></strong> — SHAP feature ranking, environmental driver attribution, and physical control mechanisms.</li>
+<li><strong><a href="../">Overview &amp; Dingman Geometry</a></strong>: Fundamentals of continuous channel power-law geometry and <span class="arithmatex">\(r = f/b\)</span> derivation.</li>
+<li><strong><a href="../models/">Model Architecture &amp; Meta-Learners</a></strong>: Machine learning workflows, elbow method &amp; PCA feature reduction, and stacking algorithms.</li>
+<li><strong><a href="../xai/">Explainability (XAI)</a></strong>: SHAP feature ranking, environmental driver attribution, and physical control mechanisms.</li>
 </ul>
 
 
@@ -1668,7 +1587,7 @@ The v1.0 Meta-Learner regularizes predicted shape exponents into a robust physic
     <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
       Material for MkDocs
     </a>
-    — developed by <strong>Arash Modaresi Rad</strong>
+    developed by <strong>Arash Modaresi Rad</strong>
   
 </div>
       

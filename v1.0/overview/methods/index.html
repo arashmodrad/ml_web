@@ -3,7 +3,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Feature space reduction, Deep Denoising AutoEncoders, SHAP screening, multi-tier ensemble architecture, and spatial cross-validation protocols in CONUS-FHG v1.0.">
+        <meta name="description" content="Expert knowledge screening, recursive feature elimination with elbow method skill evaluation, PCA dimensionality reduction, multi-tier ensemble architecture, and spatial cross-validation in CONUS-FHG v1.0.">
       
       
       
@@ -570,10 +570,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#stage-1-game-theoretic-shap-importance-screening" class="md-nav__link">
+  <a href="#phase-1-expert-knowledge-screening-domain-curation" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Stage 1: Game-Theoretic SHAP Importance Screening
+        Phase 1: Expert Knowledge Screening &amp; Domain Curation
       
     </span>
   </a>
@@ -581,10 +581,21 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#stage-2-deep-denoising-autoencoder-ae-compression" class="md-nav__link">
+  <a href="#phase-2-iterative-feature-dropping-elbow-method-evaluation" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Stage 2: Deep Denoising AutoEncoder (AE) Compression
+        Phase 2: Iterative Feature Dropping &amp; Elbow Method Evaluation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-3-principal-component-analysis-pca-for-collinear-sub-domains" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 3: Principal Component Analysis (PCA) for Collinear Sub-Domains
       
     </span>
   </a>
@@ -1419,10 +1430,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#stage-1-game-theoretic-shap-importance-screening" class="md-nav__link">
+  <a href="#phase-1-expert-knowledge-screening-domain-curation" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Stage 1: Game-Theoretic SHAP Importance Screening
+        Phase 1: Expert Knowledge Screening &amp; Domain Curation
       
     </span>
   </a>
@@ -1430,10 +1441,21 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#stage-2-deep-denoising-autoencoder-ae-compression" class="md-nav__link">
+  <a href="#phase-2-iterative-feature-dropping-elbow-method-evaluation" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Stage 2: Deep Denoising AutoEncoder (AE) Compression
+        Phase 2: Iterative Feature Dropping &amp; Elbow Method Evaluation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-3-principal-component-analysis-pca-for-collinear-sub-domains" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 3: Principal Component Analysis (PCA) for Collinear Sub-Domains
       
     </span>
   </a>
@@ -1655,10 +1677,10 @@
 
 
 <h1 id="methods-modeling-strategy">Methods &amp; Modeling Strategy<a class="headerlink" href="#methods-modeling-strategy" title="Permanent link">¶</a></h1>
-<p>The <strong>CONUS-FHG v1.0</strong> framework employs a disciplined, physics-informed machine learning pipeline to estimate hydraulic geometry parameters (<span class="arithmatex">\(a, b, c, f, k, m\)</span>) and Dingman channel shape (<span class="arithmatex">\(r\)</span>) across CONUS. This page details the two-stage feature space reduction methodology, the three-tier ensemble architecture, hyperparameter optimization, and spatial validation protocols.</p>
+<p>The <strong>v1.0</strong> framework employs a disciplined, physics-informed machine learning pipeline to estimate hydraulic geometry parameters (<span class="arithmatex">\(a, b, c, f, k, m\)</span>) and Dingman channel shape (<span class="arithmatex">\(r\)</span>) across CONUS. This page details the feature space reduction methodology using expert knowledge, iterative feature dropping via the elbow method, and Principal Component Analysis (PCA), followed by the three-tier ensemble architecture, hyperparameter optimization, and spatial validation protocols.</p>
 <hr>
 <h2 id="feature-space-optimization-dimensionality-reduction">Feature Space Optimization &amp; Dimensionality Reduction<a class="headerlink" href="#feature-space-optimization-dimensionality-reduction" title="Permanent link">¶</a></h2>
-<p>Predicting hydraulic geometry across continental scales requires capturing complex interactions between hydrology, terrain, soils, and land cover without inducing severe multicollinearity (<span class="arithmatex">\(|r| &gt; 0.85\)</span>) or variance inflation. The v1.0 pipeline reduces the initial feature pool from <strong>116 candidate environmental predictors</strong> to <strong>60 optimized features</strong> using a hybrid two-stage approach:</p>
+<p>Predicting hydraulic geometry across continental scales requires capturing complex interactions between hydrology, terrain, soils, and land cover without inducing severe multicollinearity (<span class="arithmatex">\(|r| &gt; 0.75\)</span>) or variance inflation. The v1.0 pipeline optimizes the initial feature pool from <strong>116 candidate environmental predictors</strong> to <strong>30 parsimonious features</strong> using a three-phase feature reduction strategy:</p>
 <pre class="mermaid"><code>flowchart TD
     subgraph S1 ["116 Initial Environmental Predictors"]
         P1["NWM 2.1 Flood Frequencies (Q&lt;sub&gt;1.5&lt;/sub&gt; &amp;ndash; Q&lt;sub&gt;100&lt;/sub&gt;)"]
@@ -1669,82 +1691,87 @@
         P6["MODIS NDVI &amp; Soil Moisture"]
     end
 
-    subgraph S2 ["Stage 1: Game-Theoretic SHAP Screening"]
-        SHAP["&lt;b&gt;Recursive SHAP Importance Ranking:&lt;/b&gt;&lt;br/&gt;Evaluate marginal Shapley contributions &amp;phi;&lt;sub&gt;i&lt;/sub&gt;&lt;br/&gt;Prune uninformative &amp; redundant surrogates"]
+    subgraph S2 ["Phase 1 &amp; 2: Expert Curation &amp; Iterative Feature Dropping"]
+        EXP["&lt;b&gt;Expert Knowledge Pre-Screening:&lt;/b&gt;&lt;br/&gt;Remove unphysical, noisy, or redundant predictors"]
+        ELBOW["&lt;b&gt;Recursive Feature Elimination &amp; Elbow Method:&lt;/b&gt;&lt;br/&gt;Rank predictors by importance &amp;bull; Drop iteratively by skill evaluation&lt;br/&gt;Identify optimal complexity at the skill-versus-feature count elbow point"]
     end
 
-    subgraph S3 ["Stage 2: Deep Denoising AutoEncoder (AE)"]
-        AE["&lt;b&gt;Unsupervised Latent Compression:&lt;/b&gt;&lt;br/&gt;Cluster correlated sub-domains &amp;bull; Compress via bottle-neck layer&lt;br/&gt;Generate non-linear, orthogonal latent representations"]
+    subgraph S3 ["Phase 3: Principal Component Analysis (PCA)"]
+        PCA["&lt;b&gt;Orthogonal Dimensionality Reduction:&lt;/b&gt;&lt;br/&gt;Compress collinear thematic sub-domains (flood recurrence, soil profiles)&lt;br/&gt;Extract orthogonal principal components (PC0, PC1, etc.)"]
     end
 
-    subgraph S4 ["60 Final Optimized Predictors"]
-        FINAL["Curated Feature Set for Continental ML Training"]
+    subgraph S4 ["30 Final Optimized Predictors"]
+        FINAL["Parsimonious, Orthogonal Predictor Matrix for Continental ML Training"]
     end
 
-    S1 ==&gt; S2 ==&gt; S3 ==&gt; S4
+    S1 ==&gt; EXP ==&gt; ELBOW ==&gt; PCA ==&gt; FINAL
 
     class S1 highlight-blue;
-    class S2 highlight-orange;
-    class S3 highlight-teal;</code></pre>
-<h3 id="stage-1-game-theoretic-shap-importance-screening">Stage 1: Game-Theoretic SHAP Importance Screening<a class="headerlink" href="#stage-1-game-theoretic-shap-importance-screening" title="Permanent link">¶</a></h3>
-<p>We quantify the global predictive utility of candidate predictors using <strong>TreeSHAP</strong> (Lundberg &amp; Lee, 2017), which computes the exact Shapley value attribution for feature <span class="arithmatex">\(i\)</span> across all possible feature subsets <span class="arithmatex">\(S \subseteq F \setminus \{i\}\)</span>:</p>
+    class EXP highlight-blue;
+    class ELBOW highlight-orange;
+    class PCA highlight-teal;
+    class FINAL highlight-orange;</code></pre>
+<h3 id="phase-1-expert-knowledge-screening-domain-curation">Phase 1: Expert Knowledge Screening &amp; Domain Curation<a class="headerlink" href="#phase-1-expert-knowledge-screening-domain-curation" title="Permanent link">¶</a></h3>
+<p>An initial compilation of 116 candidate geospatial, climatic, topographic, and hydrologic variables was assembled from national databases (NWM 2.1 reanalysis, StreamCat, POLARIS, USGS 3DEP, PRISM, MODIS). Domain hydrological and geomorphological expert knowledge was applied to remove irrelevant, noisy, or physically illogical variables, ensuring that all retained predictors carry plausible causal mechanisms for channel width, depth, or velocity scaling.</p>
+<h3 id="phase-2-iterative-feature-dropping-elbow-method-evaluation">Phase 2: Iterative Feature Dropping &amp; Elbow Method Evaluation<a class="headerlink" href="#phase-2-iterative-feature-dropping-elbow-method-evaluation" title="Permanent link">¶</a></h3>
+<p>To determine the most informative predictor subset: <br>
+1. Candidate features were ranked based on feature importance scores (TreeSHAP and permutation importance across gradient boosting and decision forest algorithms).<br>
+2. Features were recursively dropped in descending order of unimportance. <br>
+3. Model evaluation metrics (Kling-Gupta Efficiency <span class="arithmatex">\(\text{KGE}\)</span>, Normalized Nash-Sutcliffe Efficiency <span class="arithmatex">\(\text{NNSE}\)</span>, and <span class="arithmatex">\(\text{RMSE}\)</span>) were continuously tracked across each subset size.<br>
+4. The <strong>Elbow Method</strong> was applied to the skill vs. feature count trajectory to locate the optimal balance point retaining maximal predictive power while eliminating noise, reducing variance, and avoiding overparameterization.</p>
+<h3 id="phase-3-principal-component-analysis-pca-for-collinear-sub-domains">Phase 3: Principal Component Analysis (PCA) for Collinear Sub-Domains<a class="headerlink" href="#phase-3-principal-component-analysis-pca-for-collinear-sub-domains" title="Permanent link">¶</a></h3>
+<p>For multi-dimensional thematic groups exhibiting strong internal multicollinearity (such as multi-recurrence flood frequency distributions <span class="arithmatex">\(Q_{1.5}\)</span> through <span class="arithmatex">\(Q_{100}\)</span>, multi-layer soil physical properties, and continuous catchment slope metrics), <strong>Principal Component Analysis (PCA)</strong> was performed:</p>
 <div class="arithmatex">\[
-\phi_i(x) = \sum_{S \subseteq F \setminus \{i\}} \frac{|S|! (|F| - |S| - 1)!}{|F|!} \left[ f_x(S \cup \{i\}) - f_x(S) \right]
+\mathbf{Z} = \mathbf{X} \mathbf{W}
 \]</div>
-<p>Features with near-zero mean absolute SHAP values (<span class="arithmatex">\(\mathbb{E}[|\phi_i|] &lt; \epsilon\)</span>) across base learners are systematically eliminated, removing noise and reducing training variance.</p>
-<h3 id="stage-2-deep-denoising-autoencoder-ae-compression">Stage 2: Deep Denoising AutoEncoder (AE) Compression<a class="headerlink" href="#stage-2-deep-denoising-autoencoder-ae-compression" title="Permanent link">¶</a></h3>
-<p>For thematic subsets exhibiting high internal collinearity (such as multi-depth soil texture measurements, multi-recurrence-interval flood frequencies, and seasonal vegetation indices), we apply <strong>Deep Denoising AutoEncoders</strong>:</p>
-<div class="arithmatex">\[
-\mathbf{h} = \sigma\left(\mathbf{W}_e \mathbf{\tilde{x}} + \mathbf{b}_e\right), \quad \mathbf{\hat{x}} = \sigma\left(\mathbf{W}_d \mathbf{h} + \mathbf{b}_d\right)
-\]</div>
-<p>where <span class="arithmatex">\(\mathbf{\tilde{x}} = \mathbf{x} + \boldsymbol{\epsilon}\)</span> is the stochastically corrupted input feature vector, <span class="arithmatex">\(\mathbf{h} \in \mathbb{R}^d\)</span> is the compressed latent representation (<span class="arithmatex">\(d \ll \dim(\mathbf{x})\)</span>), and the network minimizes the reconstruction mean squared error:</p>
-<div class="arithmatex">\[
-\mathcal{L}_{\text{AE}} = \frac{1}{N} \sum_{i=1}^N \|\mathbf{x}_i - \mathbf{\hat{x}}_i\|^2_2 + \lambda \|\mathbf{W}\|_2^2
-\]</div>
-<p>The compressed latent vectors <span class="arithmatex">\(\mathbf{h}\)</span> preserve essential non-linear geomorphic signals while ensuring orthogonality and preventing overparameterization.</p>
+<p>where <span class="arithmatex">\(\mathbf{X}\)</span> is the standardized thematic feature matrix, <span class="arithmatex">\(\mathbf{W}\)</span> contains the orthogonal eigenvectors of the covariance matrix, and <span class="arithmatex">\(\mathbf{Z}\)</span> represents the principal components. By retaining the dominant principal components (e.g., PC0 and PC1, accounting for <span class="arithmatex">\(&gt; 95\%\)</span> of cumulative domain variance), the pipeline preserves essential hydrological and physical gradients while enforcing strict orthogonality.</p>
 <hr>
 <h2 id="multi-tier-modeling-architecture">Multi-Tier Modeling Architecture<a class="headerlink" href="#multi-tier-modeling-architecture" title="Permanent link">¶</a></h2>
 <p>The modeling cascade is structured into three progressive tiers to rigorously evaluate the performance benefits of ensembling and meta-learning:</p>
-<pre class="mermaid"><code>flowchart LR
-    subgraph IN ["Optimized Feature Set (60 Predictors)"]
-        FEAT["Hydro-Geomorphic Matrix &amp;bull; NWM Flow Dynamics &amp;bull; AE Latents"]
+<pre class="mermaid"><code>flowchart TD
+    subgraph IN ["1. Optimized Input Predictors (30 Features)"]
+        FEAT["&lt;b&gt;Curated Predictor Matrix:&lt;/b&gt;&lt;br/&gt;Hydrography &amp;bull; NWM 2.1 Hydrology &amp;bull; POLARIS Soils &amp;bull; 3DEP DEM &amp;bull; Orthogonal PCA Components"]
     end
 
-    subgraph B50 ["50 Out-of-the-Box Algorithms"]
-        direction TB
-        L["Linear / Regularized (Ridge, Lasso, ElasticNet)"]
-        T["Tree Ensembles (Random Forest, Extra Trees, AdaBoost)"]
-        G["Gradient Boosters (XGBoost, LightGBM, CatBoost)"]
-        N["Neural Networks (Multi-Layer Perceptrons)"]
+    subgraph B50 ["2. 50 Out-of-the-Box Machine Learning Algorithms"]
+        direction LR
+        L["&lt;b&gt;Linear &amp; Regularized&lt;/b&gt;&lt;br/&gt;Ridge, Lasso, ElasticNet"]
+        T["&lt;b&gt;Tree Ensembles&lt;/b&gt;&lt;br/&gt;Random Forest, Extra Trees, AdaBoost"]
+        G["&lt;b&gt;Gradient Boosters&lt;/b&gt;&lt;br/&gt;XGBoost, LightGBM, CatBoost"]
+        N["&lt;b&gt;Neural Networks&lt;/b&gt;&lt;br/&gt;Multi-Layer Perceptrons (MLPs)"]
     end
 
-    subgraph HYP ["Bayesian Hyperparameter Tuning"]
-        OPT["TPE / Optuna Tuning &amp;bull; 100 Iterations &amp;bull; Early Stopping"]
+    subgraph HYP ["3. Bayesian Hyperparameter Optimization"]
+        OPT["&lt;b&gt;Fine-Grained Bayesian Tuning (TPE / Optuna):&lt;/b&gt;&lt;br/&gt;100 Iterations &amp;bull; 10-Fold Spatial CV Loss &amp;bull; Early Stopping Regularization"]
     end
 
-    subgraph T1 ["Tier 1: Best Model"]
-        M1["Top Single Model&lt;br/&gt;(e.g., Tuned CatBoost)"]
+    subgraph TIERS ["4. Three-Tier Modeling Hierarchy"]
+        direction LR
+        subgraph T1 ["Tier 1: Best Single Model"]
+            M1["&lt;b&gt;Top Tuned Regressor&lt;/b&gt;&lt;br/&gt;Highest individual test skill&lt;br/&gt;&lt;i&gt;(e.g., Tuned CatBoost / XGBoost)&lt;/i&gt;"]
+        end
+
+        subgraph T2 ["Tier 2: Voting Ensemble"]
+            M2["&lt;b&gt;Consensus Average&lt;/b&gt;&lt;br/&gt;Mean of top 6&amp;ndash;8 tuned models&lt;br/&gt;&amp;ycirc;&lt;sub&gt;vote&lt;/sub&gt; = (1/M) &amp;sum; &amp;ycirc;&lt;sub&gt;m&lt;/sub&gt;"]
+        end
+
+        subgraph T3 ["Tier 3: Meta-Learner"]
+            M3["&lt;b&gt;Stacking Super-Learner&lt;/b&gt;&lt;br/&gt;Level-1 meta-regressor on OOF outputs&lt;br/&gt;&amp;ycirc;&lt;sub&gt;meta&lt;/sub&gt; = g(&amp;ycirc;&lt;sub&gt;1&lt;/sub&gt;, ..., &amp;ycirc;&lt;sub&gt;M&lt;/sub&gt;, &lt;b&gt;X&lt;/b&gt;)"]
+        end
     end
 
-    subgraph T2 ["Tier 2: Voting Ensemble"]
-        M2["Average of Top 6&amp;ndash;8 Models&lt;br/&gt;&amp;ycirc;&lt;sub&gt;vote&lt;/sub&gt; = (1/M) &amp;sum; &amp;ycirc;&lt;sub&gt;m&lt;/sub&gt;"]
-    end
+    IN ==&gt; B50
+    B50 ==&gt; HYP
+    HYP ==&gt; TIERS
 
-    subgraph T3 ["Tier 3: Meta-Learner"]
-        M3["Stacking Level-1 Regressor&lt;br/&gt;&amp;ycirc;&lt;sub&gt;meta&lt;/sub&gt; = g(&amp;ycirc;&lt;sub&gt;1&lt;/sub&gt;, &amp;ycirc;&lt;sub&gt;2&lt;/sub&gt;, ..., &amp;ycirc;&lt;sub&gt;M&lt;/sub&gt;, &lt;b&gt;X&lt;/b&gt;)"]
-    end
-
-    IN ==&gt; B50 ==&gt; HYP
-    HYP ==&gt; T1
-    HYP ==&gt; T2
-    HYP ==&gt; T3
-
+    class IN highlight-blue;
     class B50 highlight-blue;
+    class HYP highlight-blue;
     class T1 highlight-blue;
     class T2 highlight-teal;
     class T3 highlight-orange;</code></pre>
 <h3 id="1-algorithm-benchmarking-screening">1. Algorithm Benchmarking &amp; Screening<a class="headerlink" href="#1-algorithm-benchmarking-screening" title="Permanent link">¶</a></h3>
-<p>An initial screening of <strong>50 diverse regression algorithms</strong> was conducted using default hyperparameters across all target parameters (<span class="arithmatex">\(a, b, c, f, k, m\)</span>). The top candidate architectures—predominantly gradient-boosted decision trees (XGBoost, CatBoost, LightGBM), randomized decision forests (Extra Trees, Random Forest), and deep feedforward MLPs—were selected for dedicated hyperparameter optimization.</p>
+<p>An initial screening of <strong>50 diverse regression algorithms</strong> was conducted using default hyperparameters across all target parameters (<span class="arithmatex">\(a, b, c, f, k, m\)</span>). The top candidate architectures predominantly gradient-boosted decision trees (XGBoost, CatBoost, LightGBM), randomized decision forests (Extra Trees, Random Forest), and deep feedforward MLPs—were selected for dedicated hyperparameter optimization.</p>
 <h3 id="2-tier-1-best-hyperparameter-tuned-model">2. Tier 1: Best Hyperparameter-Tuned Model<a class="headerlink" href="#2-tier-1-best-hyperparameter-tuned-model" title="Permanent link">¶</a></h3>
 <p>Each selected algorithm underwent Bayesian hyperparameter optimization (Tree-structured Parzen Estimator, TPE) over 100 trials with early stopping on validation loss. Key tuned hyperparameters included:
 * <strong>Tree Depth &amp; Max Leaves</strong>: Controlling tree complexity and interaction order.
@@ -1799,16 +1826,32 @@
 <h2 id="synthesis-of-channel-shape-parameter-r">Synthesis of Channel Shape Parameter (<span class="arithmatex">\(r\)</span>)<a class="headerlink" href="#synthesis-of-channel-shape-parameter-r" title="Permanent link">¶</a></h2>
 <p>Once hydraulic geometry exponents (<span class="arithmatex">\(b, f, m\)</span>) are predicted across the hydrographic network, the continuous <strong>Dingman cross-sectional shape exponent (<span class="arithmatex">\(r\)</span>)</strong> is analytically synthesized:</p>
 <div class="arithmatex">\[
-r = \frac{1 - b}{b} = \frac{f + m}{b}
+r = \frac{f}{b}
 \]</div>
-<pre class="mermaid"><code>flowchart LR
-    ML_B["Predicted Width Exponent (b)"] --&gt; CALC["Analytical Derivation:&lt;br/&gt;r = (1 - b) / b = (f + m) / b"]
-    ML_F["Predicted Depth Exponent (f)"] --&gt; CALC
-    CALC --&gt; PROFILE["2D / 3D Synthetic Bathymetry:&lt;br/&gt;z(x) = Y&lt;sub&gt;m&lt;/sub&gt;* &amp;middot; (2x / W*)&lt;sup&gt;r&lt;/sup&gt;"]
+<pre class="mermaid"><code>flowchart TD
+    subgraph INPUTS ["1. Machine-Learned Dimensional &amp; Scaling Outputs"]
+        direction LR
+        W_BF["&lt;b&gt;Bankfull Width (50% AEP):&lt;/b&gt;&lt;br/&gt;&lt;code&gt;W* = TW&lt;sub&gt;bf&lt;/sub&gt;&lt;/code&gt;"]
+        Y_BF["&lt;b&gt;Bankfull Depth (50% AEP):&lt;/b&gt;&lt;br/&gt;&lt;code&gt;Y&lt;sub&gt;m&lt;/sub&gt;* = Y&lt;sub&gt;bf&lt;/sub&gt;&lt;/code&gt;"]
+        EXP_BF["&lt;b&gt;AHG Exponents:&lt;/b&gt;&lt;br/&gt;&lt;code&gt;b&lt;/code&gt; and &lt;code&gt;f&lt;/code&gt;"]
+    end
 
-    class ML_B highlight-blue;
-    class ML_F highlight-blue;
-    class CALC highlight-teal;</code></pre>
+    subgraph CALC ["2. Dingman Power-Law Synthesis"]
+        R_SYN["&lt;b&gt;Continuous Shape Parameter:&lt;/b&gt;&lt;br/&gt;&lt;code&gt;r = f / b = (1 - b) / b&lt;/code&gt;"]
+        INPUTS ==&gt; R_SYN
+    end
+
+    subgraph BATH ["3. Submerged Channel Cross-Section"]
+        BED["&lt;b&gt;Synthetic Bed Profile:&lt;/b&gt;&lt;br/&gt;&lt;code&gt;z(x) = Y&lt;sub&gt;bf&lt;/sub&gt; &amp;middot; (2x / TW&lt;sub&gt;bf&lt;/sub&gt;)&lt;sup&gt;r&lt;/sup&gt;&lt;/code&gt;&lt;br/&gt;Continuous 3D Bathymetry for FEMA FIS &amp;amp; NextGen FIM"]
+        R_SYN ==&gt; BED
+    end
+
+    class INPUTS highlight-blue;
+    class W_BF highlight-orange;
+    class Y_BF highlight-orange;
+    class EXP_BF highlight-blue;
+    class CALC highlight-teal;
+    class BATH highlight-teal;</code></pre>
 <p>For complete mathematical derivations, morphological classifications (triangular <span class="arithmatex">\(r=1\)</span>, parabolic <span class="arithmatex">\(r=2\)</span>, flat-bottomed <span class="arithmatex">\(r&gt;3\)</span>), and continental mapping of <span class="arithmatex">\(r\)</span>, see the <a href="../../r/">Channel Shape Parameterization (<span class="arithmatex">\(r\)</span>)</a> documentation.</p>
 
 
@@ -1854,7 +1897,7 @@ r = \frac{1 - b}{b} = \frac{f + m}{b}
     <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
       Material for MkDocs
     </a>
-    — developed by <strong>Arash Modaresi Rad</strong>
+    developed by <strong>Arash Modaresi Rad</strong>
   
 </div>
       

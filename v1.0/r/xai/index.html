@@ -87,7 +87,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#explainable-ai-xai-physical-controls-channel-shape-r" class="md-skip">
+        <a href="#explainable-ai-xai-physical-controls" class="md-skip">
           Skip to content
         </a>
       
@@ -1092,23 +1092,6 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Sensitivity &amp; Hydroclimatic Interaction Analysis">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#physical-regimes-revealed-by-the-interaction" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Physical Regimes Revealed by the Interaction:
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
         <li class="md-nav__item">
@@ -1139,17 +1122,6 @@
     <span class="md-ellipsis">
       
         2. Geotechnical Bank Cohesion &amp; Critical Shear Stress
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#3-sediment-transport-mode-bedload-vs-suspended-load" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3. Sediment Transport Mode (Bedload vs. Suspended Load)
       
     </span>
   </a>
@@ -1332,23 +1304,6 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Sensitivity &amp; Hydroclimatic Interaction Analysis">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#physical-regimes-revealed-by-the-interaction" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Physical Regimes Revealed by the Interaction:
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
         <li class="md-nav__item">
@@ -1379,17 +1334,6 @@
     <span class="md-ellipsis">
       
         2. Geotechnical Bank Cohesion &amp; Critical Shear Stress
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#3-sediment-transport-mode-bedload-vs-suspended-load" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3. Sediment Transport Mode (Bedload vs. Suspended Load)
       
     </span>
   </a>
@@ -1432,7 +1376,7 @@
   
 
 
-<h1 id="explainable-ai-xai-physical-controls-channel-shape-r">Explainable AI (XAI) &amp; Physical Controls — Channel Shape (<span class="arithmatex">\(r\)</span>)<a class="headerlink" href="#explainable-ai-xai-physical-controls-channel-shape-r" title="Permanent link">¶</a></h1>
+<h1 id="explainable-ai-xai-physical-controls">Explainable AI (XAI) &amp; Physical Controls<a class="headerlink" href="#explainable-ai-xai-physical-controls" title="Permanent link">¶</a></h1>
 <p>To ensure that the <strong>v1.0 Channel Shape (<span class="arithmatex">\(r\)</span>) Model</strong> aligns with established principles of fluvial geomorphology and hydraulic regime theory, we apply <strong>SHAP (SHapley Additive exPlanations)</strong> based on cooperative game theory. SHAP attributions decompose model predictions into individual feature contributions, revealing how catchment, climate, and hydrographic factors govern cross-sectional curvature across the continental river network.</p>
 <hr>
 <h2 id="global-feature-attribution-shap-beeswarm-ranking">Global Feature Attribution (SHAP Beeswarm Ranking)<a class="headerlink" href="#global-feature-attribution-shap-beeswarm-ranking" title="Permanent link">¶</a></h2>
@@ -1521,30 +1465,7 @@
 <h2 id="sensitivity-hydroclimatic-interaction-analysis">Sensitivity &amp; Hydroclimatic Interaction Analysis<a class="headerlink" href="#sensitivity-hydroclimatic-interaction-analysis" title="Permanent link">¶</a></h2>
 <p>Fluvial cross-sectional shape is strongly governed by the non-linear interaction between soil moisture conditions, riparian vegetation, and catchment runoff volume:</p>
 <p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../../assets/images/v1.0/r/r_analysis.png" data-desc-position="bottom"><img alt="SHAP Dependence &amp; Soil Moisture Interaction Analysis for Channel Shape r" loading="lazy" src="../../../assets/images/v1.0/r/r_analysis.png"></a></p>
-<h3 id="physical-regimes-revealed-by-the-interaction">Physical Regimes Revealed by the Interaction:<a class="headerlink" href="#physical-regimes-revealed-by-the-interaction" title="Permanent link">¶</a></h3>
-<pre class="mermaid"><code>flowchart LR
-    subgraph ARID ["Arid / Flashy Ephemeral Regime (SM_max &lt; 0.35, RunoffCat &lt; 150 mm)"]
-        A1["Sparse Vegetation\nNon-Cohesive Sandy Bed"] --&gt; A2["High Lateral Bank Mobility\nRapid Width Growth (b &amp;Gt; f)"]
-        A2 --&gt; A3["High SHAP Impact (+0.005 to +0.012)\nFlat-Bottomed / Braided (r &amp;ge; 2.0)"]
-    end
-
-    subgraph HUMID ["Humid / Perennial Equilibrium Regime (SM_max &gt; 0.42, RunoffCat &gt; 450 mm)"]
-        H1["Dense Riparian Root Cover\nCohesive Clay-Silt Banks"] --&gt; H2["Bank Stabilization\nDepth Incision Dominated (f &amp;ge; b)"]
-        H2 --&gt; H3["Negative SHAP Impact (-0.005 to -0.015)\nCohesive Parabolic / V-Notch (r &amp;approx; 1.2 - 1.8)"]
-    end
-
-    class ARID highlight-blue;
-    class HUMID highlight-teal;</code></pre>
-<ol>
-<li><strong>Arid &amp; Semi-Arid Ephemeral Washes (<span class="arithmatex">\(\text{SM}_{\max} \le 0.35\)</span>, <span class="arithmatex">\(\text{RunoffCat} &lt; 150\text{ mm}\)</span>)</strong>:</li>
-<li>Represented by the blue cluster at the top-left of the interaction plot.</li>
-<li>In arid environments with dry sandy soils and sparse riparian cover, channel banks lack cohesion and are easily eroded during high-intensity flash floods.</li>
-<li>Consequently, lateral widening dominates over vertical incision (<span class="arithmatex">\(b \gg f\)</span>), producing broad, flat-bottomed ephemeral washes with positive SHAP contributions (<span class="arithmatex">\(\text{SHAP} &gt; +0.005\)</span>).</li>
-<li><strong>Humid &amp; Perennial Basins (<span class="arithmatex">\(\text{SM}_{\max} \ge 0.42\)</span>, <span class="arithmatex">\(\text{RunoffCat} &gt; 450\text{ mm}\)</span>)</strong>:</li>
-<li>Represented by the pink/red cluster at the bottom-right of the interaction plot.</li>
-<li>Abundant soil moisture sustains dense riparian root matrices, while high clay fractions increase critical bank shear strength (<span class="arithmatex">\(\tau_c\)</span>).</li>
-<li>Floods are conveyed through deeper, narrower channels (<span class="arithmatex">\(f \ge b\)</span>), yielding negative SHAP contributions (<span class="arithmatex">\(\text{SHAP} &lt; -0.010\)</span>) that keep the shape exponent aligned with stable parabolic and cohesive regimes ($r \approx 1.5\text<del class="critic">}1.8$).</del></li>
-</ol>
+<p>High soil moisture (<span class="arithmatex">\(\text{SM}_{\max} &gt; 0.42\)</span>) and heavy runoff (<span class="arithmatex">\(\text{RunoffCat} &gt; 450\text{ mm}\)</span>, pink/red cluster) drive strong negative SHAP contributions, reflecting deep, cohesive parabolic channels.</p>
 <hr>
 <h2 id="physical-controls-on-river-channel-shape">Physical Controls on River Channel Shape<a class="headerlink" href="#physical-controls-on-river-channel-shape" title="Permanent link">¶</a></h2>
 <p>The XAI results confirm that the machine learning models have learned physical geomorphic dynamics rather than spurious statistical correlations:</p>
@@ -1569,17 +1490,12 @@
 <p>In headwaters and montane gorges, high bedrock confinement physically restricts lateral channel widening. Flow energy is concentrated vertically along the bed, driving downcutting and enforcing a triangular V-notch cross-section (<span class="arithmatex">\(r \approx 1.0\)</span>).</p>
 <h3 id="2-geotechnical-bank-cohesion-critical-shear-stress">2. Geotechnical Bank Cohesion &amp; Critical Shear Stress<a class="headerlink" href="#2-geotechnical-bank-cohesion-critical-shear-stress" title="Permanent link">¶</a></h3>
 <p>In alluvial plains, channel cross-sectional form reflects the balance between boundary shear stress (<span class="arithmatex">\(\tau_0 = \gamma R S\)</span>) and the critical erodibility of bank materials (<span class="arithmatex">\(\tau_c\)</span>). High soil moisture and clay content increase bank cohesion, allowing channels to maintain steeper sidewalls without geotechnical slumping.</p>
-<h3 id="3-sediment-transport-mode-bedload-vs-suspended-load">3. Sediment Transport Mode (Bedload vs. Suspended Load)<a class="headerlink" href="#3-sediment-transport-mode-bedload-vs-suspended-load" title="Permanent link">¶</a></h3>
-<ul>
-<li><strong>Suspended-Load Channels</strong> (high silt-clay fractions): Characterized by low width-to-depth ratios and steep, stable parabolic banks ($r \approx 1.75\text{2.2$).</li>
-<li><strong>Bedload-Dominated Channels</strong> (coarse gravels and non-cohesive sands): Require wide, shallow cross-sections to transport heavy sediment loads across the bed, resulting in lower aspect ratios and broader beds (<span class="arithmatex">\(r &lt; 1.5\)</span>).</li>
-</ul>
 <hr>
 <h2 id="model-pipeline-navigation">Model Pipeline Navigation<a class="headerlink" href="#model-pipeline-navigation" title="Permanent link">¶</a></h2>
 <ul>
-<li><strong><a href="../">Overview &amp; Dingman Geometry</a></strong> — Fundamentals of continuous channel power-law geometry and <span class="arithmatex">\(r = f/b\)</span> derivation.</li>
-<li><strong><a href="../models/">Model Architecture &amp; Meta-Learners</a></strong> — Machine learning workflows, AutoEncoder feature reduction, and stacking algorithms.</li>
-<li><strong><a href="../skill/">Model Skill &amp; Validation</a></strong> — Continental validation against HYDRoSWOT ADCP surveys, Kling-Gupta Efficiency CDFs, and stream-order bias analysis.</li>
+<li><strong><a href="../">Overview &amp; Dingman Geometry</a></strong>: Fundamentals of continuous channel power-law geometry and <span class="arithmatex">\(r = f/b\)</span> derivation.</li>
+<li><strong><a href="../models/">Model Architecture &amp; Meta-Learners</a></strong>: Machine learning workflows, elbow method &amp; PCA feature reduction, and stacking algorithms.</li>
+<li><strong><a href="../skill/">Model Skill &amp; Validation</a></strong>: Continental validation against HYDRoSWOT ADCP surveys, Kling-Gupta Efficiency CDFs, and stream-order bias analysis.</li>
 </ul>
 
 
@@ -1625,7 +1541,7 @@
     <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
       Material for MkDocs
     </a>
-    — developed by <strong>Arash Modaresi Rad</strong>
+    developed by <strong>Arash Modaresi Rad</strong>
   
 </div>
       

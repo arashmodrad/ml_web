@@ -1132,10 +1132,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
       
         <li class="md-nav__item">
-  <a href="#the-missing-bathymetry-challenge" class="md-nav__link">
+  <a href="#deriving-continental-channel-geometry-from-adcp-observations" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The Missing Bathymetry Challenge
+        Deriving Continental Channel Geometry from ADCP Observations
       
     </span>
   </a>
@@ -1280,28 +1280,46 @@
 
 
 <h1 id="conus-fhg-v10-pipeline-overview">CONUS-FHG v1.0 Pipeline Overview<a class="headerlink" href="#conus-fhg-v10-pipeline-overview" title="Permanent link">¶</a></h1>
-<p>The <strong>CONUS-FHG v1.0</strong> framework provides a robust, physics-grounded machine learning methodology for estimating continental-scale river channel geometry and submerged cross-sectional shape across the Contiguous United States (CONUS). Developed by Modaresi Rad et al. (2024), this framework bridges the gap between discrete hydrographic surveys and continental-scale hydrodynamic modeling.</p>
+<p>The <strong>CONUS-FHG v1.0</strong> framework provides a robust, physics-grounded machine learning methodology for estimating continental-scale river channel geometry and submerged cross-sectional shape across the Contiguous United States (CONUS). Developed by Modaresi Rad et al. (2024), this framework bridges the gap in derivaiton of river channel geometry as standard DEMs cannot penetrate water.</p>
 <hr>
-<h2 id="the-missing-bathymetry-challenge">The Missing Bathymetry Challenge<a class="headerlink" href="#the-missing-bathymetry-challenge" title="Permanent link">¶</a></h2>
-<p>Modern hydrologic and hydrodynamic modeling frameworks—such as the NOAA <strong>Next Generation Water Resources Modeling Framework (NextGen)</strong>, <strong>FEMA Flood Insurance Studies (FIS)</strong>, and the <strong>National Flood Inundation Mapping (FIM)</strong> program—require accurate channel geometry to simulate open-channel hydraulics:</p>
-<pre class="mermaid"><code>flowchart LR
-    subgraph DEM ["Airborne LiDAR / Satellite DEM Surface"]
-        FP1["Left Floodplain\n(LiDAR Verified)"] --- WS["Flat Water Surface\n(Sensor Blind Spot)"] --- FP2["Right Floodplain\n(LiDAR Verified)"]
+<h2 id="deriving-continental-channel-geometry-from-adcp-observations">Deriving Continental Channel Geometry from ADCP Observations<a class="headerlink" href="#deriving-continental-channel-geometry-from-adcp-observations" title="Permanent link">¶</a></h2>
+<p>Modern hydrologic and hydrodynamic modeling frameworks such as the NOAA <strong>Next Generation Water Resources Modeling Framework (NextGen)</strong>, <strong>FEMA Flood Insurance Studies (FIS)</strong>, and continental <strong>Flood Inundation Mapping (FIM)</strong> require accurate submerged channel geometry to simulate open-channel conveyance and flood wave propagation:</p>
+<pre class="mermaid"><code>flowchart TD
+    subgraph FIELD ["1. USGS HYDRoSWOT ADCP Field Observation Base"]
+        ADCP["&lt;b&gt;3,543 USGS ADCP Gauge Stations (1,432 Distinct River Systems)&lt;/b&gt;&lt;br/&gt;In-situ cross-sectional depth and acoustic velocity soundings evaluated across flow regimes"]
     end
 
-    subgraph BATH ["ML Submerged Bathymetry (CONUS-FHG)"]
-        BED["Dingman Power-Law Bed: z(x) = Y&lt;sub&gt;m&lt;/sub&gt;* &amp;middot; (2x / W*)&lt;sup&gt;r&lt;/sup&gt;\nContinuous shape r derived from ML scaling exponents f and b"]
+    subgraph LABELS ["2. Hydrologic Target Derivation &amp; AHG Continuity Fitting"]
+        direction LR
+        IN_FLOW["&lt;b&gt;In-Channel Targets (100% AEP):&lt;/b&gt;&lt;br/&gt;• In-Channel Width: &lt;code&gt;TW&lt;sub&gt;in&lt;/sub&gt;&lt;/code&gt;&lt;br/&gt;• In-Channel Depth: &lt;code&gt;Y&lt;sub&gt;in&lt;/sub&gt;&lt;/code&gt;"]
+        BF_FLOW["&lt;b&gt;Bankfull Targets (50% AEP):&lt;/b&gt;&lt;br/&gt;• Bankfull Width: &lt;code&gt;TW&lt;sub&gt;bf&lt;/sub&gt;&lt;/code&gt;&lt;br/&gt;• Bankfull Depth: &lt;code&gt;Y&lt;sub&gt;bf&lt;/sub&gt;&lt;/code&gt;"]
+        AHG_FIT["&lt;b&gt;AHG Continuity Exponents:&lt;/b&gt;&lt;br/&gt;• Width Exponent: &lt;code&gt;b&lt;/code&gt;&lt;br/&gt;• Depth Exponent: &lt;code&gt;f&lt;/code&gt;&lt;br/&gt;&lt;i&gt;(b + f + m = 1.0)&lt;/i&gt;"]
     end
 
-    WS -. "Missing Sub-Bankfull Bathymetry" .-&gt; BED
-    class WS highlight-blue;
-    class BED highlight-teal;</code></pre>
-<p>While airborne LiDAR and high-resolution Digital Elevation Models (DEMs) capture terrestrial floodplain topography with centimeter-level precision, near-infrared LiDAR pulses are absorbed or reflected by water surfaces. Consequently, raw DEMs depict river channels as flat water surfaces, omitting the <strong>submerged in-channel conveyance area</strong>. </p>
-<p>Failing to account for submerged bathymetry creates severe hydraulic modeling errors:
-1. <strong>Premature Overbank Flooding</strong>: Channels artificially overflow at sub-bankfull flows because cross-sectional conveyance volume is underestimated.
-2. <strong>Distorted Wave Celerity</strong>: Hydraulic radius (<span class="arithmatex">\(R = A/P\)</span>) is miscalculated, skewing Manning's equation velocity (<span class="arithmatex">\(V = \frac{1}{n} R^{2/3} S^{1/2}\)</span>) and flood wave travel times.
-3. <strong>Inaccurate Rating Curves</strong>: Stage-discharge relationships deviate substantially from gauge observations.</p>
-<p>CONUS-FHG v1.0 solves this fundamental problem by learning hydraulic geometry relationships from surveyed cross-sections and generalizing them to all CONUS stream reaches.</p>
+    subgraph ML ["3. Multi-Tier Machine Learning Generalization"]
+        PRED["&lt;b&gt;Continental ML Training &amp; Stacking Meta-Learner:&lt;/b&gt;&lt;br/&gt;Trained on 30 curated predictors (NWM 2.1, POLARIS Soils, 3DEP DEM, PRISM Climate, StreamCat)&lt;br/&gt;Predicts 100% AEP &amp;amp; 50% AEP dimensions and AHG exponents across 2.8M+ Reference Fabric reaches"]
+    end
+
+    subgraph BATH ["4. Synthetic Channel Cross-Sectional Bathymetry"]
+        BED["&lt;b&gt;Dingman Power-Law Bed Elevation:&lt;/b&gt;&lt;br/&gt;&lt;code&gt;z(x) = Y&lt;sub&gt;m&lt;/sub&gt;* &amp;middot; (2x / W*)&lt;sup&gt;r&lt;/sup&gt;&lt;/code&gt; &amp;nbsp; where &amp;nbsp; &lt;code&gt;r = f / b&lt;/code&gt;&lt;br/&gt;Reconstructs complete submerged 3D channel geometry for FEMA FIS &amp;amp; NextGen FIM"]
+    end
+
+    FIELD ==&gt; LABELS ==&gt; ML ==&gt; BATH
+
+    class FIELD highlight-blue;
+    class IN_FLOW highlight-teal;
+    class BF_FLOW highlight-orange;
+    class AHG_FIT highlight-blue;
+    class ML highlight-blue;
+    class BATH highlight-teal;</code></pre>
+<p>The framework derives channel top width, depth, and cross-sectional shape exclusively from <strong>USGS HYDRoSWOT Acoustic Doppler Current Profiler (ADCP)</strong> field surveys and hydro-environmental features, without relying on airborne LiDAR or elevation scans:</p>
+<ol>
+<li><strong>In-Situ ADCP Acoustic Soundings</strong>: Uses field-measured cross-sectional velocity and depth profiles from 3,543 USGS gauging stations across 1,432 distinct river systems.</li>
+<li><strong>Hydrologic Flow Target Extraction</strong>: Extracts dimensional width and depth at the <strong>100% AEP</strong> (in-channel mean annual flow) and <strong>50% AEP</strong> (bankfull 2-year flood) flow thresholds.</li>
+<li><strong>Continuity-Constrained AHG Fitting</strong>: Fits At-a-station Hydraulic Geometry (AHG) scaling exponents (<span class="arithmatex">\(b, f, m\)</span>) under mass conservation continuity constraints (<span class="arithmatex">\(b + f + m = 1.0, a \cdot c \cdot k = 1.0\)</span>).</li>
+<li><strong>Machine Learning Generalization</strong>: Trains multi-tier ML models (XGBoost, ExtraTrees, LightGBM, CatBoost, and Stacking Meta-Learners) to predict in-channel dimensions, bankfull dimensions, and AHG exponents across all un-gauged Reference Fabric reaches.</li>
+<li><strong>Dingman Power-Law Bathymetry Synthesis</strong>: Couples predicted bankfull dimensions (<span class="arithmatex">\(TW_{bf}, Y_{bf}\)</span>) with the continuous Dingman shape parameter (<span class="arithmatex">\(r = f/b\)</span>) to synthesize complete submerged cross-sections for flood inundation mapping.</li>
+</ol>
 <hr>
 <h2 id="from-at-a-station-to-feature-hydraulic-geometry-fhg">From At-a-Station to Feature Hydraulic Geometry (FHG)<a class="headerlink" href="#from-at-a-station-to-feature-hydraulic-geometry-fhg" title="Permanent link">¶</a></h2>
 <h3 id="at-a-station-hydraulic-geometry-ahg">At-a-Station Hydraulic Geometry (AHG)<a class="headerlink" href="#at-a-station-hydraulic-geometry-ahg" title="Permanent link">¶</a></h3>
@@ -1324,43 +1342,45 @@ V = k \cdot Q^m
 <div class="arithmatex">\[
 a \cdot c \cdot k = 1.0 \quad \text{and} \quad b + f + m = 1.0
 \]</div>
-<pre class="mermaid"><code>graph TD
-    subgraph Continuity ["Exact Hydraulic Continuity Constraints"]
-        direction LR
-        C1["&lt;b&gt;Product Constraint:&lt;/b&gt;&lt;br/&gt;a &amp;middot; c &amp;middot; k = 1.0"]
-        C2["&lt;b&gt;Exponent Constraint:&lt;/b&gt;&lt;br/&gt;b + f + m = 1.0"]
-    end</code></pre>
 <h3 id="feature-hydraulic-geometry-fhg">Feature Hydraulic Geometry (FHG)<a class="headerlink" href="#feature-hydraulic-geometry-fhg" title="Permanent link">¶</a></h3>
-<p>While AHG describes empirical relationships at individual gauge sites, <strong>Feature Hydraulic Geometry (FHG)</strong> (Johnson et al., 2023; Modaresi Rad et al., 2024) expands these relationships to regional and continental scales. FHG treats the power-law parameters (<span class="arithmatex">\(a, b, c, f, k, m\)</span>) as continuous functional responses to holistic catchment and hydrographic features:</p>
+<p>While AHG describes empirical relationships at individual gauge sites, <strong>Feature Hydraulic Geometry (FHG)</strong> expands these relationships to regional and continental scales. FHG treats the power-law parameters (<span class="arithmatex">\(a, b, c, f, k, m\)</span>) as continuous functional responses to holistic catchment and hydrographic features:</p>
 <div class="arithmatex">\[
 \{a, b, c, f, k, m\} = \mathcal{F}\Big(\mathbf{X}_{\text{NWM}}, \mathbf{X}_{\text{StreamCat}}, \mathbf{X}_{\text{DEM}}, \mathbf{X}_{\text{Soil}}, \mathbf{X}_{\text{Climate}}\Big)
 \]</div>
 <p>where <span class="arithmatex">\(\mathcal{F}\)</span> represents the machine learning mapping function parameterized across CONUS.</p>
 <hr>
 <h2 id="end-to-end-workflow-architecture">End-to-End Workflow Architecture<a class="headerlink" href="#end-to-end-workflow-architecture" title="Permanent link">¶</a></h2>
-<p>The CONUS-FHG v1.0 pipeline consists of four tightly integrated phases spanning data acquisition, feature space reduction, multi-tier machine learning, and continental inference:</p>
+<p>The pipeline consists of four tightly integrated phases spanning data acquisition, feature space reduction, multi-tier machine learning, and continental inference:</p>
 <p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../assets/images/v1.0/overview/Fig2.png" data-desc-position="bottom"><img alt="CONUS-FHG v1.0 End-to-End Machine Learning Workflow" loading="lazy" src="../../assets/images/v1.0/overview/Fig2.png"></a></p>
 <h3 id="workflow-stages">Workflow Stages:<a class="headerlink" href="#workflow-stages" title="Permanent link">¶</a></h3>
 <ol>
-<li><strong>Hydrographic Data Curation &amp; Preprocessing</strong>:</li>
-<li>Extraction of raw Acoustic Doppler Current Profiler (ADCP) cross-sectional surveys from the USGS HYDRoSWOT database.</li>
-<li>Quality control: filtering out tidal/backwater stations, unstable cross-sections, and records with fewer than 5 surveys.</li>
-<li>Robust optimization fitting of AHG power laws ensuring <span class="arithmatex">\(R^2 \ge 0.8\)</span> while strictly enforcing continuity constraints (<span class="arithmatex">\(a \cdot c \cdot k = 1.0\)</span>, <span class="arithmatex">\(b + f + m = 1.0\)</span>).</li>
-<li><strong>Environmental Feature Extraction</strong>:</li>
-<li>Extraction of 116 candidate environmental predictors across all gauge locations.</li>
-<li>Predictor families include National Water Model (NWM v2.1) flood frequencies, StreamCat landscape attributes, POLARIS high-resolution soil physical parameters, 3DEP DEM topographic indices, and PRISM climate statistics.</li>
-<li><strong>Dimensionality Reduction &amp; Latent Encoding</strong>:</li>
-<li>Game-theoretic SHAP (Shapley Additive Explanations) importance screening to prune noisy, uninformative variables.</li>
-<li>Unsupervised Deep Denoising AutoEncoders (AE) trained on clustered predictor subsets to compress high-dimensional collinear features into orthogonal latent components, reducing the feature space to 60 final predictors.</li>
-<li><strong>Multi-Tier Ensemble Modeling &amp; Continental Generalization</strong>:</li>
-<li>Systematic benchmarking of 50 candidate regression algorithms.</li>
-<li>Deployment of a 3-tier predictive cascade: Best Tuned Regressors (Tier 1), Voting Ensemble (Tier 2), and Stacking Meta-Learner (Tier 3).</li>
-<li>Validation via 10-fold spatial cross-validation and out-of-bag testing.</li>
-<li>Synthesis of continuous Dingman channel shape exponents (<span class="arithmatex">\(r = f/b\)</span>) for all reaches.</li>
+<li><strong>Hydrographic Data Curation &amp; Preprocessing</strong>:<blockquote>
+<p>Extraction of raw Acoustic Doppler Current Profiler (ADCP) cross-sectional surveys from the USGS HYDRoSWOT database.
+<br> Quality control: filtering out tidal/backwater stations, unstable cross-sections, and records with fewer than 5 surveys.
+<br> Robust optimization fitting of AHG power laws ensuring <span class="arithmatex">\(R^2 \ge 0.8\)</span> while strictly enforcing continuity constraints (<span class="arithmatex">\(a \cdot c \cdot k = 1.0\)</span>, <span class="arithmatex">\(b + f + m = 1.0\)</span>).</p>
+</blockquote>
+</li>
+<li><strong>Environmental Feature Extraction</strong>:<blockquote>
+<p><br> Extraction of 116 candidate environmental predictors across all gauge locations.
+<br> Predictor families include National Water Model (NWM v2.1) flood frequencies, StreamCat landscape attributes, POLARIS high-resolution soil physical parameters, 3DEP DEM topographic indices, and PRISM climate statistics.</p>
+</blockquote>
+</li>
+<li><strong>Dimensionality Reduction &amp; Latent Encoding</strong>:<blockquote>
+<p>Game-theoretic SHAP (Shapley Additive Explanations) importance screening to prune noisy, uninformative variables. <br>
+Unsupervised optimal feature detecotr during validation.</p>
+</blockquote>
+</li>
+<li><strong>Multi-Tier Ensemble Modeling &amp; Continental Generalization</strong>:<blockquote>
+<p>Systematic benchmarking of 50 candidate regression algorithms.
+<br> Deployment of a 3-tier predictive cascade: Best Tuned Regressors (Tier 1), Voting Ensemble (Tier 2), and Stacking Meta-Learner (Tier 3).
+<br> Validation via 10-fold spatial cross-validation and out-of-bag testing.
+<br> Synthesis of continuous Dingman channel shape exponents (<span class="arithmatex">\(r = f/b\)</span>) for all reaches.</p>
+</blockquote>
+</li>
 </ol>
 <hr>
 <h2 id="study-area-training-domain">Study Area &amp; Training Domain<a class="headerlink" href="#study-area-training-domain" title="Permanent link">¶</a></h2>
-<p>The training dataset encompasses <strong>3,543 USGS stream gauging stations</strong> distributed across <strong>1,432 distinct river systems</strong> throughout the Contiguous United States:</p>
+<p>The training dataset encompasses <strong>3,543 USGS stream gauging stations</strong> distributed across <strong>1,432 distinct river systems</strong> throughout the Contiguous United States, The most important varaible was identified as discharge from NWM and bellow is comaprison of NWM 2.1 to NWIS. </p>
 <p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../assets/images/v1.0/overview/Fig1.png" data-desc-position="bottom"><img alt="Spatial Distribution of USGS HYDRoSWOT ADCP Training Stations across CONUS River Networks" loading="lazy" src="../../assets/images/v1.0/overview/Fig1.png"></a></p>
 <h3 id="spatial-hydrographic-diversity">Spatial &amp; Hydrographic Diversity:<a class="headerlink" href="#spatial-hydrographic-diversity" title="Permanent link">¶</a></h3>
 <ul>
@@ -1415,7 +1435,7 @@ a \cdot c \cdot k = 1.0 \quad \text{and} \quad b + f + m = 1.0
 <p>For comprehensive technical documentation of each v1.0 subsystem, explore the following pages:</p>
 <ul>
 <li><strong><a href="data-sources/">Data Sources &amp; Quality Control</a></strong>: HYDRoSWOT ADCP data cleaning, continuity fitting, and environmental predictor PCA decompositions.</li>
-<li><strong><a href="methods/">Methods &amp; Feature Engineering</a></strong>: AutoEncoder dimensionality reduction, SHAP screening, multi-tier ensembling, and validation protocols.</li>
+<li><strong><a href="methods/">Methods &amp; Feature Engineering</a></strong>: Expert knowledge screening, recursive feature elimination with elbow method skill evaluation, PCA dimensionality reduction, and multi-tier ensembling.</li>
 <li><strong><a href="../r/">Channel Shape Parameterization (<span class="arithmatex">\(r\)</span>)</a></strong>: Mathematical derivation of Dingman exponent <span class="arithmatex">\(r\)</span>, morphological classifications, and CONUS-scale spatial trends.</li>
 </ul>
 
@@ -1462,7 +1482,7 @@ a \cdot c \cdot k = 1.0 \quad \text{and} \quad b + f + m = 1.0
     <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
       Material for MkDocs
     </a>
-    — developed by <strong>Arash Modaresi Rad</strong>
+    developed by <strong>Arash Modaresi Rad</strong>
   
 </div>
       

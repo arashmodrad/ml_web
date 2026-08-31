@@ -87,7 +87,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#model-architectures-multi-tier-ensemble-v10" class="md-skip">
+        <a href="#model-architectures-multi-tier-ensemble" class="md-skip">
           Skip to content
         </a>
       
@@ -845,22 +845,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#two-complementary-modeling-formulations" class="md-nav__link">
+  <a href="#target-formulation-physical-flow-benchmarks" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Two Complementary Modeling Formulations
+        Target Formulation &amp; Physical Flow Benchmarks
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Two Complementary Modeling Formulations">
+    <nav class="md-nav" aria-label="Target Formulation &amp; Physical Flow Benchmarks">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#1-functional-hydraulic-geometry-fhg-parameterization" class="md-nav__link">
+  <a href="#1-in-channel-bankfull-depth-predictions" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. Functional Hydraulic Geometry (FHG) Parameterization
+        1. In-Channel &amp; Bankfull Depth Predictions
       
     </span>
   </a>
@@ -868,10 +868,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#2-direct-depth-prediction" class="md-nav__link">
+  <a href="#2-at-a-station-hydraulic-geometry-exponent-f" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. Direct Depth Prediction
+        2. At-a-Station Hydraulic Geometry Exponent (\(f\))
       
     </span>
   </a>
@@ -1379,22 +1379,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#two-complementary-modeling-formulations" class="md-nav__link">
+  <a href="#target-formulation-physical-flow-benchmarks" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Two Complementary Modeling Formulations
+        Target Formulation &amp; Physical Flow Benchmarks
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Two Complementary Modeling Formulations">
+    <nav class="md-nav" aria-label="Target Formulation &amp; Physical Flow Benchmarks">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#1-functional-hydraulic-geometry-fhg-parameterization" class="md-nav__link">
+  <a href="#1-in-channel-bankfull-depth-predictions" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. Functional Hydraulic Geometry (FHG) Parameterization
+        1. In-Channel &amp; Bankfull Depth Predictions
       
     </span>
   </a>
@@ -1402,10 +1402,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#2-direct-depth-prediction" class="md-nav__link">
+  <a href="#2-at-a-station-hydraulic-geometry-exponent-f" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. Direct Depth Prediction
+        2. At-a-Station Hydraulic Geometry Exponent (\(f\))
       
     </span>
   </a>
@@ -1576,7 +1576,7 @@
   
 
 
-<h1 id="model-architectures-multi-tier-ensemble-v10">Model Architectures &amp; Multi-Tier Ensemble (v1.0)<a class="headerlink" href="#model-architectures-multi-tier-ensemble-v10" title="Permanent link">¶</a></h1>
+<h1 id="model-architectures-multi-tier-ensemble">Model Architectures &amp; Multi-Tier Ensemble<a class="headerlink" href="#model-architectures-multi-tier-ensemble" title="Permanent link">¶</a></h1>
 <blockquote>
 <p><strong>Publication Reference</strong>: Modaresi Rad, A., et al. (2024). <em>Enhancing River Channel Dimension and Bathymetry Estimates Across Continental Scale Using Machine Learning and Functional Hydraulic Geometry</em>. <strong>Journal of Geophysical Research: Machine Learning and Computation</strong>, 1(3), e2024JH000173.</p>
 </blockquote>
@@ -1596,11 +1596,11 @@
     end
 
     subgraph REDUCE ["2. Dimensionality Reduction &amp; Feature Selection"]
-        RFE["Recursive Feature Elimination (RFE)"]
-        AE["Denoising AutoEncoder (Latent Embeddings)"]
-        TOP60["&lt;b&gt;~60 Salient Predictors&lt;/b&gt;"]
-        RFE --&gt; TOP60
-        AE --&gt; TOP60
+        EXP["Expert Domain Pre-Screening"]
+        RFE["Recursive Feature Elimination &amp; Elbow Method"]
+        PCA["Principal Component Analysis (PCA)"]
+        TOP30["&lt;b&gt;~30 Salient Predictors&lt;/b&gt;"]
+        EXP --&gt; RFE --&gt; PCA --&gt; TOP30
     end
 
     subgraph SELECTION ["3. 50 Candidate ML Screening &amp; Hyperparameter Tuning"]
@@ -1622,41 +1622,37 @@
         end
     end
 
-    subgraph OUTPUT ["5. Channel Depth Outputs"]
+    subgraph OUTPUT ["5. Channel Depth &amp; AHG Outputs"]
         direction LR
-        P_FHG["FHG Exponent &lt;i&gt;f&lt;/i&gt; &amp; Coeff &lt;i&gt;c&lt;/i&gt;&lt;br/&gt;&lt;i&gt;Y(Q) = c &amp;middot; Q&lt;sup&gt;f&lt;/sup&gt;&lt;/i&gt;"]
-        P_DIR["Direct Depth Prediction&lt;br/&gt;&lt;i&gt;Y&lt;sub&gt;bf&lt;/sub&gt;&lt;/i&gt;, &lt;i&gt;Y&lt;sub&gt;10&lt;/sub&gt;&lt;/i&gt;, &lt;i&gt;Y&lt;sub&gt;100&lt;/sub&gt;&lt;/i&gt;"]
+        P_IN["&lt;b&gt;In-Channel Depth (100% AEP)&lt;/b&gt;&lt;br/&gt;&lt;code&gt;Y&lt;sub&gt;in&lt;/sub&gt; = exp(ŷ&lt;sub&gt;in&lt;/sub&gt;)&lt;/code&gt;"]
+        P_BF["&lt;b&gt;Bankfull Depth (50% AEP)&lt;/b&gt;&lt;br/&gt;&lt;code&gt;Y&lt;sub&gt;bf&lt;/sub&gt; = exp(ŷ&lt;sub&gt;bf&lt;/sub&gt;)&lt;/code&gt;"]
+        P_FHG["&lt;b&gt;AHG Exponent f&lt;/b&gt;&lt;br/&gt;&lt;code&gt;f = logit&lt;sup&gt;-1&lt;/sup&gt;(ŷ&lt;sub&gt;f&lt;/sub&gt;)&lt;/code&gt;&lt;br/&gt;&lt;i&gt;(For Dingman r = f / b)&lt;/i&gt;"]
     end
 
     RAW ==&gt; REDUCE ==&gt; SELECTION ==&gt; ENSEMBLE ==&gt; OUTPUT
 
     class ENSEMBLE highlight-blue;
     class T3 highlight-blue;
-    class OUTPUT highlight-teal;</code></pre>
+    class P_IN highlight-teal;
+    class P_BF highlight-orange;
+    class P_FHG highlight-blue;</code></pre>
 <hr>
-<h2 id="two-complementary-modeling-formulations">Two Complementary Modeling Formulations<a class="headerlink" href="#two-complementary-modeling-formulations" title="Permanent link">¶</a></h2>
-<p>To serve both continuous hydrodynamic routing and discrete flood hazard mapping, the v1.0 pipeline implements two depth estimation formulations:</p>
-<h3 id="1-functional-hydraulic-geometry-fhg-parameterization">1. Functional Hydraulic Geometry (FHG) Parameterization<a class="headerlink" href="#1-functional-hydraulic-geometry-fhg-parameterization" title="Permanent link">¶</a></h3>
-<p>Predicts the continuous At-A-Station power-law parameters (<span class="arithmatex">\(f\)</span> and <span class="arithmatex">\(c\)</span>) as functions of static reach and catchment attributes <span class="arithmatex">\(\mathbf{X}\)</span>:</p>
+<h2 id="target-formulation-physical-flow-benchmarks">Target Formulation &amp; Physical Flow Benchmarks<a class="headerlink" href="#target-formulation-physical-flow-benchmarks" title="Permanent link">¶</a></h2>
+<p>The v1.0 Depth pipeline trains machine learning models to predict both dimensional channel depths and hydraulic scaling exponents:</p>
+<h3 id="1-in-channel-bankfull-depth-predictions">1. In-Channel &amp; Bankfull Depth Predictions<a class="headerlink" href="#1-in-channel-bankfull-depth-predictions" title="Permanent link">¶</a></h3>
+<p>Rather than relying purely on empirical scaling, models directly predict physical water depths at standardized hydrologic flow thresholds:
+- <strong>In-Channel Depth (<span class="arithmatex">\(Y_{\text{in}}\)</span>)</strong>: Evaluated at the <strong>100% AEP discharge</strong> (<span class="arithmatex">\(Q_{\text{100\% AEP}}\)</span>, 1-year mean annual flow).
+- <strong>Bankfull Depth (<span class="arithmatex">\(Y_{\text{bf}}\)</span>)</strong>: Evaluated at the <strong>50% AEP discharge</strong> (<span class="arithmatex">\(Q_{\text{50\% AEP}}\)</span>, 2-year channel-forming flood).</p>
+<p>Target depths are log-transformed (<span class="arithmatex">\(\ln(Y)\)</span>) during training to stabilize residual variance across small headwater streams (<span class="arithmatex">\(Y &lt; 0.5\text{ m}\)</span>) and major continental rivers (<span class="arithmatex">\(Y &gt; 10\text{ m}\)</span>):</p>
 <div class="arithmatex">\[
-f = \mathcal{M}_f(\mathbf{X}), \quad c = \mathcal{M}_c(\mathbf{X})
+y_Y = \ln(Y) \implies \hat{Y} = \exp(\hat{y}_Y)
 \]</div>
-<p>Given any simulated or observed discharge hydrograph <span class="arithmatex">\(Q(t)\)</span>, in-channel mean depth <span class="arithmatex">\(Y(t)\)</span> is computed analytically:</p>
+<h3 id="2-at-a-station-hydraulic-geometry-exponent-f">2. At-a-Station Hydraulic Geometry Exponent (<span class="arithmatex">\(f\)</span>)<a class="headerlink" href="#2-at-a-station-hydraulic-geometry-exponent-f" title="Permanent link">¶</a></h3>
+<p>In parallel, continuous At-a-station Hydraulic Geometry (AHG) power-law relationships (<span class="arithmatex">\(Y = c \cdot Q^f\)</span>) are fitted across the multi-flow ADCP soundings under continuity constraints (<span class="arithmatex">\(b + f + m = 1.0\)</span>). The depth exponent <span class="arithmatex">\(f\)</span> is predicted to calculate the continuous <strong>Dingman cross-sectional shape parameter</strong>:</p>
 <div class="arithmatex">\[
-Y(t) = c \cdot [Q(t)]^f
+r = \frac{f}{b} = \frac{1 - b}{b}
 \]</div>
-<ul>
-<li><strong>Advantages</strong>: Seamless integration into unsteady 1D/2D hydraulic models (e.g., HEC-RAS rating curves, NOAA NextGen FIM); continuous depth calculation at baseflow, median flow, bankfull, and extreme flood stages.</li>
-<li><strong>Continuity Enforcement</strong>: Joint optimization maintains continuity constraints with width (<span class="arithmatex">\(W = a \cdot Q^b\)</span>) and velocity (<span class="arithmatex">\(V = k \cdot Q^m\)</span>), such that <span class="arithmatex">\(b + f + m = 1.0\)</span> and <span class="arithmatex">\(a \cdot c \cdot k = 1.0\)</span>.</li>
-</ul>
-<h3 id="2-direct-depth-prediction">2. Direct Depth Prediction<a class="headerlink" href="#2-direct-depth-prediction" title="Permanent link">¶</a></h3>
-<p>Predicts discrete water depths (<span class="arithmatex">\(Y\)</span>) directly for defined flow quantiles or bankfull discharge (<span class="arithmatex">\(Q_{bf}\)</span>):</p>
-<div class="arithmatex">\[
-Y_{bf} = \mathcal{M}_Y(\mathbf{X}, Q_{bf})
-\]</div>
-<ul>
-<li><strong>Advantages</strong>: Direct objective minimization on observed depth measurements; independent validation of the power-law parameterization.</li>
-</ul>
+<p>which governs the vertical-to-lateral geometry of the submerged channel bed.</p>
 <hr>
 <h2 id="predictor-space-dimensionality-reduction">Predictor Space &amp; Dimensionality Reduction<a class="headerlink" href="#predictor-space-dimensionality-reduction" title="Permanent link">¶</a></h2>
 <p>The initial feature repository comprises <strong>&gt;400 environmental variables</strong> aggregated from national geospatial hydro-environmental datasets:</p>
@@ -1707,52 +1703,41 @@ Y_{bf} = \mathcal{M}_Y(\mathbf{X}, Q_{bf})
 </tbody>
 </table>
 <h3 id="dimensionality-reduction-pipeline">Dimensionality Reduction Pipeline<a class="headerlink" href="#dimensionality-reduction-pipeline" title="Permanent link">¶</a></h3>
-<p>To avoid collinearity, mitigate the curse of dimensionality, and eliminate spurious correlations, dimensionality reduction is performed in two steps:</p>
+<p>To avoid collinearity, mitigate the curse of dimensionality, and eliminate spurious correlations, dimensionality reduction is performed in three methodical stages:</p>
 <ol>
-<li><strong>Recursive Feature Elimination (RFE)</strong>: Iteratively trains gradient boosted models, dropping the single least influential predictor until cross-validation performance peaks.</li>
-<li><strong>Denoising AutoEncoder (AE)</strong>: High-dimensional correlated subsets are passed through a symmetric bottleneck neural network to construct low-dimensional latent embeddings capturing non-linear feature co-dependencies:</li>
+<li><strong>Expert Domain Knowledge Pre-Screening</strong>: Initial candidate variables are vetted to eliminate physically uninformative or redundant indicators.</li>
+<li><strong>Recursive Feature Elimination &amp; Elbow Method</strong>: Iteratively trains gradient boosted models, dropping the least influential predictors while tracking model skill (KGE, NNSE). The <strong>Elbow Method</strong> is used to identify the optimal inflection point that maximizes predictive performance with minimal complexity.</li>
+<li><strong>Principal Component Analysis (PCA)</strong>: High-dimensional collinear thematic subsets (such as multi-recurrence flood frequency distributions and soil textural profiles) are decomposed into orthogonal principal components (PC0, PC1, etc.).</li>
 </ol>
-<div class="highlight"><pre><span></span><code>Input Features (X ∈ ℝ⁴⁰⁰)
-       │
-   [Dense 256 + ReLU + BatchNorm]
-       │
-   [Dense 128 + Dropout(0.2)]
-       │
-   [Latent Bottleneck: 60 Dimensions]  &lt;── Salient Predictor Embeddings
-       │
-   [Dense 128 + ReLU]
-       │
-   [Dense 256 + Reconstruction Loss]
-</code></pre></div>
-<p>This reduces the feature space to <strong>~60 orthogonal, physically informative features</strong>.</p>
+<p>This optimizes the predictor space to <strong>~30 orthogonal, physically informative features</strong>.</p>
 <hr>
 <h2 id="multi-tier-modeling-strategies">Multi-Tier Modeling Strategies<a class="headerlink" href="#multi-tier-modeling-strategies" title="Permanent link">¶</a></h2>
 <p>Rather than relying on a single learning algorithm, the framework implements a three-tier hierarchical architecture:</p>
 <pre class="mermaid"><code>classDiagram
-    class Tier1_BestModel {
+    class BestModel {
         +Algorithm: Tuned XGBoost / CatBoost
         +Type: Individual Gradient Boosted Tree
         +Optimization: Bayesian Hyperparameter Tuning
         +Characteristics: High accuracy on dominant geomorphic regimes
     }
-    class Tier2_VotingEnsemble {
+    class VotingEnsemble {
         +Algorithm: Averaging / Weighted Blending
         +BaseModels: Top 6-8 ML algorithms
         +Formula: ŷ = 1/M ∑ ŷᵢ
         +Characteristics: Reduces individual model variance and outliers
     }
-    class Tier3_MetaLearner {
+    class MetaLearner {
         +Algorithm: Stacked Generalization (Level-2 Regressor)
         +Inputs: Out-of-fold predictions from Base Models
         +Conditioning: Catchment physiography &amp; climate
         +Characteristics: Learns model strengths &amp; error correlations
     }
-    Tier1_BestModel &lt;|-- Tier2_VotingEnsemble
-    Tier2_VotingEnsemble &lt;|-- Tier3_MetaLearner</code></pre>
+    BestModel &lt;|-- VotingEnsemble
+    VotingEnsemble &lt;|-- MetaLearner</code></pre>
 <h3 id="tier-1-best-individual-ml-model">Tier 1: Best Individual ML Model<a class="headerlink" href="#tier-1-best-individual-ml-model" title="Permanent link">¶</a></h3>
 <ul>
 <li>Evaluates <strong>50 candidate regression algorithms</strong> (including Random Forest, Extra Trees, XGBoost, LightGBM, CatBoost, Support Vector Machines, Multi-Layer Perceptrons, Ridge/ElasticNet) with default parameters to establish robust inductive biases.</li>
-<li>Selects the single highest-performing algorithm—typically <strong>XGBoost (Extreme Gradient Boosting)</strong> or <strong>CatBoost</strong>—and performs Bayesian hyperparameter optimization over tree depth, learning rate, subsample ratio, and regularizers (<span class="arithmatex">\(\lambda, \alpha\)</span>).</li>
+<li>Selects the single highest-performing algorithm typically <strong>XGBoost (Extreme Gradient Boosting)</strong> or <strong>CatBoost</strong> and performs Bayesian hyperparameter optimization over tree depth, learning rate, subsample ratio, and regularizers (<span class="arithmatex">\(\lambda, \alpha\)</span>).</li>
 </ul>
 <h3 id="tier-2-voting-ensemble">Tier 2: Voting Ensemble<a class="headerlink" href="#tier-2-voting-ensemble" title="Permanent link">¶</a></h3>
 <p>Combines the out-of-fold predictions of the top 6–8 tuned models:</p>
@@ -1791,28 +1776,17 @@ y_{\log} = \ln(Y + \epsilon)
 <hr>
 <h2 id="overfitting-prevention-cross-validation">Overfitting Prevention &amp; Cross-Validation<a class="headerlink" href="#overfitting-prevention-cross-validation" title="Permanent link">¶</a></h2>
 <p>To ensure genuine out-of-sample generalization across unseen hydrographic basins:</p>
-<div class="highlight"><pre><span></span><code>Continental Dataset (3,500+ Gauged Sites / HYDRoSWOT ADCP)
-┌───────────────────────────────────────────────────────────────┐
-│                    K-Fold Spatial Split                       │
-├──────────────┬──────────────┬──────────────┬──────────────────┤
-│ Fold 1 (20%) │ Fold 2 (20%) │ Fold 3 (20%) │ ... Fold 5 (20%) │
-└──────────────┴──────────────┴──────────────┴──────────────────┘
-       │
-       ├── Training Set (80%): Multi-Seed Gradient Boosting + Early Stopping
-       ├── Validation Set: Evaluates patience threshold (100 rounds)
-       └── Out-of-Bag Test Set: Final blind evaluation (NNSE, KGE, RMSE)
-</code></pre></div>
 <ol>
-<li><strong>Spatial &amp; River Network Splitting</strong>: Holdout folds are clustered by hydrologic unit codes (HUC-8/HUC-4) to prevent spatial autocorrelation leakage between adjacent stream gages.</li>
-<li><strong>Early Stopping Regularization</strong>: Training terminates when validation loss fails to decrease for 100 consecutive iterations.</li>
-<li><strong>Dropout &amp; Tree Subsampling</strong>: Neural models utilize feature dropout (<span class="arithmatex">\(p = 0.2\)</span>), while tree models subsample features (<code>colsample_bytree = 0.8</code>) and data instances (<code>subsample = 0.8</code>) at each split.</li>
+<li><strong>10-Fold Cross-Validation</strong>: Field gauging stations across all 1,432 distinct river systems are partitioned across 10 folds to ensure rigorous out-of-bag (OOB) and out-of-fold (OOF) blind evaluation.</li>
+<li><strong>Early Stopping Regularization</strong>: Training terminates when validation loss fails to decrease for 50 consecutive iterations.</li>
+<li><strong>Tree Subsampling &amp; Regularization</strong>: Tree models subsample features (<code>colsample_bytree = 0.70–0.80</code>) and training instances (<code>subsample = 0.80–0.85</code>) at each split to prevent overfitting.</li>
 </ol>
 <hr>
 <h2 id="section-navigation">Section Navigation<a class="headerlink" href="#section-navigation" title="Permanent link">¶</a></h2>
 <ul>
-<li><a href="../">Depth v1.0 Overview</a> — Problem statement, FHG continuity formulation, and summary.</li>
-<li><a href="../skill/">Model Skill &amp; Evaluation</a> — Continental USGS validation, NNSE CDFs, max flow diagnostics, and literature benchmarking.</li>
-<li><a href="../xai/">Explainable AI (XAI)</a> — Global SHAP attributions, feature interaction analyses, and physical mechanisms.</li>
+<li><a href="../">Depth v1.0 Overview</a>: Problem statement, FHG continuity formulation, and summary.</li>
+<li><a href="../skill/">Model Skill &amp; Evaluation</a>: Continental USGS validation, NNSE CDFs, max flow diagnostics, and literature benchmarking.</li>
+<li><a href="../xai/">Explainable AI (XAI)</a>: Global SHAP attributions, feature interaction analyses, and physical mechanisms.</li>
 </ul>
 
 
@@ -1858,7 +1832,7 @@ y_{\log} = \ln(Y + \epsilon)
     <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
       Material for MkDocs
     </a>
-    — developed by <strong>Arash Modaresi Rad</strong>
+    developed by <strong>Arash Modaresi Rad</strong>
   
 </div>
       
