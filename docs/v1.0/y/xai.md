@@ -2,7 +2,7 @@
 title: Depth (Y) — Explainable AI (XAI) & Physical Interpretability
 ---
 
-# Explainable AI (XAI) & Physical Interpretability (v1.0)
+# Explainable AI (XAI) & Physical Interpretability
 
 > **Publication Reference**: Modaresi Rad, A., et al. (2024). *Enhancing River Channel Dimension and Bathymetry Estimates Across Continental Scale Using Machine Learning and Functional Hydraulic Geometry*. **Journal of Geophysical Research: Machine Learning and Computation**, 1(3), e2024JH000173.
 
@@ -12,7 +12,7 @@ title: Depth (Y) — Explainable AI (XAI) & Physical Interpretability
 
 In continental-scale hydrologic and hydrodynamic modeling, high predictive accuracy is necessary but insufficient on its own. To be trusted in regulatory flood risk mapping (FEMA) and operational flood forecasting (NOAA-OWP National Water Model), machine learning models must demonstrate that their predictions conform to established **physical laws of open-channel hydraulics and fluvial geomorphology**.
 
-We employ **SHAP (SHapley Additive exPlanations)**—a cooperative game-theoretic framework developed by Lundberg & Lee (2017)—to compute exact, additive feature attributions for channel depth ($Y$) and Functional Hydraulic Geometry (FHG) parameters ($f$ and $c$).
+We employ **SHAP (SHapley Additive exPlanations)** a cooperative game-theoretic framework developed by Lundberg & Lee (2017) to compute exact, additive feature attributions for channel depth ($Y$) and Functional Hydraulic Geometry (FHG) parameters ($f$ and $c$).
 
 $$
 f(\mathbf{x}) = \phi_0 + \sum_{j=1}^{M} \phi_j(\mathbf{x})
@@ -22,85 +22,104 @@ where $\phi_0$ is the base expected model prediction across the continental data
 
 ---
 
-## Global Feature Importance for Depth Exponent ($f$) and Coefficient ($c$)
+## Global Feature Importance & Elbow Optimization
 
-The SHAP summary beeswarm plot below ranks the top hydro-environmental predictors by mean absolute Shapley value ($|\phi_j|$) and illustrates their directional influence across thousands of continental river reaches:
+The global importance of each hydro-environmental predictor was evaluated across all CONUS training reaches by calculating the mean absolute Shapley value ($|\phi_j|$):
 
 ![SHAP Global Feature Importance and Directional Impact for Channel Depth Parameters](../../assets/images/v1.0/y/Fig4_y.png){ loading=lazy }
+*Figure 1: (a) Global TreeSHAP feature importance ranking and summary beeswarm plot for the v1.0 Depth model. Points represent individual stream reaches, with color indicating raw feature value (red = high, blue = low) and x-axis indicating impact on predicted depth. (b) Recursive feature elimination using the Elbow Method tracking model $R^2$, demonstrating optimal parsimony at 15 features ([Modaresi Rad et al., 2024](https://doi.org/10.1029/2024JH000173)).*
 
-### Top Physical Predictors Ranked by Importance
+```mermaid
+flowchart TD
+    subgraph DRIVERS ["Dominant Channel Depth Predictors (Top 15 Subset)"]
+        direction TB
+        QBF["<b>1. Bankfull Discharge (Q<sub>bf</sub>)</b><br/>Primary volumetric energy scaling depth"]
+        ELEV["<b>2. Elevation & Reach Slope</b><br/>Gravitational energy gradient and valley setting"]
+        BFI["<b>3. Base Flow Index (BFI)</b><br/>Groundwater contribution & permanent thalweg maintenance"]
+        PC0["<b>4. NWM Flood pc0 & Flood pc1</b><br/>Hydrograph peakedness & flood frequency moments"]
+        AET["<b>5. Actual Evapotranspiration (AET)</b><br/>Hydroclimatic moisture & vegetated runoff regulation"]
+        SOIL["<b>6. Soil PCs (pc0, pc1, pc2) & Roughness</b><br/>Geotechnical bank cohesion & boundary resistance"]
+    end
 
-| Rank | Feature | Description | Dominant Hydraulic Mechanism |
+    class DRIVERS highlight-blue;
+    class QBF highlight-blue;
+    class ELEV highlight-blue;
+    class BFI highlight-teal;
+    class PC0 highlight-teal;
+    class AET highlight-orange;
+    class SOIL highlight-orange;
+```
+
+### Top 15 Predictors Ranked by SHAP Value
+
+| Rank | Feature Name | Category | SHAP Directionality & Hydraulic Mechanism |
 | :---: | :--- | :--- | :--- |
-| **1** | **Drainage Area / Arbolate Sum** | Cumulative upstream catchment area ($A_{\text{up}}$) and digitized flowline length | Sets the baseline volumetric flow scale ($Q$), exerting dominant positive control on depth coefficient $c$ |
-| **2** | **Channel Slope ($S$)** | Longitudinal bed gradient ($\text{m/m}$) | Governs gravitational driving potential and flow velocity; negatively correlated with depth exponent $f$ |
-| **3** | **Mean Annual Precipitation (MAP)** | Long-term climatological rainfall ($\text{mm/yr}$) | Controls mean annual runoff depth and effective formative discharge magnitude |
-| **4** | **Soil Clay % & Cohesion** | Catchment and riparian soil fine fraction | Increases bank cohesion and critical shear stress ($\tau_c$), forcing vertical deepening ($f \uparrow$) over widening |
-| **5** | **Baseflow Index (BFI)** | Ratio of baseflow to total streamflow volume | Sustains perennial low-flow thalwegs, producing deeper, more defined low-flow channel geometries |
-| **6** | **Hydraulic Conductivity ($K_{\text{sat}}$)** | Saturated soil permeability ($\text{cm/hr}$) | Regulates subsurface vs. surface runoff partitioning, modulating hydrograph peakedness |
-| **7** | **Flow Quantiles ($Q_{50}, Q_{90}$)** | Median and low-flow discharge percentiles | Defines the baseflow conveyance threshold required to maintain cross-sectional depth |
+| **1** | **Bankfull Discharge** | Hydrology | **Dominant positive driver**. High $Q_{\text{bf}}$ (red dots) provides the primary volumetric flow to maintain deeper channel profiles ($\text{SHAP} > +5.0$). |
+| **2** | **Elevation** | Terrain | High elevation (red dots) exhibits negative SHAP values, reflecting shallow, steep headwater channels relative to lowland mainstems. |
+| **3** | **Slope** | Geomorphometry | High bed slope produces negative SHAP values. As flow velocity ($m$) increases on steep gradients, stage rises more slowly per unit flow ($f \downarrow$). |
+| **4** | **Base Flow Index (BFI)** | Hydrogeology | High BFI (red dots) provides sustained perennial baseflow, scouring and maintaining a deeper, well-defined permanent channel thalweg. |
+| **5** | **NWM Flood pc0** | Flow Dynamics | First principal component of NWM flood recurrence moments; governs peak channel-forming hydraulic capacity. |
+| **6** | **Actual Evapotranspiration (AET)** | Hydroclimate | Reflects catchment water balance and vegetative maturity; high AET correlates with cohesive vegetated banks that promote vertical deepening. |
+| **7** | **Elevation Difference** | Terrain | Reach-level topographic drop; steep relief concentrates energy into velocity rather than depth. |
+| **8** | **Soil pc1** | Soil Mechanics | First principal component of POLARIS soil properties; captures soil texture, clay fraction, and hydraulic conductivity. |
+| **9** | **NWM Flood pc1** | Flow Dynamics | Second principal component of NWM flood quantiles; modulates moderate flood event magnitude. |
+| **10** | **Roughness** | Hydrodynamics | Channel boundary resistance; retards velocity and raises equilibrium water stage. |
+| **11** | **Soil pc2** | Soil Mechanics | Second principal component of soil profile characteristics, moderating soil moisture retention and bank stability. |
+| **12** | **Arbolatesu** | Hydrography | Cumulative upstream network length; scales with cumulative flow accumulation and sediment transport capacity. |
+| **13** | **PET** | Climate | Potential Evapotranspiration; captures atmospheric evaporative demand and aridity gradients. |
+| **14** | **Lengthkm** | Geometry | Reach flowline length; longer reaches typically occur in low-gradient alluvial valleys with deeper cross-sections. |
+| **15** | **Soil pc0** | Soil Mechanics | Fundamental soil physical characteristics influencing infiltration capacity and runoff routing. |
+
+### Elbow Method Feature Space Optimization
+
+As illustrated in **Figure 1b**, recursive feature dropping guided by model skill demonstrates clear elbow dynamics:
+
+* At **116 features**, cross-correlation and collinearity limit performance to $R^2 \approx 58\%$.
+* Progressively eliminating non-informative variables concentrates predictive skill into orthogonal physical drivers.
+* The performance curve peaks at **15 features ($R^2 \approx 81\%$)**, highlighted by the vertical red dashed line. Reducing features below 15 causes a rapid degradation in predictive skill ($R^2 < 76\%$).
 
 ---
 
-## Physical Interpretation of Directional SHAP Attributions
+## SHAP Interaction & Dependency Analysis
 
-```
-Directional Effect of Key Predictors on Depth Parameters:
-┌────────────────────────────────────────────────────────────────────────┐
-│ High Predictor Value (Red Dots)    ──► Positive (+) or Negative (-)    │
-├────────────────────────────────────────────────────────────────────────┤
-│ • Drainage Area (A_up)    [HIGH]   ──► Increases Depth Coefficient c  │
-│ • Channel Slope (S)       [HIGH]   ──► Decreases Depth Exponent f     │
-│ • Soil Clay %             [HIGH]   ──► Increases Exponent f & Depth Y │
-│ • Saturated Ksat          [HIGH]   ──► Decreases Exponent f           │
-│ • Baseflow Index (BFI)    [HIGH]   ──► Increases Depth Coefficient c  │
-└────────────────────────────────────────────────────────────────────────┘
-```
-
-### 1. Channel Slope ($S$) vs. Depth Exponent ($f$)
-
-* **Observation**: High channel slopes (red points) exhibit strong negative SHAP values for the depth exponent $f$.
-* **Hydraulic Mechanism**: According to Manning's equation ($V = \frac{1}{n} R^{2/3} S^{1/2}$), steeper channels generate higher flow velocities for a given discharge. As flow rises in steep mountain reaches, the velocity exponent ($m$) absorbs a larger fraction of continuity ($b + f + m = 1.0$). Consequently, stage rises more slowly per unit increase in discharge, yielding a lower depth exponent $f$.
-
-### 2. Soil Clay Content & Bank Cohesion
-
-* **Observation**: High soil clay percentages strongly promote positive SHAP values for both $f$ and $c$.
-* **Geomorphic Mechanism**: Bank stability in alluvial channels is governed by the critical shear stress of bank materials:
-
-$$\tau_c = \zeta \cdot c_{\text{soil}} + (\rho_s - \rho) g D \tan \phi$$
-
-Cohesive clay-rich banks resist lateral hydraulic erosion and bank collapse. When discharge increases, the flow is constrained from widening (lower width exponent $b$) and is forced to scour vertically into the bed, resulting in a higher depth exponent $f$ and deeper, narrower channel profiles (lower width-to-depth ratio $W/Y$).
-
-### 3. Baseflow Index (BFI) & Flow Stability
-
-* **Observation**: Catchments with high Baseflow Index (BFI > 0.60) exhibit consistently elevated depth coefficients $c$.
-* **Hydrologic Mechanism**: High-BFI channels experience sustained groundwater discharge throughout the year rather than intermittent, flashy flood pulses. This continuous baseflow maintains a well-scoured, permanent in-channel thalweg, preventing channel bed aggradation and increasing base depth at unit flow.
-
----
-
-## Non-Linear Feature Interactions & 2D Dependency Analysis
-
-Channel morphology is governed by complex non-linear couplings between hydraulic driving forces and boundary resistive forces. We performed **SHAP interaction value analysis** ($\Phi_{i, j}$) to decouple the main effect of each variable from its second-order interaction terms:
+To evaluate non-linear environmental couplings, SHAP interaction values decouple individual predictor responses from second-order dependencies:
 
 ![SHAP 2D Interaction and Dependence Analyses for Channel Depth Parameters](../../assets/images/v1.0/y/Fig6_y.png){ loading=lazy }
+*Figure 2: SHAP dependency and interaction plot for Actual Evapotranspiration (AET), colored by Soil pc2 ([Modaresi Rad et al., 2024](https://doi.org/10.1029/2024JH000173)).*
 
-### Key 2D Interaction Insights
+### Actual Evapotranspiration (AET) $\times$ Soil Properties Interaction
 
-#### 1. Slope–Drainage Area Coupling (Total Stream Power)
+```mermaid
+flowchart TD
+    subgraph ARID ["1. Water-Limited / Arid Regimes (AET < 66)"]
+        A1["Sparse Riparian Cover<br/>Low Catchment Moisture"]
+        A2["<b>Negative SHAP Contribution (-0.7 to 0.0 m)</b><br/>Wide, Shallow Cross-Sections"]
+        A1 --> A2
+    end
 
-The interaction between longitudinal slope ($S$) and drainage area ($A_{\text{up}}$) mirrors the physical formulation of **Total Stream Power**:
+    subgraph HUMID ["2. Energy-Rich / Humid Regimes (AET > 66)"]
+        H1["Dense Riparian Root Stabilization<br/>Cohesive Clay-Rich Soils (Soil pc2)"]
+        H2["<b>Positive SHAP Contribution (+0.5 to +3.0+ m)</b><br/>Deep, Well-Defined Channel Thalwegs"]
+        H1 --> H2
+    end
 
-$$
-\Omega = \gamma Q S \approx \gamma (k A_{\text{up}}^p) S
-$$
+    ARID ~~~ HUMID
 
-* In small headwaters (low $A_{\text{up}}$), slope variations exert minimal influence on depth because total kinetic energy is limited.
-* In mid-to-large basins (high $A_{\text{up}}$), high slope creates intense unit stream power ($\omega = \Omega / W$), triggering deep vertical incision into bedrock or coarse alluvium and producing distinct step-pool or riffle-pool geometries.
+    class ARID highlight-blue;
+    class HUMID highlight-teal;
+    class A1 highlight-blue;
+    class A2 highlight-blue;
+    class H1 highlight-teal;
+    class H2 highlight-teal;
+```
 
-#### 2. Soil Texture–Aridity Index Interaction
+#### Physical Mechanisms Revealed:
 
-* In **humid climates** (high precipitation, low aridity), dense riparian canopy and root networks reinforce bank strength regardless of soil texture, stabilizing moderate depth exponents ($f \approx 0.36\text{--}0.40$).
-* In **semi-arid and arid regions** (high aridity), the absence of dense vegetative root networks amplifies the role of soil texture. Coarse, non-cohesive sandy banks erode rapidly, producing wide, shallow braided channels ($f < 0.28, b > 0.55$), whereas localized clay-rich playa soils maintain incised, box-canyon channel forms ($f > 0.45$).
+1. **Threshold at $\text{AET} \approx 66$**:
+   * In arid and water-limited catchments ($\text{AET} < 66$), SHAP values remain negative ($-0.7\text{ to }0.0\text{ m}$), indicating that low vegetative density and non-cohesive soils produce wider, shallower channels.
+   * At $\text{AET} \approx 66$, the interaction exhibits a sharp upward transition where moisture availability supports dense bank-stabilizing root matrices.
+2. **Amplification by Soil Characteristics (`Soil pc2`)**:
+   * Above $\text{AET} > 66$, catchments with high `Soil pc2` values (pink/red points) exhibit substantial positive depth adjustments ($\text{SHAP} > +1.0\text{ to }+3.0\text{ m}$), reflecting deeper, cohesive channels where lateral erosion is constrained and flow energy is directed into vertical incision.
 
 ---
 
@@ -108,29 +127,33 @@ $$
 
 The learned relationships within the v1.0 machine learning ensemble closely replicate classical geomorphic balance principles:
 
-```
-                      LANE'S BALANCE OF EQUILIBRIUM
-                           Q · S ∝ Qs · D50
-                               ▲
-                              / \
-                             /   \
-                            /     \
-                  [ Water Flow ]   [ Sediment Load ]
-                   Water Volume     Sediment Amount
-                   Channel Slope    Grain Size (D50)
+```mermaid
+flowchart TD
+    Q_VOL["<b>1. Volumetric Discharge (Q<sub>bf</sub>, BFI)</b><br/>• Dominant positive driver of depth capacity<br/>• Sustains defined in-channel thalweg"]
+    
+    SLOPE_ELEV["<b>2. Slope & Elevation Dynamics</b><br/>• High slope accelerates velocity (m &uparrow;)<br/>• Reduces depth exponent (f &downarrow;) by continuity"]
+    
+    SOIL_VEG["<b>3. Soil Cohesion & AET Interaction</b><br/>• High AET + cohesive soils restrict widening<br/>• Flow energy forced into vertical deepening"]
+
+    Q_VOL --> DEPTH["<b>Continuous Channel Depth (Y)</b><br/>Y = c &middot; Q<sup>f</sup>"]
+    SLOPE_ELEV --> DEPTH
+    SOIL_VEG --> DEPTH
+
+    class DEPTH highlight-orange;
+    class Q_VOL highlight-blue;
+    class SLOPE_ELEV highlight-teal;
+    class SOIL_VEG highlight-teal;
 ```
 
-1. **Lane's Balance ($Q \cdot S \propto Q_s \cdot D_{50}$)**:
-    * The ML model captures how channels adjust depth to balance water stream power ($Q \cdot S$) against sediment caliber ($D_{50}$) and sediment supply ($Q_s$).
-2. **Tractive Force Theory**:
-    * Boundary shear stress distribution ($\tau_0 = \gamma R S$) is accurately partitioned between bed and bank resistance based on soil cohesiveness and channel slope.
-3. **Continuity Compliance**:
-    * By learning FHG exponent relationships within the unified multi-stage pipeline, the model ensures physical consistency where depth ($f$), width ($b$), and velocity ($m$) scale cooperatively to satisfy mass conservation across continental river networks.
+1. **Lane's Balance & Energy Dissipation**:
+   * The model captures how steep channels dissipate kinetic energy through velocity rather than stage height, directly conforming to hydraulic geometry continuity ($b + f + m = 1.0$).
+2. **Boundary Shear Stress Partitioning**:
+   * Geotechnical soil parameters and hydroclimatic variables determine whether boundary shear stress ($\tau_0 = \gamma R S$) is accommodated through lateral bank collapse or vertical bed downcutting.
 
 ---
 
 ## Section Navigation
 
-- [Depth v1.0 Overview](index.md) — Problem statement, FHG continuity formulation, and summary.
-- [Model Architecture](models.md) — Candidate ML models, feature engineering, and the 3-tier Stacking Meta-Learner.
-- [Model Skill & Evaluation](skill.md) — Continental USGS validation, NNSE distributions, max flow diagnostics, and literature benchmarking.
+- [Depth v1.0 Overview](index.md): Problem statement, FHG continuity formulation, and summary.
+- [Model Architecture](models.md): Candidate ML models, feature engineering, and the 3-tier Stacking Meta-Learner.
+- [Model Skill & Evaluation](skill.md): Continental USGS validation, NNSE distributions, max flow diagnostics, and literature benchmarking.

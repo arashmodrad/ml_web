@@ -1,4 +1,4 @@
-# Shape — Dingman Cross-Section Exponent
+# Shape: Dingman Cross-Section Exponent
 
 The cross-sectional profile of a natural river channel is parameterized using the continuous power-law model introduced by Dingman (2007). The channel bed elevation $y(x)$ relative to the maximum bankfull depth $d_{bf}$ is expressed as:
 
@@ -92,8 +92,8 @@ The predicted shape exponent ($\hat{r}$ / `r_pred`) feeds directly into **Stage 
 
 ## Section Navigation
 
-- [Literature Review](literature.md) — Dingman power-law theory and geomorphic cross-section classification.
-- [Model Architecture](models.md) — ResNet-XGBoost ensemble with physical parameter bounds.
-- [Model Skill](skill.md) — Validation against field surveys and 2D hydraulic cross-sections.
-- [Uncertainty Quantification](uncertainty.md) — Continental shape maps and confidence bounds.
-- [Explainability (XAI)](xai.md) — SHAP attribution and geomorphic driver analysis.
+- [Literature Review](literature.md): Dingman power-law theory and geomorphic cross-section classification.
+- [Model Architecture](models.md): ResNet-XGBoost ensemble with physical parameter bounds.
+- [Model Skill](skill.md): Validation against field surveys and 2D hydraulic cross-sections.
+- [Uncertainty Quantification](uncertainty.md): Continental shape maps and confidence bounds.
+- [Explainability (XAI)](xai.md): SHAP attribution and geomorphic driver analysis.

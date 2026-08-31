@@ -2,7 +2,7 @@
 title: Explainability
 ---
 
-# Explainable AI (XAI) — Depth (Stage 2)
+# Explainable AI (XAI):Depth (Stage 2)
 
 Our explainability pipeline examines the feature attribution structure of the Stage 2 bankfull depth ($d_{bf}$) model, validating how cascaded width constraints guide depth estimation.
 

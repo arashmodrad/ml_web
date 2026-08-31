@@ -5,7 +5,7 @@ description: Comprehensive catalog of hydrographic, hydraulic, landscape, soil, 
 
 # Data Sources & Quality Assurance
 
-The **CONUS-FHG v1.0** framework integrates field-measured hydraulic geometry from the USGS HYDRoSWOT database with continental-scale environmental predictor datasets spanning hydrology, topography, geology, soil physics, and climate. This page details the source data catalogs, quality assurance workflows, hydraulic continuity fitting, and Principal Component Analysis (PCA) decompositions.
+The **V1.0** framework integrates field-measured hydraulic geometry from the USGS HYDRoSWOT database with continental-scale environmental predictor datasets spanning hydrology, topography, geology, soil physics, and climate. This page details the source data catalogs, quality assurance workflows, hydraulic continuity fitting, and Principal Component Analysis (PCA) decompositions.
 
 ---
 
@@ -27,8 +27,8 @@ flowchart TD
     end
 
     subgraph FIT ["Continuity-Constrained Fitting"]
-        F1["<b>Johnson et al. (2023) Framework:</b><br/>Fit W = a&middot;Q<sup>b</sup>, Y = c&middot;Q<sup>f</sup>, V = k&middot;Q<sup>m</sup><br/>Subject to: a&middot;c&middot;k = 1.0 and b+f+m = 1.0"]
-        F2["<b>Goodness-of-Fit Threshold:</b> R<sup>2</sup> &ge; 0.80"]
+        F1["<br/>Fit W = a&middot;Q<sup>b</sup>, Y = c&middot;Q<sup>f</sup>, V = k&middot;Q<sup>m</sup><br/>Subject to: a&middot;c&middot;k = 1.0 and b+f+m = 1.0"]
+        F2["<b>Goodness-of-Fit Threshold:</b> R<sup>2</sup> &ge; 0.60"]
     end
 
     subgraph FINAL ["Curated Training Dataset"]
@@ -64,7 +64,7 @@ Key filtering criteria include:
 
 ### Continuity-Constrained AHG Power-Law Fitting
 
-Following the framework of Johnson et al. (2023), power-law curves are simultaneously optimized across all three hydraulic parameters while enforcing strict mass conservation:
+Power-law curves are simultaneously optimized across all three hydraulic parameters while enforcing strict mass conservation:
 
 ![Hydraulic Geometry Power-Law Continuity Optimization Fitting](../../assets/images/v1.0/overview/ADCP_fit.png){ loading=lazy }
 
@@ -78,7 +78,7 @@ $$
 b + f + m = 1.0 \quad \text{and} \quad \ln(a) + \ln(c) + \ln(k) = 0.0 \implies a \cdot c \cdot k = 1.0
 $$
 
-Only stations achieving a coefficient of determination $R^2 \ge 0.80$ are retained for ML training.
+Only stations achieving a coefficient of determination $R^2 \ge 0.60$ are retained for ML training.
 
 ### Spatial Distribution of Training Stations
 
@@ -90,27 +90,16 @@ Station marker sizing illustrates the clustering density of gauges within contig
 
 ---
 
-## Gauge Network & Spatial Coverage Analysis
-
-Supplementary Figure S1 illustrates the comprehensive spatial density and network connectivity of the training gauges across CONUS hydrologic regions:
-
-![Supplementary Figure S1: Gauge Network Density and Regional Distribution](../../assets/images/v1.0/overview/Fig_S1.png){ loading=lazy }
-
-!!! info "Spatial Representation across Hydrologic Landscape Regions (HLRs)"
-    The training dataset encompasses all 20 Hydrologic Landscape Regions of CONUS (Wolock et al., 2004). Dense clusters occur in the Midwest, Southeast, and Mid-Atlantic, while arid Western basins and steep Pacific Northwest catchments ensure robust representation of extreme hydro-climatic regimes.
-
----
-
 ## Environmental Predictor Catalog (116 Candidate Features)
 
-A comprehensive suite of **116 candidate environmental predictors** was compiled across six primary thematic categories for all 3,543 training gauge locations and continental NHDPlusV2 / NextGen flowlines:
+A comprehensive suite of **116 candidate environmental predictors** was compiled across six primary thematic categories for all 3,543 training gauge locations and continental Reference Fabric / NextGen flowlines:
 
 | Predictor Category | Primary Data Source | Key Variables & Physical Descriptors |
 | :--- | :--- | :--- |
 | **Hydrologic Dynamics** | **National Water Model (NWM v2.1)** | 1.5-yr, 2-yr, 5-yr, 10-yr, 25-yr, 50-yr, 100-yr annual flood frequency flows; flow duration quantiles ($Q_{10}, Q_{50}, Q_{90}$); mean annual runoff. |
 | **Catchment Landscape** | **EPA StreamCat Dataset** | Base Flow Index (BFI), NLCD 2016 land cover (forest, urban, agriculture, wetland fractions), impervious percentage, road density, dam density. |
 | **Soil Physical Properties** | **POLARIS & SSURGO** | % clay, % sand, % silt, saturated hydraulic conductivity ($K_{\text{sat}}$), saturated soil water content ($\theta_s$), soil depth to bedrock, available water capacity. |
-| **Topography & Network** | **USGS 3DEP DEM & NHDPlusV2** | Reach slope ($S$), upstream drainage area ($A$), Strahler stream order, arbolate sum, channel elevation, catchment relief ratio, physiographic diversity. |
+| **Topography & Network** | **USGS 3DEP DEM & Reference Fabric** | Reach slope ($S$), upstream drainage area ($A$), Strahler stream order, arbolate sum, channel elevation, catchment relief ratio, physiographic diversity. |
 | **Hydro-Meteorology** | **PRISM & GridMET** | Mean annual precipitation ($P$), mean annual temperature ($T$), potential evapotranspiration ($\text{PET}$), aridity index ($P/\text{PET}$), precipitation seasonality. |
 | **Land Surface Dynamics** | **MODIS & Landsat** | Normalized Difference Vegetation Index (NDVI), Leaf Area Index (LAI), long-term root-zone soil moisture ($SM$). |
 
@@ -118,71 +107,71 @@ A comprehensive suite of **116 candidate environmental predictors** was compiled
 
 ## Principal Component Analysis (PCA) Decompositions
 
-To investigate the multi-collinearity structure of the 116 candidate predictors and guide AutoEncoder compression, Principal Component Analysis (PCA) was performed across each environmental domain. Supplementary Figures S2 through S12 detail the scree plots, eigenvector loadings, and geographic spatial patterns:
+To eliminate multicollinearity among the 116 candidate predictors and compress thematic feature sub-domains into orthogonal predictors, Principal Component Analysis (PCA) was performed across each environmental domain. Supplementary Figures S2 through S12 detail the scree plots, eigenvector loadings, and geographic spatial patterns:
 
-=== "StreamCat Catchment (Fig S2)"
+=== "StreamCat Catchment"
     ### Catchment Landscape & Land Use PCA
     Decomposes EPA StreamCat metrics into orthogonal axes capturing urbanization/imperviousness (PC1), agricultural intensity vs. forest cover (PC2), and baseflow buffering capacity (PC3).
 
     ![Supplementary Figure S2: StreamCat Catchment Metrics PCA Decomposition](../../assets/images/v1.0/overview/Fig_S2.png){ loading=lazy }
 
-=== "Soil Physical Texture (Fig S3)"
+=== "Soil Physical Texture"
     ### Soil Texture & Hydraulic Conductivity PCA
     Decomposes POLARIS/SSURGO soil properties. PC1 aligns strongly with the clay-sand textural gradient, while PC2 represents saturated hydraulic conductivity ($K_{\text{sat}}$) and water retention capacity ($\theta_s$).
 
     ![Supplementary Figure S3: Soil Texture and Hydraulic Properties PCA](../../assets/images/v1.0/overview/Fig_S3.png){ loading=lazy }
 
-=== "Topography & Relief (Fig S4)"
+=== "Topography & Relief"
     ### DEM Slope & Catchment Relief PCA
     Captures terrain ruggedness, elevation gradients, and longitudinal stream slopes extracted from USGS 3DEP 10m/30m DEMs.
 
     ![Supplementary Figure S4: DEM Topography and Relief Metrics PCA](../../assets/images/v1.0/overview/Fig_S4.png){ loading=lazy }
 
-=== "NWM Flood Frequency (Fig S5)"
+=== "NWM Flood Frequency"
     ### National Water Model (NWM 2.1) Flow Dynamics PCA
     Decomposes flood frequency return periods ($Q_{1.5}$ through $Q_{100}$) and flow duration quantiles. PC1 accounts for >85% of total flow magnitude variance, while PC2 captures hydrograph flashiness.
 
     ![Supplementary Figure S5: NWM 2.1 Flood Frequency and Flow Quantiles PCA](../../assets/images/v1.0/overview/Fig_S5.png){ loading=lazy }
 
-=== "Riparian Land Cover (Fig S6)"
+=== "Riparian Land Cover"
     ### Riparian Buffer & Corridor Dynamics PCA
     Evaluates 100m riparian buffer land use, identifying canopy shading, bank stabilization vegetation, and near-channel anthropogenic development.
 
     ![Supplementary Figure S6: Riparian Land Cover PCA Decomposition](../../assets/images/v1.0/overview/Fig_S6.png){ loading=lazy }
 
-=== "Climate & Water Balance (Fig S7)"
+=== "Climate & Water Balance"
     ### PRISM Climate & Aridity Index PCA
     Captures continental gradients in precipitation magnitude, seasonality, potential evapotranspiration, and water-energy balance.
 
     ![Supplementary Figure S7: Hydro-Climatic Regime and Water Balance PCA](../../assets/images/v1.0/overview/Fig_S7.png){ loading=lazy }
 
-=== "Vegetation Dynamics (Fig S8)"
+=== "Vegetation Dynamics"
     ### MODIS NDVI & Leaf Area Index PCA
     Characterizes seasonal canopy density, transpiration demand, and surface roughness variations derived from multi-year MODIS time series.
 
     ![Supplementary Figure S8: Vegetation Dynamics and LAI/NDVI PCA](../../assets/images/v1.0/overview/Fig_S8.png){ loading=lazy }
 
-=== "Geology & Lithology (Fig S9)"
+=== "Geology & Lithology"
     ### Subsurface Permeability & Lithologic Classes PCA
     Represents bedrock geology, surficial deposit permeability, and geochemical weathering classes influencing bank cohesion.
 
     ![Supplementary Figure S9: Lithology and Bedrock Permeability PCA](../../assets/images/v1.0/overview/Fig_S9.png){ loading=lazy }
 
-=== "Network Topology (Fig S10)"
+=== "Network Topology"
     ### Hydrographic Topology & Flowline Connectivity PCA
     Quantifies upstream network bifurcation, Strahler stream order scaling, arbolate sum expansion, and tributary confluence spacing.
 
     ![Supplementary Figure S10: Drainage Network Topology PCA Decomposition](../../assets/images/v1.0/overview/Fig_S10.png){ loading=lazy }
 
-=== "Flow Duration & Flashiness (Fig S11)"
+=== "Flow Duration & Flashiness"
     ### Flow Duration & Hydrograph Flashiness PCA
     Isolates Richards-Baker Flashiness Index (RBI), baseflow recession constants, and low-flow intermittency ($Q_{90}/Q_{50}$).
 
     ![Supplementary Figure S11: Streamflow Flashiness and Duration PCA](../../assets/images/v1.0/overview/Fig_S11.png){ loading=lazy }
 
-=== "Integrated Multi-Source (Fig S12)"
+=== "Hydrological Landscape Regions (HLR)"
     ### Integrated Continental Eigenvector Spectrum
-    Full-spectrum PCA integrating all 116 candidate predictors. Highlights the concentration of variance across the first 15–20 principal components, establishing the mathematical rationale for AutoEncoder compression.
+    Full-spectrum of HLR codes.
 
     ![Supplementary Figure S12: Integrated Continental Multi-Source Eigenvector Spectrum](../../assets/images/v1.0/overview/Fig_S12.png){ loading=lazy }
 
@@ -190,6 +179,6 @@ To investigate the multi-collinearity structure of the 116 candidate predictors 
 
 ## Summary of Data Harmonization
 
-By reconciling field-measured ADCP hydraulic geometry from HYDRoSWOT with multi-source environmental descriptors, the CONUS-FHG v1.0 data pipeline provides a clean, continuous, and physically consistent dataset for machine learning. 
+By reconciling field-measured ADCP hydraulic geometry from HYDRoSWOT with multi-source environmental descriptors, the v1.0 data pipeline provides a clean, continuous, and physically consistent dataset for machine learning. 
 
 Next: Explore how these 116 predictors are compressed and modeled in [Methods & Feature Engineering](methods.md).

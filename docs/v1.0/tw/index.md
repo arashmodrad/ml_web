@@ -3,15 +3,15 @@ title: TopWidth Overview (v1.0)
 description: Continental-scale river channel top width estimation using Feature Hydraulic Geometry (FHG) and machine learning.
 ---
 
-# TopWidth: Continental Channel Width Parameterization (v1.0)
+# TopWidth: Continental Channel Width Parameterization
 
-River channel top width ($W$ or $\text{TW}$) is the primary horizontal dimension governing open-channel conveyance, stage-discharge dynamics, hydraulic radius, and sediment transport capacity. In hydrological and hydrodynamic modeling frameworks—such as the NOAA National Water Model (NWM), NextGen Water Resources Modeling Framework, and FEMA Flood Inundation Mapping (FIM)—accurate cross-sectional geometry is required for millions of kilometers of ungaged river reaches across the Continental United States (CONUS).
+River channel top width ($W$ or $\text{TW}$) is the primary horizontal dimension governing open channel conveyance, stage-discharge dynamics, hydraulic radius, and sediment transport capacity. In hydrological and hydrodynamic modeling frameworks such as the NOAA National Water Model (NWM), NextGen Water Resources Modeling Framework, and FEMA Flood Inundation Mapping (FIM) accurate cross sectional geometry is required for millions of kilometers of ungaged river reaches across the Continental United States (CONUS).
 
-However, high-resolution digital elevation models (DEMs) and LiDAR data cannot penetrate beneath water surfaces, creating a pervasive **missing sub-surface bathymetry** problem. The **v1.0 TopWidth model** resolves this challenge by combining **Feature Hydraulic Geometry (FHG)** with advanced ensemble machine learning to predict both continuous in-channel width and bankfull channel width across CONUS river networks ([Modaresi Rad et al., 2024](https://doi.org/10.1029/2024JH000173)).
+However, high-resolution digital elevation models (DEMs) and LiDAR data cannot penetrate beneath water surfaces, creating a pervasive **missing sub-surface bathymetry** problem. The **v1.0 TopWidth model** resolves this challenge by combining **At Station Hydraulic Geometry (AHG)** with advanced ensemble machine learning to predict both continuous in-channel width and bankfull channel width across CONUS river networks ([Modaresi Rad et al., 2024](https://doi.org/10.1029/2024JH000173)).
 
 ---
 
-## Theoretical Foundation: Feature Hydraulic Geometry (FHG)
+## Theoretical Foundation: At Station Hydraulic Geometry (AHG)
 
 ### Classical Hydraulic Geometry Framework
 
@@ -39,11 +39,11 @@ flowchart LR
         EQ --> EXP
     end
 
-    subgraph TARGETS ["v1.0 FHG Modeling Targets"]
+    subgraph TARGETS ["v1.0 Flow Regimes & AHG Scaling Targets"]
         direction TB
-        TW["<b>TopWidth (TW)</b><br/><code>W = a &middot; Q<sup>b</sup></code><br/><i>In-channel & Bankfull</i>"]
-        DEPTH["<b>Depth (Y)</b><br/><code>Y = c &middot; Q<sup>f</sup></code><br/><i>Mean & Max Depth</i>"]
-        VEL["<b>Velocity (V)</b><br/><code>V = k &middot; Q<sup>m</sup></code><br/><i>Kinematic State</i>"]
+        TW["<b>TopWidth (TW)</b><br/><code>TW<sub>in</sub></code> (100% AEP) &bull; <code>TW<sub>bf</sub></code> (50% AEP)<br/><i>AHG Exponent b</i>"]
+        DEPTH["<b>Depth (Y)</b><br/><code>Y<sub>in</sub></code> (100% AEP) &bull; <code>Y<sub>bf</sub></code> (50% AEP)<br/><i>AHG Exponent f</i>"]
+        VEL["<b>Channel Shape (r)</b><br/><code>r = f / b = (1-b)/b</code><br/><i>Dingman Power-Law Bathymetry</i>"]
     end
 
     CONTINUITY ==> TARGETS
@@ -65,60 +65,67 @@ $$a \cdot c \cdot k = 1.0 \quad \text{and} \quad b + f + m = 1.0$$
 
 ### From AHG to Feature Hydraulic Geometry (FHG)
 
-While classical AHG applies only to individual gaged cross-sections, **Feature Hydraulic Geometry (FHG)** ([Johnson et al., 2023](https://doi.org/10.22541/au.167093222.95689047/v1); [Modaresi Rad et al., 2024](https://doi.org/10.1029/2024JH000173)) bridges localized at-a-station dynamics and continental-scale downstream scaling. FHG learns functional relationships between holistic catchment attributes (hydro-climate, terrain morphometry, lithology, and soils) and the hydraulic coefficients ($a, b$) to infer width across ungaged reaches.
+While classical AHG applies only to individual gaged cross-sections, **Feature Hydraulic Geometry (FHG)** bridges localized at-a-station dynamics and continental-scale downstream scaling. FHG learns functional relationships between holistic catchment attributes (hydro-climate, terrain morphometry, lithology, and soils) and the hydraulic coefficients ($a, b$) to infer width across ungaged reaches.
 
 ```mermaid
 flowchart TD
-    subgraph INPUTS ["Environmental & Physiographic Drivers"]
+    subgraph INPUTS ["1. Environmental & Physiographic Drivers (116 Features)"]
+        direction LR
         CLIM["<b>Hydro-Climatology</b><br/>• Mean Annual Precip<br/>• Soil Moisture (&theta;)<br/>• Evapotranspiration"]
-        TOPO["<b>Geomorphometry</b><br/>• Upstream Drainage Area (A)<br/>• Channel Slope (S)<br/>• TWI & Concavity (FCD)"]
-        SOIL["<b>Lithology & Soil</b><br/>• % Clay & Silt<br/>• Permeability (K<sub>sat</sub>)<br/>• Erodibility Indices"]
-        HYDRO["<b>Flow Frequency</b><br/>• Bankfull Flow (Q<sub>bf</sub>)<br/>• NWM Flood PCA<br/>• Base Flow Index"]
+        TOPO["<b>Geomorphometry</b><br/>• Upstream Drainage Area<br/>• Channel Bed Slope<br/>• TWI Index"]
+        SOIL["<b>Lithology & Soil</b><br/>• % Clay & Silt<br/>• Permeability (K<sub>sat</sub>)<br/>• Saturated Moisture"]
+        HYDRO["<b>Flow Frequency</b><br/>• NWM Flood Frequency<br/>• PCA Components<br/>• Base Flow Index"]
     end
 
-    subgraph ML ["v1.0 Ensemble Architecture"]
-        MODELS["<b>Base Learners</b><br/>XGBoost &bull; ExtraTrees &bull; LightGBM &bull; CatBoost &bull; Random Forest"]
-        STACK["<b>Stacked Meta-Learner</b><br/>Optimized Multi-Model Generalization"]
+    subgraph ML ["2. Multi-Tier ML Ensemble Architecture"]
+        direction LR
+        MODELS["<b>Constituent Base Models</b><br/>XGBoost &bull; ExtraTrees &bull; LightGBM &bull; CatBoost &bull; Random Forest"]
+        STACK["<b>Stacked Meta-Learner</b><br/>Optimized Level-1 Generalization on OOF Predictions"]
         MODELS --> STACK
     end
 
-    subgraph OUTPUTS ["Continental TopWidth Predictions"]
-        IN_CH["<b>In-Channel TopWidth</b><br/><code>W(Q) = a &middot; Q<sup>b</sup></code><br/><i>Continuous Variable Flow</i>"]
-        BF["<b>Bankfull TopWidth</b><br/><code>W<sub>bf</sub> = a &middot; Q<sub>bf</sub><sup>b</sup></code><br/><i>Channel-Forming Capacity</i>"]
+    subgraph OUTPUTS ["3. 100% & 50% AEP TopWidth & AHG Parameterization"]
+        direction LR
+        IN_CH["<b>In-Channel TopWidth (100% AEP)</b><br/><code>TW<sub>in</sub></code> at 100% AEP flow (Q<sub>100%</sub>)<br/><i>Mean annual active in-channel width</i>"]
+        BF["<b>Bankfull TopWidth (50% AEP)</b><br/><code>TW<sub>bf</sub></code> at 50% AEP flow (Q<sub>50%</sub>)<br/><i>2-year channel-forming bankfull width</i>"]
+        AHG_B["<b>AHG Width Exponent (b)</b><br/><code>b = &part;ln(W)/&part;ln(Q)</code><br/><i>(Used with f for Dingman r = f / b)</i>"]
     end
 
     INPUTS ==> ML
-    STACK ==> IN_CH
-    STACK ==> BF
+    ML ==> OUTPUTS
 
-    classDef default fill:#1e293b,stroke:#475569,stroke-width:1.5px,color:#f8fafc;
-    classDef highlight fill:#c2410c,stroke:#fb923c,stroke-width:2px,color:#ffffff;
-    class STACK highlight;
+    class INPUTS highlight-blue;
+    class ML highlight-blue;
+    class IN_CH highlight-teal;
+    class BF highlight-orange;
+    class AHG_B highlight-blue;
 ```
 
 ---
 
-## Two Regimes: In-Channel vs. Bankfull Width
+## Two Regimes: In-Channel (100% AEP) vs. Bankfull (50% AEP) TopWidth
 
-The v1.0 framework models channel top width under two distinct hydrologic states:
+The v1.0 framework models channel top width under two distinct flow regimes defined by USGS NWIS flood frequency annual exceedance probabilities:
 
-| Dimension | Governing Equation | Hydrologic Role | Data Source & Calibration |
+| Dimension | Governing Discharge | Hydrologic Definition | Training Data Derivation |
 | :--- | :--- | :--- | :--- |
-| **In-Channel Width ($W$)** | $W(Q) = a \cdot Q^b$ | Continuous time-varying water surface width under baseflow, median, and sub-bankfull flows. | Calibrated against thousands of multi-flow Acoustic Doppler Current Profiler (ADCP) field surveys from the USGS HYDRoSWOT database. |
-| **Bankfull Width ($W_{bf}$)** | $W_{bf} = a \cdot Q_{bf}^b$ | Maximum top width of the active channel prior to floodplain inundation (channel-forming discharge $Q_{bf} \approx Q_{1.5}$). | Coupled with 1.5-year recurrence flood statistics simulated by the National Water Model (NWM 2.1). |
+| **In-Channel Width ($TW_{\text{in}}$)** | **100% AEP Discharge ($Q_{\text{100\% AEP}}$)** | 1-year recurrence interval / mean annual flow within active banks. | Extracted directly from USGS HYDRoSWOT ADCP stage-discharge rating curves at the 100% AEP flow threshold. |
+| **Bankfull Width ($TW_{\text{bf}}$)** | **50% AEP Discharge ($Q_{\text{50\% AEP}}$)** | 2-year recurrence interval ($Q_2$) channel-forming bankfull flow. | Extracted directly from USGS HYDRoSWOT ADCP stage-discharge rating curves at the 50% AEP flow threshold. |
 
-!!! info "In-Channel vs. Bankfull Significance"
-    * **In-Channel Width ($W$)** directly determines low-flow wetted habitat, baseflow travel times, and sub-grid storage for continuous hydrological routing.
-    * **Bankfull Width ($W_{bf}$)** defines channel conveyance limits, the onset threshold of floodplain overbank flow, and boundary shear stress distributions during flood events.
+The ML ensemble directly learns and predicts both **$TW_{\text{in}}$** (at 100% AEP) and **$TW_{\text{bf}}$** (at 50% AEP) across all CONUS reaches. In parallel, continuous At-a-station Hydraulic Geometry (AHG) power laws are fitted to the multi-flow ADCP soundings to extract the width scaling exponent $b$, which is coupled with depth exponent $f$ exclusively to derive the Dingman cross-sectional shape parameter ($r = f/b$).
+
+!!! info "Operational Hydrologic Significance"
+    * **In-Channel Width ($TW_{\text{in}}$ at 100% AEP)** directly determines baseflow wetted perimeter, in-stream aquatic habitat, and sub-grid channel storage during routine non-flood hydrologic routing.
+    * **Bankfull Width ($TW_{\text{bf}}$ at 50% AEP)** defines the conveyance capacity threshold before overbank spill, controlling the onset of floodplain inundation for FEMA Flood Insurance Studies (FIS) and NextGen FIM.
 
 ---
 
 ## Continental Mapping Across CONUS
 
-The trained ensemble pipeline was applied to the entire High-Resolution National Hydrography Dataset (NHDPlusV2), generating reach-level predictions for over **2.7 million COMID stream reaches** across CONUS.
+The trained ensemble pipeline was applied to the entire High-Resolution Reference Fabric dataset, generating reach-level predictions for over **2.7 million COMID stream reaches** across CONUS.
 
 ![Continental TopWidth Distribution Across CONUS Flowlines](../../assets/images/v1.0/tw/Fig3_tw.png){ loading=lazy }
-*Figure 1: Continental reach-scale predictions of river top width mapped across NHDPlusV2 flowlines in the Continental United States (CONUS).*
+*Figure 1: Continental reach scale predictions of river top width mapped across Reference Fabric flowlines in the Continental United States (CONUS).*
 
 The continental map captures clear macro-geomorphic patterns:
 
@@ -130,54 +137,19 @@ The continental map captures clear macro-geomorphic patterns:
 
 ## Key Performance Summary
 
-Across rigorous out-of-fold spatial cross-validation and independent ADCP field benchmarks, the v1.0 TopWidth pipeline achieves exceptional predictive accuracy:
-
-$$\text{In-Channel TopWidth: } R^2 = 0.76, \quad \text{NNSE} = 0.88$$
-
-$$\text{Bankfull TopWidth: } R^2 = 0.82, \quad \text{NNSE} = 0.91$$
+Across rigorous out-of-fold spatial cross-validation and independent ADCP field benchmarks, the v1.0 TopWidth pipeline achieves high predictive accuracy:
 
 ```mermaid
-pie title v1.0 Model Variance Explained (R²)
-    "Bankfull TopWidth Explained (82%)" : 82
-    "Unexplained Variance (18%)" : 18
+pie title v1.0 Bankfull TopWidth Variance Explained (R²)
+    "Bankfull TopWidth Explained (76%)" : 76
+    "Unexplained Variance (24%)" : 24
 ```
 
 ### Major Scientific & Operational Milestones
 
-1. **Elimination of Regional Discontinuities**: Traditional regional regression equations (e.g., [Blackburn-Lynch et al., 2017](https://doi.org/10.1111/1752-1688.12567)) produce artificial boundary jumps at political and watershed divides. The v1.0 ML model provides seamless, hydro-climatically driven reach predictions across all 20 Hydrologic Landscape Regions (HLRs).
-2. **Superior Benchmarking**: The stacked meta-learner substantially outperforms classical global drainage area power laws ([Bieger et al., 2015](https://doi.org/10.1111/1752-1688.12282)) and modern machine learning models ([Doyle et al., 2023](https://doi.org/10.1029/2022WR033621)).
-3. **Physical Explainability via TreeSHAP**: Interpretability analysis confirms that predictions are governed by physically sound drivers—including bankfull discharge ($Q_{bf}$), flood frequency PC0, Topographic Wetness Index (TWI), and root-stabilizing soil moisture ($\theta$).
+1. **Elimination of Regional Discontinuities**: Traditional regional regression equations (e.g., [Blackburn-Lynch et al., 2017](https://doi.org/10.1111/1752-1688.12540)) produce artificial boundary jumps at political and watershed divides. The v1.0 ML model provides seamless, hydro-climatically driven reach predictions across all 20 Hydrologic Landscape Regions (HLRs).
+2. **Superior Benchmarking**: The proposed model substantially outperforms classical global discharge equations ([Andreadis et al., 2013](https://doi.org/10.1002/wrcr.20440)), global drainage area equations ([Frasson et al., 2019](https://doi.org/10.1029/2019GL082027)), and modern machine learning models ([Doyle et al., 2023](https://doi.org/10.1111/1752-1688.13116)).
+3. **Physical Explainability via TreeSHAP**: Interpretability analysis confirms that predictions are governed by physically sound drivers including bankfull discharge ($Q_{bf}$), flood frequency PC0, Topographic Wetness Index (TWI), and root-stabilizing soil moisture ($\theta$).
 
 ---
 
-## Section Navigation
-
-Explore the technical details of the v1.0 TopWidth modeling framework:
-
-<div class="grid cards" markdown>
-
--   :material-cpu-64-bit:{ .lg .middle } **[Model Architecture & Tuning](models.md)**
-
-    ---
-
-    Base algorithms (XGBoost, ExtraTrees, LightGBM, CatBoost, RF), stacked meta-learner design, target transformations, and feature selection.
-
-    [:octicons-arrow-right-24: Explore Model Pipeline](models.md)
-
--   :material-chart-box-outline:{ .lg .middle } **[Model Skill & Validation](skill.md)**
-
-    ---
-
-    In-channel and bankfull Goodness-of-Fit (NNSE, $R^2$, KGE), quantile diagnostics, and benchmarks against Blackburn-Lynch, Bieger, and Doyle.
-
-    [:octicons-arrow-right-24: View Performance Metrics](skill.md)
-
--   :material-lightbulb-on-outline:{ .lg .middle } **[Explainability (XAI)](xai.md)**
-
-    ---
-
-    Global TreeSHAP feature importance rankings, local explanations, and physical dependency analyses (TWI, soil moisture, flood frequency).
-
-    [:octicons-arrow-right-24: Inspect Geomorphic Drivers](xai.md)
-
-</div>

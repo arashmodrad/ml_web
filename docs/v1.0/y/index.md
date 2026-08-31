@@ -2,9 +2,7 @@
 title: Depth (Y) — v1.0 Overview
 ---
 
-# Continental River Depth Parameterization (v1.0)
-
-> **Publication Reference**: Modaresi Rad, A., et al. (2024). *Enhancing River Channel Dimension and Bathymetry Estimates Across Continental Scale Using Machine Learning and Functional Hydraulic Geometry*. **Journal of Geophysical Research: Machine Learning and Computation**, 1(3), e2024JH000173.
+# Continental River Depth Parameterization
 
 ---
 
@@ -12,41 +10,56 @@ title: Depth (Y) — v1.0 Overview
 
 River channel depth ($Y$ or $d$) is the primary vertical dimension governing in-channel conveyance capacity, bed shear stress distribution, and sediment transport dynamics. Across continental river networks, accurate representation of in-channel and bankfull depth is severely hindered by the **missing bathymetry problem** in digital elevation models (DEMs). 
 
-Version **v1.0** of the FEMA/NOAA-OWP channel geometry framework introduces a machine learning approach to parameterize continuous At-A-Station Functional Hydraulic Geometry (**FHG**) relationships ($Y = c \cdot Q^f$) across all **2.7 million+ NHDPlusV2 / COMID stream reaches** in the Conterminous United States (CONUS).
+Version **v1.0** of the FEMA/NOAA-OWP channel geometry framework introduces a machine learning framework to predict in-channel and bankfull channel depths (**$Y_{\text{in}}$ at 100% AEP** and **$Y_{\text{bf}}$ at 50% AEP**) and hydraulic geometry scaling exponents across all **2.7 million+ Reference Fabric COMID stream reaches** in the Conterminous United States (CONUS).
 
 ```mermaid
-flowchart LR
-    subgraph INPUTS ["Continental Environmental Inputs (>400 Features)"]
-        direction TB
-        HYD["<b>Hydrofabric & Topology</b><br/>Stream Order, Arbolate Sum"]
-        SOIL["<b>Soil & Geotechnical</b><br/>Clay %, Ksat, Soil Moisture"]
-        DEM["<b>DEM & Terrain</b><br/>Slope, Relief, NED Diversity"]
-        CLIM["<b>Climate & Flow Stats</b><br/>MAP, Aridity, NWM Q-Quantiles"]
+flowchart TD
+    subgraph INPUTS ["1. Continental Environmental Predictors (116 Features)"]
+        direction LR
+        HYD["<b>Hydrofabric & Topology</b><br/>Stream Order, Arbolate Sum, Length"]
+        SOIL["<b>Soil & Geotechnical</b><br/>Clay %, K<sub>sat</sub>, Moisture &theta;<sub>s</sub>"]
+        DEM["<b>DEM & Terrain</b><br/>Slope, Relief, TWI Index"]
+        CLIM["<b>Climate & Flow Dynamics</b><br/>MAP, Aridity, NWM 2.1 Frequencies"]
     end
 
-    subgraph REDUCTION ["Dimensionality Reduction"]
-        AE["<b>AutoEncoder & RFE</b><br/>Compress to ~60 Top Predictors"]
+    subgraph REDUCTION ["2. Dimensionality Reduction & Feature Optimization"]
+        AE["<b>Expert Screening &bull; Elbow Method &bull; PCA Decompositions</b><br/>Compresses 116 environmental predictors into 30 parsimonious, orthogonal features"]
     end
 
-    subgraph ENSEMBLE ["Multi-Tier Ensemble Modeling"]
-        direction TB
-        M1["<b>Tier 1: Best Single ML</b><br/>Tuned GBDT (XGBoost)"]
-        M2["<b>Tier 2: Voting Ensemble</b><br/>Average of Top 6-8 Models"]
-        M3["<b>Tier 3: Meta-Learner</b><br/>Stacked Learning (2nd Level)"]
+    subgraph ENSEMBLE ["3. Multi-Tier Modeling Cascade"]
+        direction LR
+        subgraph T1 ["Tier 1: Best Single Model"]
+            M1["<b>Tuned GBDT Regressor</b><br/><i>(e.g., CatBoost / XGBoost)</i>"]
+        end
+
+        subgraph T2 ["Tier 2: Voting Ensemble"]
+            M2["<b>Consensus Average</b><br/>Mean of top 6&ndash;8 tuned models"]
+        end
+
+        subgraph T3 ["Tier 3: Meta-Learner"]
+            M3["<b>Stacking Super-Learner</b><br/>Level-1 meta-model on OOF outputs"]
+        end
     end
 
-    subgraph OUTPUTS ["FHG & Depth Parameterization"]
-        direction TB
-        FHG_PARAM["<b>FHG Parameters</b><br/>Exponent <i>f</i> & Coeff <i>c</i>"]
-        DEPTH_PRED["<b>Dynamic Depth Prediction</b><br/><i>Y(Q) = c &middot; Q<sup>f</sup></i>"]
-        BF_DEPTH["<b>Bankfull Depth</b><br/><i>Y<sub>bf</sub></i> at <i>Q<sub>bf</sub></i>"]
+    subgraph OUTPUTS ["4. 100% & 50% AEP Depth & AHG Exponent Parameterization"]
+        direction LR
+        DEPTH_IN["<b>In-Channel Depth (100% AEP)</b><br/><code>Y<sub>in</sub></code> at 100% AEP flow (Q<sub>100%</sub>)<br/><i>Mean annual active in-channel depth</i>"]
+        DEPTH_BF["<b>Bankfull Depth (50% AEP)</b><br/><code>Y<sub>bf</sub></code> at 50% AEP flow (Q<sub>50%</sub>)<br/><i>2-year channel-forming bankfull depth</i>"]
+        AHG_F["<b>AHG Depth Exponent (f)</b><br/><code>f = &part;ln(Y)/&part;ln(Q)</code><br/><i>(Used with b for Dingman r = f / b)</i>"]
     end
 
-    INPUTS ==> REDUCTION ==> ENSEMBLE ==> OUTPUTS
+    INPUTS ==> REDUCTION
+    REDUCTION ==> ENSEMBLE
+    ENSEMBLE ==> OUTPUTS
 
-    class ENSEMBLE highlight-blue;
-    class M3 highlight-blue;
-    class OUTPUTS highlight-teal;
+    class INPUTS highlight-blue;
+    class REDUCTION highlight-blue;
+    class T1 highlight-blue;
+    class T2 highlight-teal;
+    class T3 highlight-orange;
+    class DEPTH_IN highlight-teal;
+    class DEPTH_BF highlight-orange;
+    class AHG_F highlight-blue;
 ```
 
 ---
@@ -55,7 +68,7 @@ flowchart LR
 
 | Metric / Dimension | Value / Finding | Scientific Significance |
 | :--- | :--- | :--- |
-| **CONUS Scope** | **2,770,000+ Reaches** | Complete high-resolution coverage across all NHDPlusV2 COMIDs |
+| **CONUS Scope** | **2,770,000+ Reaches** | Complete high-resolution coverage across all Reference Fabric COMIDs |
 | **Observation Base** | **3,500+ USGS / HYDRoSWOT ADCP Sites** | Quality-screened acoustic Doppler current profiler velocity-depth surveys ($R^2 \ge 0.80$) |
 | **Median Test NNSE** | **$\mathbf{> 0.88}$ (Meta-Learner)** | Normalized Nash-Sutcliffe Efficiency demonstrating high predictive accuracy |
 | **Extreme Flow Reliability** | **$R^2 = 0.84$ at $Q_{\max}$** | Accurate generalization at maximum observed historical flows without catastrophic saturation |
@@ -68,21 +81,6 @@ flowchart LR
 
 Digital Elevation Models derived from spaceborne radar (e.g., SRTM, NASADEM) or airborne Near-Infrared (NIR) LiDAR effectively capture floodplain and valley topography. However, infrared and optical wavelengths cannot penetrate open water bodies. Consequently, elevation grids represent the **water surface elevation** at the time of data acquisition rather than the true channel bed.
 
-```
-Submerged River Cross-Section:
-============================================================
-              Floodplain Bank (Captured by LiDAR DEM)
-                        \                /
-                         \  Water Line  /  <--- NIR LiDAR Reflects Here
-~~~~~~~~~~~~~~~~~~~~~~~~~~+~~~~~~~~~~~~+~~~~~~~~~~~~~~~~~~~~
-                          |  MISSING   |
-                          | BATHYMETRY |  <--- Unseen Inundation Volume
-                          \  (Y = c·Qᶠ)/
-                           \__________/
-                           Channel Bed
-============================================================
-```
-
 !!! danger "Hydraulic Consequences of Missing Bathymetry"
     Omitting in-channel bathymetry causes 1D and 2D hydrodynamic engines (e.g., HEC-RAS, NOAA NextGen FIM) to:
     
@@ -94,9 +92,22 @@ The **Functional Hydraulic Geometry (FHG)** framework solves this fundamental da
 
 ---
 
-## Theoretical Formulation: Functional Hydraulic Geometry (FHG)
+## Two Flow Regimes: In-Channel (100% AEP) vs. Bankfull (50% AEP) Depth
 
-Following the foundational theory of Leopold & Maddock (1953), hydraulic cross-section variables (Top Width $W$, Mean Depth $Y$, and Mean Velocity $V$) scale with discharge ($Q$) as simple power-law functions:
+The v1.0 framework parameterizes channel depth under two fundamental hydrologic benchmarks defined by USGS NWIS flood frequency annual exceedance probabilities:
+
+| Dimension | Governing Discharge | Hydrologic Definition | Training Data Derivation |
+| :--- | :--- | :--- | :--- |
+| **In-Channel Depth ($Y_{\text{in}}$)** | **100% AEP Discharge ($Q_{\text{100\% AEP}}$)** | 1-year recurrence interval / mean annual flow within active banks. | Extracted directly from USGS HYDRoSWOT ADCP stage-discharge rating curves at the 100% AEP flow threshold. |
+| **Bankfull Depth ($Y_{\text{bf}}$)** | **50% AEP Discharge ($Q_{\text{50\% AEP}}$)** | 2-year recurrence interval ($Q_2$) channel-forming bankfull flow. | Extracted directly from USGS HYDRoSWOT ADCP stage-discharge rating curves at the 50% AEP flow threshold. |
+
+The ML ensemble directly learns and predicts both **$Y_{\text{in}}$** (at 100% AEP) and **$Y_{\text{bf}}$** (at 50% AEP) across all CONUS reaches. In parallel, continuous At-a-station Hydraulic Geometry (AHG) power laws are fitted to the multi-flow ADCP soundings to extract the depth scaling exponent $f$, which is coupled with width exponent $b$ exclusively to derive the Dingman cross-sectional shape parameter ($r = f/b$).
+
+---
+
+## Theoretical Formulation: At-a-Station Hydraulic Geometry & Continuity
+
+Following Leopold & Maddock (1953), hydraulic cross-section variables (Top Width $W$, Mean Depth $Y$, and Mean Velocity $V$) scale with discharge ($Q$) as power-law functions:
 
 $$
 \begin{aligned}
@@ -106,26 +117,23 @@ V &= k \cdot Q^m
 \end{aligned}
 $$
 
-### Continuity & Exponent Sum Rules
+### Continuity Constraints & Exponent Sum Rules
 
-By conservation of mass for open channel flow:
-
-$$
-Q = W \cdot Y \cdot V = (a \cdot Q^b) \cdot (c \cdot Q^f) \cdot (k \cdot Q^m) = (a \cdot c \cdot k) \cdot Q^{b + f + m}
-$$
-
-This imposes two rigorous physical continuity constraints:
+By conservation of mass for open channel flow ($Q = W \cdot Y \cdot V = (a \cdot c \cdot k) \cdot Q^{b + f + m}$), exact continuity constraints must hold:
 
 $$
 a \cdot c \cdot k = 1.0 \quad \text{and} \quad b + f + m = 1.0
 $$
 
-### Physical Meaning of Depth Parameters ($f$ and $c$)
+### Role of Depth Exponent ($f$) in Shape Parameterization
 
-* **The Depth Exponent ($f$)**: Dictates the **rate of vertical channel deepening** in response to rising discharge ($\frac{dY}{dQ} = c \cdot f \cdot Q^{f-1}$). 
-    * Higher $f$ ($f > 0.40$): Deeply confined, incised, or steep-banked channels where stage rises rapidly with discharge.
-    * Lower $f$ ($f < 0.30$): Wide, unconfined, or braided channels where increased discharge causes lateral overbank spreading rather than rapid deepening.
-* **The Depth Coefficient ($c$)**: Represents the **characteristic depth at unit discharge** ($Q = 1\,\text{m}^3/\text{s}$ or $1\,\text{cfs}$). It scales with catchment size, longitudinal bed slope, and boundary resistance.
+The depth scaling exponent $f$ governs the rate of vertical channel deepening with flow ($\frac{dY}{dQ} = c \cdot f \cdot Q^{f-1}$). In the v1.0 pipeline, $f$ is predicted to calculate the continuous **Dingman cross-sectional shape exponent**:
+
+$$
+r = \frac{f}{b} = \frac{1 - b}{b}
+$$
+
+where higher $f/b$ ratios indicate entrenched, steep-walled channels and lower ratios denote wide, shallow alluvial channels.
 
 ---
 
@@ -176,9 +184,9 @@ graph TD
     class ML highlight-blue;
 ```
 
-1. **Tier 1 — Best Individual Model**: Out-of-bag tuned Gradient Boosted Decision Tree (GBDT).
-2. **Tier 2 — Voting Ensemble**: Blends predictions across the top 6–8 tuned models to mitigate individual algorithm variance.
-3. **Tier 3 — Meta-Learner**: Learns how individual model errors vary with catchment physiography (e.g., favoring tree models in high-relief headwaters and neural architectures in low-gradient basins), delivering the highest overall skill.
+1. **Tier 1: Best Individual Model**: Out-of-bag tuned Gradient Boosted Decision Tree (GBDT).
+2. **Tier 2: Voting Ensemble**: Blends predictions across the top 6–8 tuned models to mitigate individual algorithm variance.
+3. **Tier 3:  Meta-Learner**: Learns how individual model errors vary with catchment physiography (e.g., favoring tree models in high-relief headwaters and neural architectures in low-gradient basins), delivering the highest overall skill.
 
 ---
 
@@ -192,7 +200,7 @@ Explore the complete v1.0 Depth parameterization documentation across the dedica
     
     ---
     
-    Detailed breakdown of candidate ML models, feature engineering, AutoEncoder dimensionality reduction, and the Stacking Meta-Learner architecture.
+    Detailed breakdown of candidate ML models, feature engineering, elbow method and PCA dimensionality reduction, and the Stacking Meta-Learner architecture.
     
     [:octicons-arrow-right-24: View Model Architecture](models.md)
 

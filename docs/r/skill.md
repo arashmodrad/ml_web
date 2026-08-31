@@ -2,7 +2,7 @@
 title: Model Skill
 ---
 
-# Model Skill — Shape Exponent (Stage 3)
+# Model Skill: Shape Exponent (Stage 3)
 
 ---
 

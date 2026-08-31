@@ -2,7 +2,7 @@
 title: Explainability
 ---
 
-# Explainable AI (XAI) — Shape Exponent (Stage 3)
+# Explainable AI (XAI): Shape Exponent (Stage 3)
 
 Our explainability pipeline evaluates the feature attribution structure of the Stage 3 Dingman shape exponent ($r$) model, illuminating how upstream predicted geometry and cross-sectional aspect ratios govern channel curvature.
 

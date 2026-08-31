@@ -2,7 +2,7 @@
 title: Uncertainty Quantification
 ---
 
-# Uncertainty Quantification — Shape Exponent (Stage 3)
+# Uncertainty Quantification: Shape Exponent (Stage 3)
 
 Spatial flowline prediction maps display the reach-scale distribution of the Dingman cross-sectional shape exponent ($r$) across continental river networks.
 

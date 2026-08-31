@@ -1,4 +1,4 @@
-# Literature — Depth
+# Literature: Depth
 
 !!! info "Coming Soon"
     Theoretical background, downstream scaling synthesis, and depth estimation literature are currently being compiled.

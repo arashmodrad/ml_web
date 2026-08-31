@@ -3,32 +3,43 @@ title: Shape (R) v1.0 Overview
 description: Continental channel cross-sectional shape parameterization using Dingman continuous power-law geometry and Feature Hydraulic Geometry (FHG) in v1.0.
 ---
 
-# Shape ($r$) — v1.0 Parameterization Overview
+# Shape ($r$) Parameterization Overview
 
 In 1D and 2D hydrodynamic routing models (such as **HEC-RAS** and the **NextGen National Water Model**), the cross-sectional shape of a river channel controls the relationship between water surface elevation, conveyance area, wetted perimeter, and mean velocity. In the **v1.0 ML Parameterization Framework**, channel cross-sectional geometry is continuously parameterized using the power-law formulation introduced by **Dingman (2007)**, derived directly from machine-learned hydraulic geometry exponents.
 
 ---
 
-## The Missing Bathymetry Challenge
+## Derivation of Channel Shape ($r$) from Hydraulic Geometry Exponents
 
-Standard Digital Elevation Models (DEMs), such as USGS 3DEP LiDAR and NED, are derived from airborne sensors that cannot penetrate the water surface during normal or baseflow conditions. Consequently, DEMs accurately capture subaerial floodplain topography but exhibit a **missing bathymetry gap** below the bankfull water surface.
+In 1D and 2D hydraulic modeling, cross-sectional conveyance volume is governed by the channel shape exponent $r$. In the **v1.0 ML Framework**, $r$ is derived directly from the relationship between at-a-station depth scaling exponent $f$ and width scaling exponent $b$ ($r = f/b$) fitted from **USGS HYDRoSWOT ADCP** field measurements without requiring LiDAR bathymetry:
 
 ```mermaid
 flowchart LR
-    subgraph DEM ["Airborne LiDAR / DEM Surface"]
-        FP1["Left Floodplain\n(LiDAR Verified)"] --- WS["Flat Water Surface\n(Sensor Blind Spot)"] --- FP2["Right Floodplain\n(LiDAR Verified)"]
+    subgraph ADCP ["USGS HYDRoSWOT ADCP Soundings"]
+        DATA["<b>3,543 Field Stations</b><br/>Observed Stage-Discharge, Width, Depth & Velocity Profiling"]
     end
 
-    subgraph BATH ["ML-Derived Submerged Bathymetry"]
-        BED["Dingman Power-Law Bed Profile: z(x) = Y<sub>m</sub>* &middot; (2x / W*)<sup>r</sup>\nParameter r derived from FHG exponents f / b"]
+    subgraph EXP ["AHG Power-Law Exponents"]
+        AHG["<b>Continuity Exponents:</b><br/>• Width scaling: b (W &prop; Q<sup>b</sup>)<br/>• Depth scaling: f (Y &prop; Q<sup>f</sup>)<br/><i>Continuity: b + f + m = 1.0</i>"]
     end
 
-    WS -. "Missing In-Channel Bathymetry" .-> BED
-    class WS highlight-blue;
+    subgraph META ["Meta-Learner & ML Framework"]
+        ML_DERIVE["<b>Shape Exponent Derivation:</b><br/>r = f / b<br/>Generalization across 2.8M+ CONUS COMIDs"]
+    end
+
+    subgraph BED_SHAPE ["Dingman Power-Law Bathymetry"]
+        BED["<b>Continuous Cross-Sectional Geometry:</b><br/>z(x) = Y<sub>m</sub>* &middot; (2x / W*)<sup>r</sup><br/>Parameterizes full in-channel shape across flow regimes"]
+    end
+
+    ADCP ==> EXP ==> META ==> BED_SHAPE
+
+    class DATA highlight-blue;
+    class AHG highlight-blue;
+    class ML_DERIVE highlight-orange;
     class BED highlight-teal;
 ```
 
-Without accounting for submerged channel geometry, hydraulic models underestimate cross-sectional conveyance volume, leading to premature overbank flooding, distorted travel times, and inaccurate stage-discharge rating curves in FEMA Flood Insurance Studies (FIS) and continental Flood Inundation Mapping (FIM).
+By linking the rate of channel widening ($b$) and deepening ($f$) with flow to the cross-sectional geometry, the ML pipeline provides physically continuous channel profiles across all CONUS reaches.
 
 ---
 
@@ -71,7 +82,7 @@ The dimensionless parameter $r$ defines the curvature of the channel bed and lat
 
 ## Hydraulic Geometry Linkage: Connecting AHG to Exponent $r$
 
-In the classical **At-a-station Hydraulic Geometry (AHG)** framework established by Leopold & Maddock (1953) and extended to **Feature Hydraulic Geometry (FHG)** by Johnson et al. (2023), channel width ($W$), mean depth ($Y$), and mean velocity ($V$) scale with discharge ($Q$) as power-law functions:
+In the classical **At-a-station Hydraulic Geometry (AHG)** framework established by Leopold & Maddock (1953), channel width ($W$), mean depth ($Y$), and mean velocity ($V$) scale with discharge ($Q$) as power-law functions:
 
 $$
 W = a \cdot Q^b, \quad Y = c \cdot Q^f, \quad V = k \cdot Q^m
@@ -105,27 +116,8 @@ $$
 Comparing exponents between Dingman's geometric power law ($W \propto y^{1/r}$) and the hydraulic geometry stage relation ($W \propto Y^{b/f}$) yields the exact fundamental physical relationship:
 
 $$
-\boxed{r = \frac{f}{b}}
+r = \frac{f}{b}
 $$
-
-!!! note "Physical Significance of the Ratio $f / b$"
-    * When **$f > b$** ($r > 1$): Vertical depth changes outpace lateral widening with increasing discharge. This occurs when channel banks are cohesive, vegetated, or laterally confined.
-    * When **$b > f$** ($r < 1$): Lateral widening outpaces depth growth. This is characteristic of unconfined alluvial fans, arid braided rivers, and non-cohesive sandy washes.
-    * When **$f \approx 2b$** ($r \approx 2$): The channel maintains an equilibrium parabolic geometry, matching standard alluvial regime theory.
-
----
-
-## Analytical Geometry Properties
-
-A major computational advantage of the continuous Dingman formulation is that key cross-sectional properties can be computed **analytically** without requiring discretized numerical cross-section integration:
-
-| Geometric Parameter | Analytical Formula | $r=1.0$ (Triangle) | $r=1.75$ (Lane B) | $r=2.0$ (Parabola) | $r \to \infty$ (Rectangle) |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| **Bankfull Area ($A^*$)** | $A^* = \left(\frac{r}{r+1}\right) W^* Y_m^*$ | $0.500 \cdot W^* Y_m^*$ | $0.636 \cdot W^* Y_m^*$ | $0.667 \cdot W^* Y_m^*$ | $1.000 \cdot W^* Y_m^*$ |
-| **Mean Hydraulic Depth ($\bar{Y}^*$)** | $\bar{Y}^* = \left(\frac{r}{r+1}\right) Y_m^*$ | $0.500 \cdot Y_m^*$ | $0.636 \cdot Y_m^*$ | $0.667 \cdot Y_m^*$ | $1.000 \cdot Y_m^*$ |
-| **Cross-Sectional Shape Factor ($\lambda$)** | $\lambda = \frac{r}{r+1}$ | $0.500$ | $0.636$ | $0.667$ | $1.000$ |
-| **Wetted Perimeter ($P^*$)** | $P^* \approx W^* + \frac{2r}{r+1} \frac{(Y_m^*)^2}{W^*}$ | $W^* + \frac{(Y_m^*)^2}{W^*}$ | $W^* + 1.273 \frac{(Y_m^*)^2}{W^*}$ | $W^* + 1.333 \frac{(Y_m^*)^2}{W^*}$ | $W^* + 2Y_m^*$ |
-| **Hydraulic Radius ($R^*$)** | $R^* = \frac{A^*}{P^*}$ | $\frac{0.500 W^* Y_m^*}{W^* + (Y_m^*)^2/W^*}$ | $\frac{0.636 W^* Y_m^*}{W^* + 1.273 (Y_m^*)^2/W^*}$ | $\frac{0.667 W^* Y_m^*}{W^* + 1.333 (Y_m^*)^2/W^*}$ | $\frac{W^* Y_m^*}{W^* + 2Y_m^*}$ |
 
 ---
 
@@ -142,6 +134,6 @@ A major computational advantage of the continuous Dingman formulation is that ke
 
 ## Model Pipeline Navigation
 
-* **[Model Architecture & Meta-Learners](models.md)** — Multi-tier machine learning framework, AutoEncoder feature reduction, and meta-learner stacking.
-* **[Model Skill & Validation](skill.md)** — Continental validation against HYDRoSWOT ADCP surveys, Kling-Gupta Efficiency CDFs, and stream-order bias analysis.
-* **[Explainability & Physical Controls (XAI)](xai.md)** — SHAP global importance ranking, hydroclimatic interaction plots, and geomorphic sensitivity analysis.
+* **[Model Architecture & Meta-Learners](models.md)**: Multi-tier machine learning framework, elbow method & PCA feature reduction, and meta-learner stacking.
+* **[Model Skill & Validation](skill.md)**: Continental validation against HYDRoSWOT ADCP surveys, Kling-Gupta Efficiency CDFs, and stream-order bias analysis.
+* **[Explainability & Physical Controls (XAI)](xai.md)**: SHAP global importance ranking, hydroclimatic interaction plots, and geomorphic sensitivity analysis.

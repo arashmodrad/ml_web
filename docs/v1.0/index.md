@@ -13,7 +13,7 @@ Welcome to the **v1.0 Release** documentation for the continental-scale Machine 
 
 Standard Digital Elevation Models (DEMs) derived from airborne LiDAR or satellite sensors accurately capture terrestrial floodplain topography but cannot penetrate the water surface during survey conditions. This creates a critical **missing bathymetry gap** beneath the bankfull stage, distorting hydraulic conveyance, stage-discharge rating curves, and flood inundation extent in hydrographic models.
 
-**CONUS-FHG v1.0** resolves this fundamental challenge by extending classical **At-a-station Hydraulic Geometry (AHG)** into **Feature Hydraulic Geometry (FHG)**. By training a multi-tier machine learning ensemble on high-precision Acoustic Doppler Current Profiler (ADCP) surveys from the USGS HYDRoSWOT database and coupling them with National Water Model (NWM v2.1) flow dynamics, StreamCat landscape characteristics, POLARIS soils, and high-resolution DEM topography, the framework predicts continuous power-law geometry ($W \propto Q^b, Y \propto Q^f, V \propto Q^m$) and synthetic cross-sectional shape exponents ($r$) across millions of stream reaches.
+**CONUS-FHG v1.0** resolves this fundamental challenge by combining field-measured Acoustic Doppler Current Profiler (ADCP) soundings from the USGS HYDRoSWOT database with National Water Model (NWM v2.1) flow dynamics, StreamCat landscape characteristics, POLARIS soils, and high-resolution DEM topography. The machine learning framework predicts in-channel dimensions (at **100% AEP** discharge), bankfull dimensions (at **50% AEP** discharge), and continuous At-a-station Hydraulic Geometry (AHG) scaling exponents ($b, f$) to synthesize continuous Dingman cross-sectional shape exponents ($r = f/b$) across millions of stream reaches.
 
 ```mermaid
 flowchart LR
@@ -25,7 +25,7 @@ flowchart LR
 
     subgraph FE ["Feature Optimization"]
         direction TB
-        RED["<b>Dimensionality Reduction</b><br/>116 &rarr; 60 Features<br/>Recursive SHAP &bull; AutoEncoder"]
+        RED["<b>Dimensionality Reduction</b><br/>116 &rarr; 30 Features<br/>Elbow Method &bull; PCA"]
     end
 
     subgraph ML ["3-Tier Modeling Cascade"]
@@ -37,9 +37,9 @@ flowchart LR
 
     subgraph OUT ["Continental Geometry"]
         direction TB
-        TW["<b>TopWidth (W)</b><br/>W = a &middot; Q<sup>b</sup>"]
-        DEP["<b>Depth (Y)</b><br/>Y = c &middot; Q<sup>f</sup>"]
-        SHP["<b>Channel Shape (r)</b><br/>z(x) = Y<sub>m</sub>*(2x/W*)<sup>r</sup>"]
+        TW["<b>TopWidth (TW)</b><br/>100% &amp; 50% AEP Widths<br/>AHG Exponent <i>b</i>"]
+        DEP["<b>Depth (Y)</b><br/>100% &amp; 50% AEP Depths<br/>AHG Exponent <i>f</i>"]
+        SHP["<b>Channel Shape (r)</b><br/><i>r = f / b</i><br/>Dingman Bathymetry"]
     end
 
     IN ==> FE ==> ML ==> OUT
@@ -63,7 +63,7 @@ The v1.0 release directly reflects the peer-reviewed methodology and findings pu
     [:octicons-link-external-16: https://doi.org/10.1029/2024JH000173](https://doi.org/10.1029/2024JH000173){ target=_blank }
 
 ??? abstract "Paper Abstract (Click to expand)"
-    Accurate representation of river channel bathymetry is essential for hydrodynamic modeling, flood risk assessment, and ecological studies. However, direct measurements of in-channel bathymetry are sparse, and remote sensing methods such as LiDAR cannot penetrate water surfaces, leaving a critical data gap below the water surface. In this study, we present a machine learning framework to estimate channel dimensions across the Contiguous United States (CONUS). We leverage the USGS HYDRoSWOT acoustic Doppler current profiler (ADCP) dataset (3,543 stations across 1,432 distinct river systems) combined with the National Water Model (NWM v2.1) flood frequency reanalysis, hydrographic networks, landscape characteristics from StreamCat, POLARIS soil properties, and digital elevation models. Feature space is reduced from 116 candidate predictors to 60 optimized features using recursive SHAP importance screening and deep Denoising AutoEncoders. We evaluate a three-tier modeling strategy comparing the best individual hyperparameter-tuned model, a voting ensemble, and a stacking meta-learner. The framework yields high predictive skill (Normalized NSE > 0.85 for depth and width scaling) and enables synthetic reconstruction of 2D/3D channel cross-sections using Dingman's power-law shape formulation ($r$).
+    Accurate representation of river channel bathymetry is essential for hydrodynamic modeling, flood risk assessment, and ecological studies. However, direct measurements of in-channel bathymetry are sparse, and remote sensing methods cannot penetrate water surfaces, leaving a critical data gap below the water surface. In this study, we present a machine learning framework to estimate channel dimensions across the Contiguous United States (CONUS). We leverage the USGS HYDRoSWOT acoustic Doppler current profiler (ADCP) dataset (3,543 stations across 1,432 distinct river systems) combined with the National Water Model (NWM v2.1) flood frequency reanalysis, hydrographic networks, landscape characteristics from StreamCat, POLARIS soil properties, and digital elevation models. Feature space is reduced from 116 candidate predictors to 30 optimized features using expert knowledge screening, recursive feature elimination guided by model skill evaluation (elbow method), and Principal Component Analysis (PCA). We evaluate a three-tier modeling strategy comparing the best individual hyperparameter-tuned model, a voting ensemble, and a stacking meta-learner. The framework yields high predictive skill (Normalized NSE > 0.85 for depth and width scaling) and enables synthetic reconstruction of 2D/3D channel cross-sections using Dingman's power-law shape formulation ($r$).
 
 ---
 
@@ -77,11 +77,11 @@ The v1.0 release directly reflects the peer-reviewed methodology and findings pu
 
     Curated and quality-controlled **3,543 USGS streamflow stations** across **1,432 distinct river networks**, extracting hydraulic geometry power-law parameters while enforcing strict mass continuity ($a \cdot c \cdot k = 1.0$, $b + f + m = 1.0$).
 
--   :material-vector-arrange-below:{ .lg .middle } __AutoEncoder Feature Compression__
+-   :material-chart-bell-curve:{ .lg .middle } __Elbow Method & PCA Feature Reduction__
 
     ---
 
-    Compressed a massive, multi-collinear feature space of **116 candidate environmental variables** into **60 orthogonal predictors** using unsupervised Denoising AutoEncoders and game-theoretic SHAP pruning.
+    Optimized a high-dimensional feature space of **116 candidate environmental variables** into **30 parsimonious, orthogonal predictors** using expert screening, recursive skill-drop elbow optimization, and PCA.
 
 -   :material-layers-triple:{ .lg .middle } __3-Tier Ensembling Framework__
 
@@ -157,5 +157,5 @@ Explore the v1.0 documentation sections below:
 
 * **[Pipeline Overview](overview/index.md)**: End-to-end framework, hydrographic context, and study area analysis.
 * **[Data Sources & Quality Control](overview/data-sources.md)**: HYDRoSWOT ADCP data cleaning, continuity fitting, and environmental predictor PCA decompositions.
-* **[Methods & Feature Engineering](overview/methods.md)**: AutoEncoder dimensionality reduction, SHAP screening, multi-tier ensembling, and validation protocols.
+* **[Methods & Feature Engineering](overview/methods.md)**: Expert knowledge screening, recursive feature elimination with elbow method skill evaluation, PCA dimensionality reduction, and multi-tier ensembling.
 * **[Channel Shape Parameterization ($r$)](r/index.md)**: Deep dive into the Dingman power-law cross-section model and continental $r$ distributions.

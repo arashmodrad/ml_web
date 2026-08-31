@@ -2,7 +2,7 @@
 title: Uncertainty Quantification
 ---
 
-# Uncertainty Quantification — TopWidth (Stage 1)
+# Uncertainty Quantification: TopWidth (Stage 1)
 
 Spatial flowline prediction maps illustrate the geographic distribution of bankfull channel top width ($W_{bf}$) across diverse hydrologic regimes.
 

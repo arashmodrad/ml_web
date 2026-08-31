@@ -2,7 +2,7 @@
 title: Model Skill
 ---
 
-# Model Skill — TopWidth (Stage 1)
+# Model Skill: TopWidth (Stage 1)
 
 ---
 

@@ -2,7 +2,7 @@
 title: Model Skill
 ---
 
-# Model Skill — Depth (Stage 2)
+# Model Skill: Depth (Stage 2)
 
 ---
 
