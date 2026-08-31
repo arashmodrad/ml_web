@@ -1,4 +1,4 @@
-# Literature — TopWidth
+# Literature: TopWidth
 
 !!! info "Coming Soon"
     Detailed literature review, theoretical derivations, and historical benchmark comparisons are currently in preparation.

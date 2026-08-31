@@ -25,7 +25,7 @@ flowchart LR
 
     subgraph FE ["Feature Optimization"]
         direction TB
-        RED["<b>Dimensionality Reduction</b><br/>116 &rarr; 60 Features<br/>Elbow Method &bull; PCA"]
+        RED["<b>Dimensionality Reduction</b><br/>116 &rarr; 30 Features<br/>Elbow Method &bull; PCA"]
     end
 
     subgraph ML ["3-Tier Modeling Cascade"]
@@ -63,7 +63,7 @@ The v1.0 release directly reflects the peer-reviewed methodology and findings pu
     [:octicons-link-external-16: https://doi.org/10.1029/2024JH000173](https://doi.org/10.1029/2024JH000173){ target=_blank }
 
 ??? abstract "Paper Abstract (Click to expand)"
-    Accurate representation of river channel bathymetry is essential for hydrodynamic modeling, flood risk assessment, and ecological studies. However, direct measurements of in-channel bathymetry are sparse, and remote sensing methods cannot penetrate water surfaces, leaving a critical data gap below the water surface. In this study, we present a machine learning framework to estimate channel dimensions across the Contiguous United States (CONUS). We leverage the USGS HYDRoSWOT acoustic Doppler current profiler (ADCP) dataset (3,543 stations across 1,432 distinct river systems) combined with the National Water Model (NWM v2.1) flood frequency reanalysis, hydrographic networks, landscape characteristics from StreamCat, POLARIS soil properties, and digital elevation models. Feature space is reduced from 116 candidate predictors to 60 optimized features using expert knowledge screening, recursive feature elimination guided by model skill evaluation (elbow method), and Principal Component Analysis (PCA). We evaluate a three-tier modeling strategy comparing the best individual hyperparameter-tuned model, a voting ensemble, and a stacking meta-learner. The framework yields high predictive skill (Normalized NSE > 0.85 for depth and width scaling) and enables synthetic reconstruction of 2D/3D channel cross-sections using Dingman's power-law shape formulation ($r$).
+    Accurate representation of river channel bathymetry is essential for hydrodynamic modeling, flood risk assessment, and ecological studies. However, direct measurements of in-channel bathymetry are sparse, and remote sensing methods cannot penetrate water surfaces, leaving a critical data gap below the water surface. In this study, we present a machine learning framework to estimate channel dimensions across the Contiguous United States (CONUS). We leverage the USGS HYDRoSWOT acoustic Doppler current profiler (ADCP) dataset (3,543 stations across 1,432 distinct river systems) combined with the National Water Model (NWM v2.1) flood frequency reanalysis, hydrographic networks, landscape characteristics from StreamCat, POLARIS soil properties, and digital elevation models. Feature space is reduced from 116 candidate predictors to 30 optimized features using expert knowledge screening, recursive feature elimination guided by model skill evaluation (elbow method), and Principal Component Analysis (PCA). We evaluate a three-tier modeling strategy comparing the best individual hyperparameter-tuned model, a voting ensemble, and a stacking meta-learner. The framework yields high predictive skill (Normalized NSE > 0.85 for depth and width scaling) and enables synthetic reconstruction of 2D/3D channel cross-sections using Dingman's power-law shape formulation ($r$).
 
 ---
 
@@ -81,7 +81,7 @@ The v1.0 release directly reflects the peer-reviewed methodology and findings pu
 
     ---
 
-    Optimized a high-dimensional feature space of **116 candidate environmental variables** into **60 parsimonious, orthogonal predictors** using expert screening, recursive skill-drop elbow optimization, and PCA.
+    Optimized a high-dimensional feature space of **116 candidate environmental variables** into **30 parsimonious, orthogonal predictors** using expert screening, recursive skill-drop elbow optimization, and PCA.
 
 -   :material-layers-triple:{ .lg .middle } __3-Tier Ensembling Framework__
 

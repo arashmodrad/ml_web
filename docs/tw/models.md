@@ -2,7 +2,7 @@
 title: Model Architecture
 ---
 
-# Model Architecture — TopWidth (Stage 1)
+# Model Architecture: TopWidth
 
 Bankfull top width ($W_{bf}$) forms **Stage 1** of our cascaded machine learning parameterization framework. As the primary horizontal scaling dimension of river systems, accurate width estimation anchors all subsequent downstream predictions (Depth, Shape, and Manning's Roughness).
 

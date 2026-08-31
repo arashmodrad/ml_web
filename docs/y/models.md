@@ -2,7 +2,7 @@
 title: Model Architecture
 ---
 
-# Model Architecture — Depth (Stage 2)
+# Model Architecture: Depth
 
 Bankfull depth ($d_{bf}$) constitutes **Stage 2** of our cascaded machine learning parameterization pipeline. In river hydraulics, depth governs cross-sectional conveyance capacity, boundary shear stress ($\tau_b = \gamma R S$), and sediment transport competence.
 

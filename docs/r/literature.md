@@ -1,4 +1,4 @@
-# Literature — Shape
+# Literature: Shape
 
 !!! info "Coming Soon"
     Mathematical derivations of cross-sectional geometry, power-law channel theory, and geomorphic classifications are being prepared.

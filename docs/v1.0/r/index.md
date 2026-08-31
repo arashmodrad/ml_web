@@ -82,7 +82,7 @@ The dimensionless parameter $r$ defines the curvature of the channel bed and lat
 
 ## Hydraulic Geometry Linkage: Connecting AHG to Exponent $r$
 
-In the classical **At-a-station Hydraulic Geometry (AHG)** framework established by Leopold & Maddock (1953) and extended to **Feature Hydraulic Geometry (FHG)** by Johnson et al. (2023), channel width ($W$), mean depth ($Y$), and mean velocity ($V$) scale with discharge ($Q$) as power-law functions:
+In the classical **At-a-station Hydraulic Geometry (AHG)** framework established by Leopold & Maddock (1953), channel width ($W$), mean depth ($Y$), and mean velocity ($V$) scale with discharge ($Q$) as power-law functions:
 
 $$
 W = a \cdot Q^b, \quad Y = c \cdot Q^f, \quad V = k \cdot Q^m
@@ -116,27 +116,8 @@ $$
 Comparing exponents between Dingman's geometric power law ($W \propto y^{1/r}$) and the hydraulic geometry stage relation ($W \propto Y^{b/f}$) yields the exact fundamental physical relationship:
 
 $$
-\boxed{r = \frac{f}{b}}
+r = \frac{f}{b}
 $$
-
-!!! note "Physical Significance of the Ratio $f / b$"
-    * When **$f > b$** ($r > 1$): Vertical depth changes outpace lateral widening with increasing discharge. This occurs when channel banks are cohesive, vegetated, or laterally confined.
-    * When **$b > f$** ($r < 1$): Lateral widening outpaces depth growth. This is characteristic of unconfined alluvial fans, arid braided rivers, and non-cohesive sandy washes.
-    * When **$f \approx 2b$** ($r \approx 2$): The channel maintains an equilibrium parabolic geometry, matching standard alluvial regime theory.
-
----
-
-## Analytical Geometry Properties
-
-A major computational advantage of the continuous Dingman formulation is that key cross-sectional properties can be computed **analytically** without requiring discretized numerical cross-section integration:
-
-| Geometric Parameter | Analytical Formula | $r=1.0$ (Triangle) | $r=1.75$ (Lane B) | $r=2.0$ (Parabola) | $r \to \infty$ (Rectangle) |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| **Bankfull Area ($A^*$)** | $A^* = \left(\frac{r}{r+1}\right) W^* Y_m^*$ | $0.500 \cdot W^* Y_m^*$ | $0.636 \cdot W^* Y_m^*$ | $0.667 \cdot W^* Y_m^*$ | $1.000 \cdot W^* Y_m^*$ |
-| **Mean Hydraulic Depth ($\bar{Y}^*$)** | $\bar{Y}^* = \left(\frac{r}{r+1}\right) Y_m^*$ | $0.500 \cdot Y_m^*$ | $0.636 \cdot Y_m^*$ | $0.667 \cdot Y_m^*$ | $1.000 \cdot Y_m^*$ |
-| **Cross-Sectional Shape Factor ($\lambda$)** | $\lambda = \frac{r}{r+1}$ | $0.500$ | $0.636$ | $0.667$ | $1.000$ |
-| **Wetted Perimeter ($P^*$)** | $P^* \approx W^* + \frac{2r}{r+1} \frac{(Y_m^*)^2}{W^*}$ | $W^* + \frac{(Y_m^*)^2}{W^*}$ | $W^* + 1.273 \frac{(Y_m^*)^2}{W^*}$ | $W^* + 1.333 \frac{(Y_m^*)^2}{W^*}$ | $W^* + 2Y_m^*$ |
-| **Hydraulic Radius ($R^*$)** | $R^* = \frac{A^*}{P^*}$ | $\frac{0.500 W^* Y_m^*}{W^* + (Y_m^*)^2/W^*}$ | $\frac{0.636 W^* Y_m^*}{W^* + 1.273 (Y_m^*)^2/W^*}$ | $\frac{0.667 W^* Y_m^*}{W^* + 1.333 (Y_m^*)^2/W^*}$ | $\frac{W^* Y_m^*}{W^* + 2Y_m^*}$ |
 
 ---
 
@@ -153,6 +134,6 @@ A major computational advantage of the continuous Dingman formulation is that ke
 
 ## Model Pipeline Navigation
 
-* **[Model Architecture & Meta-Learners](models.md)** — Multi-tier machine learning framework, elbow method & PCA feature reduction, and meta-learner stacking.
-* **[Model Skill & Validation](skill.md)** — Continental validation against HYDRoSWOT ADCP surveys, Kling-Gupta Efficiency CDFs, and stream-order bias analysis.
-* **[Explainability & Physical Controls (XAI)](xai.md)** — SHAP global importance ranking, hydroclimatic interaction plots, and geomorphic sensitivity analysis.
+* **[Model Architecture & Meta-Learners](models.md)**: Multi-tier machine learning framework, elbow method & PCA feature reduction, and meta-learner stacking.
+* **[Model Skill & Validation](skill.md)**: Continental validation against HYDRoSWOT ADCP surveys, Kling-Gupta Efficiency CDFs, and stream-order bias analysis.
+* **[Explainability & Physical Controls (XAI)](xai.md)**: SHAP global importance ranking, hydroclimatic interaction plots, and geomorphic sensitivity analysis.

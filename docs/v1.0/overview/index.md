@@ -27,7 +27,7 @@ flowchart TD
     end
 
     subgraph ML ["3. Multi-Tier Machine Learning Generalization"]
-        PRED["<b>Continental ML Training & Stacking Meta-Learner:</b><br/>Trained on 60 curated predictors (NWM 2.1, POLARIS Soils, 3DEP DEM, PRISM Climate, StreamCat)<br/>Predicts 100% AEP &amp; 50% AEP dimensions and AHG exponents across 2.8M+ Reference Fabric reaches"]
+        PRED["<b>Continental ML Training & Stacking Meta-Learner:</b><br/>Trained on 30 curated predictors (NWM 2.1, POLARIS Soils, 3DEP DEM, PRISM Climate, StreamCat)<br/>Predicts 100% AEP &amp; 50% AEP dimensions and AHG exponents across 2.8M+ Reference Fabric reaches"]
     end
 
     subgraph BATH ["4. Synthetic Channel Cross-Sectional Bathymetry"]
@@ -88,7 +88,7 @@ $$
 
 ### Feature Hydraulic Geometry (FHG)
 
-While AHG describes empirical relationships at individual gauge sites, **Feature Hydraulic Geometry (FHG)** (Johnson et al., 2023; Modaresi Rad et al., 2024) expands these relationships to regional and continental scales. FHG treats the power-law parameters ($a, b, c, f, k, m$) as continuous functional responses to holistic catchment and hydrographic features:
+While AHG describes empirical relationships at individual gauge sites, **Feature Hydraulic Geometry (FHG)** expands these relationships to regional and continental scales. FHG treats the power-law parameters ($a, b, c, f, k, m$) as continuous functional responses to holistic catchment and hydrographic features:
 
 $$
 \{a, b, c, f, k, m\} = \mathcal{F}\Big(\mathbf{X}_{\text{NWM}}, \mathbf{X}_{\text{StreamCat}}, \mathbf{X}_{\text{DEM}}, \mathbf{X}_{\text{Soil}}, \mathbf{X}_{\text{Climate}}\Big)

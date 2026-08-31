@@ -2,7 +2,7 @@
 title: Model Architecture
 ---
 
-# Model Architecture — Shape Exponent (Stage 3)
+# Model Architecture: Shape Exponent
 
 The cross-sectional shape exponent ($r$) constitutes **Stage 3** of our cascaded parameterization framework. In non-linear hydraulic routing and stage-discharge modeling, $r$ defines how conveyance area ($A$) and hydraulic radius ($R$) grow as water surface elevation rises from low baseflow to bankfull stage.
 

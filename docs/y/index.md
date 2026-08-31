@@ -1,4 +1,4 @@
-# Depth — Bankfull Channel Depth
+# Depth: Bankfull Channel Depth
 
 Bankfull channel depth ($d_{bf}$ or $y_{bf}$) represents the vertical dimension of the active channel geometry, governing flow conveyance capacity and boundary shear stress distributions. In classical hydraulic geometry, bankfull depth scales with discharge according to the empirical power-law of Leopold & Maddock (1953):
 
@@ -68,8 +68,8 @@ Predicted bankfull depth (`y_bf_pred`) feeds directly forward into subsequent st
 
 ## Section Navigation
 
-- [Literature Review](literature.md) — Downstream depth scaling, threshold channels, and tractive force theory.
-- [Model Architecture](models.md) — ResNet-XGBoost ensemble with cross-feature conditioning.
-- [Model Skill](skill.md) — Validation scores, scatter plots, and regional performance.
-- [Uncertainty Quantification](uncertainty.md) — Confidence distributions and spatial flowline maps.
-- [Explainability (XAI)](xai.md) — SHAP attribution, PDP curves, and causal interactions.
+- [Literature Review](literature.md): Downstream depth scaling, threshold channels, and tractive force theory.
+- [Model Architecture](models.md): ResNet-XGBoost ensemble with cross-feature conditioning.
+- [Model Skill](skill.md): Validation scores, scatter plots, and regional performance.
+- [Uncertainty Quantification](uncertainty.md): Confidence distributions and spatial flowline maps.
+- [Explainability (XAI)](xai.md): SHAP attribution, PDP curves, and causal interactions.

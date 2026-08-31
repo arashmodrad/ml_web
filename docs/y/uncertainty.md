@@ -2,7 +2,7 @@
 title: Uncertainty Quantification
 ---
 
-# Uncertainty Quantification — Depth (Stage 2)
+# Uncertainty Quantification: Depth (Stage 2)
 
 Spatial flowline prediction maps display the reach-scale distribution of bankfull depth ($d_{bf}$) across diverse hydrologic domains.
 

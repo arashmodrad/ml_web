@@ -2,7 +2,7 @@
 title: Depth (Y) — Explainable AI (XAI) & Physical Interpretability
 ---
 
-# Explainable AI (XAI) & Physical Interpretability (v1.0)
+# Explainable AI (XAI) & Physical Interpretability
 
 > **Publication Reference**: Modaresi Rad, A., et al. (2024). *Enhancing River Channel Dimension and Bathymetry Estimates Across Continental Scale Using Machine Learning and Functional Hydraulic Geometry*. **Journal of Geophysical Research: Machine Learning and Computation**, 1(3), e2024JH000173.
 
@@ -12,7 +12,7 @@ title: Depth (Y) — Explainable AI (XAI) & Physical Interpretability
 
 In continental-scale hydrologic and hydrodynamic modeling, high predictive accuracy is necessary but insufficient on its own. To be trusted in regulatory flood risk mapping (FEMA) and operational flood forecasting (NOAA-OWP National Water Model), machine learning models must demonstrate that their predictions conform to established **physical laws of open-channel hydraulics and fluvial geomorphology**.
 
-We employ **SHAP (SHapley Additive exPlanations)**—a cooperative game-theoretic framework developed by Lundberg & Lee (2017)—to compute exact, additive feature attributions for channel depth ($Y$) and Functional Hydraulic Geometry (FHG) parameters ($f$ and $c$).
+We employ **SHAP (SHapley Additive exPlanations)** a cooperative game-theoretic framework developed by Lundberg & Lee (2017) to compute exact, additive feature attributions for channel depth ($Y$) and Functional Hydraulic Geometry (FHG) parameters ($f$ and $c$).
 
 $$
 f(\mathbf{x}) = \phi_0 + \sum_{j=1}^{M} \phi_j(\mathbf{x})
@@ -154,6 +154,6 @@ flowchart TD
 
 ## Section Navigation
 
-- [Depth v1.0 Overview](index.md) — Problem statement, FHG continuity formulation, and summary.
-- [Model Architecture](models.md) — Candidate ML models, feature engineering, and the 3-tier Stacking Meta-Learner.
-- [Model Skill & Evaluation](skill.md) — Continental USGS validation, NNSE distributions, max flow diagnostics, and literature benchmarking.
+- [Depth v1.0 Overview](index.md): Problem statement, FHG continuity formulation, and summary.
+- [Model Architecture](models.md): Candidate ML models, feature engineering, and the 3-tier Stacking Meta-Learner.
+- [Model Skill & Evaluation](skill.md): Continental USGS validation, NNSE distributions, max flow diagnostics, and literature benchmarking.

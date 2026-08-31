@@ -2,7 +2,7 @@
 title: Explainability
 ---
 
-# Explainable AI (XAI) — TopWidth (Stage 1)
+# Explainable AI (XAI): TopWidth (Stage 1)
 
 Our explainability framework investigates how the Stage 1 model relies on base hydro-geomorphic features to predict bankfull top width ($W_{bf}$).
 

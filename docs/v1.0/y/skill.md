@@ -2,7 +2,7 @@
 title: Depth (Y) — Model Skill & Continental Evaluation
 ---
 
-# Model Skill & Continental Evaluation (v1.0)
+# Model Skill & Continental Evaluation
 
 > **Publication Reference**: Modaresi Rad, A., et al. (2024). *Enhancing River Channel Dimension and Bathymetry Estimates Across Continental Scale Using Machine Learning and Functional Hydraulic Geometry*. **Journal of Geophysical Research: Machine Learning and Computation**, 1(3), e2024JH000173.
 
@@ -42,13 +42,6 @@ The map below illustrates Normalized Nash-Sutcliffe Efficiency ($NNSE$) scores f
 
 ![Continental Station NNSE for Channel Depth Parameter f](../../assets/images/v1.0/y/Best_Model_Sub_f_cMAP_f_Y_Testing_NNSE.png){ loading=lazy }
 
-### Spatial Performance Highlights
-
-* **Nationwide Reliability**: Over **84% of evaluated USGS testing stations** achieve $NNSE > 0.80$, with continental median $NNSE = 0.89$.
-* **Eastern Humid & Appalachian Basins**: Strongest predictive skill ($NNSE > 0.90$) where dense vegetative cover and well-developed soils produce consistent hydraulic geometry relationships.
-* **Interior Plains & Midwest**: High accuracy across low-gradient alluvial systems (Upper Mississippi, Ohio, Missouri basins), confirming robust power-law scaling across wide drainage area spans.
-* **Western Mountain & Arid Playas**: Good performance maintained despite extreme topographic gradients and flash-flood hydrologic regimes, with minor localized drops in arid ephemeral channels where mobile sand beds alter cross-sectional stage-discharge relationships over time.
-
 ---
 
 ## Multi-Tier Ensemble Evaluation: CDF Analysis
@@ -61,7 +54,7 @@ Cumulative Distribution Functions (CDFs) of Normalized Nash-Sutcliffe Efficiency
 
 * **Continental Median Skill**: The median station performance reaches **$\text{NNSE} \approx 0.94$** (50th percentile red dashed marker).
 * **Reliability Threshold ($\text{NNSE} \ge 0.66$)**: Over **$88\%$ of all testing stations** exceed the $\text{NNSE} = 0.66$ benchmark (blue dashed marker) for high-accuracy hydrodynamic modeling.
-* **Top-Tier Precision**: Over **$60\%$ of stations** achieve $\text{NNSE} \ge 0.95$, reflecting near-perfect depth rating curve representation.
+* **Top-Tier Precision**: Over **$50\%$ of stations** achieve $\text{NNSE} \ge 0.94$, reflecting near-perfect depth rating curve representation.
 
 ---
 
@@ -88,10 +81,10 @@ To verify model stability across continental environmental gradients, goodness-o
 
 ### Quantile Performance Details
 
-* **Channel Slope**: $R^2$ ranges from $0.65$ in moderate gradient streams to $0.86$ in low-slope valleys ($0.0\text{--}0.001$).
-* **Bankfull Discharge ($Q_{\text{bf}}$)**: $R^2$ increases steadily with stream scale, from $0.32$ in headwater trickles ($0\text{--}53\text{ m}^3/\text{s}$) to $0.76$ in large channels ($303\text{--}15,466\text{ m}^3/\text{s}$).
-* **Elevation**: $R^2$ ranges from $0.67$ to $0.86$, peaking ($R^2 \approx 0.86$) across interior lowland plains ($121\text{--}216\text{ m}$).
-* **Base Flow Index (BFI)**: Strong predictive skill ($R^2 = 0.70\text{--}0.86$) across all baseflow contribution regimes.
+* **Channel Slope**: $R^2$ ranges from $0.65$ in moderate gradient streams to $0.86$ in low-slope valleys ($0.0- 0.001$).
+* **Bankfull Discharge ($Q_{\text{bf}}$)**: $R^2$ increases steadily with stream scale, from $0.32$ in headwater trickles ($0 - 53\text{ m}^3/\text{s}$) to $0.76$ in large channels ($303 - 15,466\text{ m}^3/\text{s}$).
+* **Elevation**: $R^2$ ranges from $0.67$ to $0.86$, peaking ($R^2 \approx 0.86$) across interior lowland plains ($121 - 216\text{ m}$).
+* **Base Flow Index (BFI)**: Strong predictive skill ($R^2 = 0.70 - 0.86$) across all baseflow contribution regimes.
 
 ---
 
@@ -105,17 +98,6 @@ We benchmarked the v1.0 Depth model against published continental regional curve
 
 ![Performance Comparison with Blackburn-Lynch et al. (2017) Across 20 HLRs](../../assets/images/v1.0/y/Fig7.png){ loading=lazy }
 *Figure 3: Goodness-of-Fit comparison between the proposed ML model and Blackburn-Lynch et al. (2017) regional regressions across all 20 Hydrologic Landscape Regions ([Modaresi Rad et al., 2024](https://doi.org/10.1029/2024JH000173)).*
-
-#### Overall Benchmark Against Blackburn-Lynch (2017)
-
-| Regime & Evaluation | Metric | Blackburn-Lynch (2017) | Proposed ML Model (Ours) |
-| :--- | :---: | :---: | :---: |
-| **Bankfull Depth ($Y_{\text{bf}}$)** | $R^2$ | $-0.72$ | **$0.80$** |
-| | $\text{KGE}$ | $-0.42$ | **$0.76$** |
-| | $\text{NRMSE}$ | $0.17$ | **$0.08$** |
-| **In-Channel Depth ($Y_{\text{in}}$)** | $R^2$ | $-0.45$ | **$0.77$** |
-| | $\text{KGE}$ | $-2.42$ | **$0.74$** |
-| | $\text{NRMSE}$ | $0.16$ | **$0.08$** |
 
 #### Regional Performance Across HLRs (Figure 7e)
 
@@ -132,14 +114,6 @@ The proposed ML model was benchmarked against global discharge-based depth equat
 ![Benchmarking Against Global Equations and Doyle et al. (2023) ML Models](../../assets/images/v1.0/y/Fig10.png){ loading=lazy }
 *Figure 4: Scatter distributions and Goodness-of-Fit metrics ($R^2, \text{KGE}, \text{NRMSE}$) comparing the proposed ML model against Andreadis et al. (2013) and Doyle et al. (2023) ([Modaresi Rad et al., 2024](https://doi.org/10.1029/2024JH000173)).*
 
-#### Comparative Performance Matrix (Figure 10)
-
-| Model / Approach | Target Regime | $R^2$ | $\text{KGE}$ | $\text{NRMSE}$ |
-| :--- | :--- | :---: | :---: | :---: |
-| **Global Discharge Based** ([Andreadis et al., 2013](https://doi.org/10.1002/wrcr.20440)) | Bankfull ($Y_{\text{bf}}$)<br/>In-Channel ($Y_{\text{in}}$) | $-0.84$<br/>$0.36$ | $-3.00$<br/>$-1.63$ | $0.22$<br/>$0.12$ |
-| **ML Model** ([Doyle et al., 2023](https://doi.org/10.1029/2022WR033621)) | Bankfull ($Y_{\text{bf}}$)<br/>In-Channel ($Y_{\text{in}}$) | $0.46$<br/>$0.32$ | $0.59$<br/>$-3.56$ | $0.14$<br/>$0.20$ |
-| **Proposed ML Model (CONUS-FHG v1.0)** | **Bankfull ($Y_{\text{bf}}$)**<br/>**In-Channel ($Y_{\text{in}}$)** | **$0.80$**<br/>**$0.77$** | **$0.76$**<br/>**$0.74$** | **$0.08$**<br/>**$0.08$** |
-
 ---
 
 ### 3. Physiographic Division & Province Evaluation (Figure S13)
@@ -149,13 +123,13 @@ Model generalizability was evaluated across US Physiographic Divisions (8 divisi
 ![Model Performance Partitioned by Physiographic Provinces and Divisions](../../assets/images/v1.0/y/Fig_S13.png){ loading=lazy }
 *Figure 5: Performance comparison of the proposed ML model against Blackburn-Lynch et al. (2017) and Bieger et al. (2015) across Physiographic Provinces and Divisions ([Modaresi Rad et al., 2024](https://doi.org/10.1029/2024JH000173)).*
 
-* **Physiographic Provinces (Figure S13c)**: Proposed ML model $R^2$ consistently ranges from $0.60\text{--}0.85$ across provinces, outperforming Blackburn-Lynch et al. (2017) in nearly every province.
-* **Physiographic Divisions (Figure S13d)**: Proposed ML model $R^2$ remains consistently high ($R^2 \approx 0.65\text{--}0.85$) across all 8 major divisions, significantly outperforming Bieger et al. (2015) regional estimates.
+* **Physiographic Provinces (Figure S13c)**: Proposed ML model $R^2$ consistently ranges from $0.60 - 0.85$ across provinces, outperforming Blackburn-Lynch et al. (2017) in nearly every province.
+* **Physiographic Divisions (Figure S13d)**: Proposed ML model $R^2$ remains consistently high ($R^2 \approx 0.65 - 0.85$) across all 8 major divisions, significantly outperforming Bieger et al. (2015) regional estimates.
 
 ---
 
 ## Section Navigation
 
-- [Depth v1.0 Overview](index.md) — Problem statement, FHG continuity formulation, and summary.
-- [Model Architecture](models.md) — Candidate ML models, feature engineering, and the 3-tier Stacking Meta-Learner.
-- [Explainable AI (XAI)](xai.md) — Global SHAP feature importances, 2D interaction dependencies, and physical interpretations.
+- [Depth v1.0 Overview](index.md): Problem statement, FHG continuity formulation, and summary.
+- [Model Architecture](models.md): Candidate ML models, feature engineering, and the 3-tier Stacking Meta-Learner.
+- [Explainable AI (XAI)](xai.md): Global SHAP feature importances, 2D interaction dependencies, and physical interpretations.

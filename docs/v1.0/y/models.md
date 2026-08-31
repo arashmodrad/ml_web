@@ -2,7 +2,7 @@
 title: Depth (Y) — Model Architectures & Multi-Tier Ensemble
 ---
 
-# Model Architectures & Multi-Tier Ensemble (v1.0)
+# Model Architectures & Multi-Tier Ensemble
 
 > **Publication Reference**: Modaresi Rad, A., et al. (2024). *Enhancing River Channel Dimension and Bathymetry Estimates Across Continental Scale Using Machine Learning and Functional Hydraulic Geometry*. **Journal of Geophysical Research: Machine Learning and Computation**, 1(3), e2024JH000173.
 
@@ -29,8 +29,8 @@ flowchart TD
         EXP["Expert Domain Pre-Screening"]
         RFE["Recursive Feature Elimination & Elbow Method"]
         PCA["Principal Component Analysis (PCA)"]
-        TOP60["<b>~60 Salient Predictors</b>"]
-        EXP --> RFE --> PCA --> TOP60
+        TOP30["<b>~30 Salient Predictors</b>"]
+        EXP --> RFE --> PCA --> TOP30
     end
 
     subgraph SELECTION ["3. 50 Candidate ML Screening & Hyperparameter Tuning"]
@@ -120,7 +120,7 @@ To avoid collinearity, mitigate the curse of dimensionality, and eliminate spuri
 2. **Recursive Feature Elimination & Elbow Method**: Iteratively trains gradient boosted models, dropping the least influential predictors while tracking model skill (KGE, NNSE). The **Elbow Method** is used to identify the optimal inflection point that maximizes predictive performance with minimal complexity.
 3. **Principal Component Analysis (PCA)**: High-dimensional collinear thematic subsets (such as multi-recurrence flood frequency distributions and soil textural profiles) are decomposed into orthogonal principal components (PC0, PC1, etc.).
 
-This optimizes the predictor space to **~60 orthogonal, physically informative features**.
+This optimizes the predictor space to **~30 orthogonal, physically informative features**.
 
 ---
 
@@ -130,32 +130,32 @@ Rather than relying on a single learning algorithm, the framework implements a t
 
 ```mermaid
 classDiagram
-    class Tier1_BestModel {
+    class BestModel {
         +Algorithm: Tuned XGBoost / CatBoost
         +Type: Individual Gradient Boosted Tree
         +Optimization: Bayesian Hyperparameter Tuning
         +Characteristics: High accuracy on dominant geomorphic regimes
     }
-    class Tier2_VotingEnsemble {
+    class VotingEnsemble {
         +Algorithm: Averaging / Weighted Blending
         +BaseModels: Top 6-8 ML algorithms
         +Formula: ŷ = 1/M ∑ ŷᵢ
         +Characteristics: Reduces individual model variance and outliers
     }
-    class Tier3_MetaLearner {
+    class MetaLearner {
         +Algorithm: Stacked Generalization (Level-2 Regressor)
         +Inputs: Out-of-fold predictions from Base Models
         +Conditioning: Catchment physiography & climate
         +Characteristics: Learns model strengths & error correlations
     }
-    Tier1_BestModel <|-- Tier2_VotingEnsemble
-    Tier2_VotingEnsemble <|-- Tier3_MetaLearner
+    BestModel <|-- VotingEnsemble
+    VotingEnsemble <|-- MetaLearner
 ```
 
 ### Tier 1: Best Individual ML Model
 
 * Evaluates **50 candidate regression algorithms** (including Random Forest, Extra Trees, XGBoost, LightGBM, CatBoost, Support Vector Machines, Multi-Layer Perceptrons, Ridge/ElasticNet) with default parameters to establish robust inductive biases.
-* Selects the single highest-performing algorithm—typically **XGBoost (Extreme Gradient Boosting)** or **CatBoost**—and performs Bayesian hyperparameter optimization over tree depth, learning rate, subsample ratio, and regularizers ($\lambda, \alpha$).
+* Selects the single highest-performing algorithm typically **XGBoost (Extreme Gradient Boosting)** or **CatBoost** and performs Bayesian hyperparameter optimization over tree depth, learning rate, subsample ratio, and regularizers ($\lambda, \alpha$).
 
 ### Tier 2: Voting Ensemble
 
@@ -211,19 +211,6 @@ where $\sigma^2_{\text{val}}$ is the residual mean squared error evaluated on th
 
 To ensure genuine out-of-sample generalization across unseen hydrographic basins:
 
-```
-Continental Dataset (3,500+ Gauged Sites / HYDRoSWOT ADCP)
-┌───────────────────────────────────────────────────────────────┐
-│                    K-Fold Spatial Split                       │
-├──────────────┬──────────────┬──────────────┬──────────────────┤
-│ Fold 1 (20%) │ Fold 2 (20%) │ Fold 3 (20%) │ ... Fold 5 (20%) │
-└──────────────┴──────────────┴──────────────┴──────────────────┘
-       │
-       ├── Training Set (80%): Multi-Seed Gradient Boosting + Early Stopping
-       ├── Validation Set: Evaluates patience threshold (100 rounds)
-       └── Out-of-Bag Test Set: Final blind evaluation (NNSE, KGE, RMSE)
-```
-
 1. **10-Fold Cross-Validation**: Field gauging stations across all 1,432 distinct river systems are partitioned across 10 folds to ensure rigorous out-of-bag (OOB) and out-of-fold (OOF) blind evaluation.
 2. **Early Stopping Regularization**: Training terminates when validation loss fails to decrease for 50 consecutive iterations.
 3. **Tree Subsampling & Regularization**: Tree models subsample features (`colsample_bytree = 0.70–0.80`) and training instances (`subsample = 0.80–0.85`) at each split to prevent overfitting.
@@ -232,6 +219,6 @@ Continental Dataset (3,500+ Gauged Sites / HYDRoSWOT ADCP)
 
 ## Section Navigation
 
-- [Depth v1.0 Overview](index.md) — Problem statement, FHG continuity formulation, and summary.
-- [Model Skill & Evaluation](skill.md) — Continental USGS validation, NNSE CDFs, max flow diagnostics, and literature benchmarking.
-- [Explainable AI (XAI)](xai.md) — Global SHAP attributions, feature interaction analyses, and physical mechanisms.
+- [Depth v1.0 Overview](index.md): Problem statement, FHG continuity formulation, and summary.
+- [Model Skill & Evaluation](skill.md): Continental USGS validation, NNSE CDFs, max flow diagnostics, and literature benchmarking.
+- [Explainable AI (XAI)](xai.md): Global SHAP attributions, feature interaction analyses, and physical mechanisms.

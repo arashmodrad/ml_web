@@ -3,7 +3,7 @@ title: Explainable AI & Geomorphic Drivers (v1.0)
 description: TreeSHAP feature attribution, global importance rankings, interaction analyses, and physical process discovery for TopWidth v1.0.
 ---
 
-# TopWidth: Explainable AI & Geomorphic Drivers (v1.0)
+# TopWidth: Explainable AI & Geomorphic Drivers
 
 A central objective of the v1.0 parameterization framework is ensuring that machine learning predictions are not mere statistical correlations, but physically consistent representations of fluvial mechanics ([Modaresi Rad et al., 2024](https://doi.org/10.1029/2024JH000173)). To interpret model behavior, quantify the contribution of each predictor, and discover non-linear environmental couplings, we utilize **TreeSHAP (SHapley Additive exPlanations)** grounded in cooperative game theory ([Lundberg & Lee, 2017](https://doi.org/10.48550/arXiv.1705.07874)).
 
@@ -174,6 +174,6 @@ flowchart TD
 
 ## Section Navigation
 
-- [TopWidth v1.0 Overview](index.md) — Problem statement, FHG power-law equations, and key findings.
-- [Model Architectures](models.md) — 50 baseline algorithms, Bayesian optimization, and Meta-Learner stacking.
-- [Model Skill & Continental Validation](skill.md) — Evaluation across 3,543 USGS stations, HLR comparisons, and literature benchmarking.
+- [TopWidth v1.0 Overview](index.md): Problem statement, FHG power-law equations, and key findings.
+- [Model Architectures](models.md): 50 baseline algorithms, Bayesian optimization, and Meta-Learner stacking.
+- [Model Skill & Continental Validation](skill.md): Evaluation across 3,543 USGS stations, HLR comparisons, and literature benchmarking.

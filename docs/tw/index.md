@@ -66,8 +66,8 @@ Predicted bankfull width (`tw_bf_pred`) feeds directly into downstream modeling 
 <!-- 
 ## Section Navigation
 
-- [Literature Review](literature.md) — Scaling laws, hydraulic geometry, and prior ML approaches.
-- [Model Architecture](models.md) — Hybrid ResNet-XGBoost ensemble design and feature processing.
-- [Model Skill](skill.md) — Prediction accuracy, KGE/NSE scores, and regional validation.
-- [Uncertainty Quantification](uncertainty.md) — Confidence distributions and spatial flowline maps.
-- [Explainability (XAI)](xai.md) — SHAP feature importance, PDP curves, and causal inference. -->
+- [Literature Review](literature.md): Scaling laws, hydraulic geometry, and prior ML approaches.
+- [Model Architecture](models.md): Hybrid ResNet-XGBoost ensemble design and feature processing.
+- [Model Skill](skill.md): Prediction accuracy, KGE/NSE scores, and regional validation.
+- [Uncertainty Quantification](uncertainty.md): Confidence distributions and spatial flowline maps.
+- [Explainability (XAI)](xai.md): SHAP feature importance, PDP curves, and causal inference. -->

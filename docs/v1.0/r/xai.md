@@ -39,32 +39,7 @@ Fluvial cross-sectional shape is strongly governed by the non-linear interaction
 
 ![SHAP Dependence & Soil Moisture Interaction Analysis for Channel Shape r](../../assets/images/v1.0/r/r_analysis.png){ loading=lazy }
 
-### Physical Regimes Revealed by the Interaction:
-
-```mermaid
-flowchart LR
-    subgraph ARID ["Arid / Flashy Ephemeral Regime (SM_max < 0.35, RunoffCat < 150 mm)"]
-        A1["Sparse Vegetation\nNon-Cohesive Sandy Bed"] --> A2["High Lateral Bank Mobility\nRapid Width Growth (b &Gt; f)"]
-        A2 --> A3["High SHAP Impact (+0.005 to +0.012)\nFlat-Bottomed / Braided (r &ge; 2.0)"]
-    end
-
-    subgraph HUMID ["Humid / Perennial Equilibrium Regime (SM_max > 0.42, RunoffCat > 450 mm)"]
-        H1["Dense Riparian Root Cover\nCohesive Clay-Silt Banks"] --> H2["Bank Stabilization\nDepth Incision Dominated (f &ge; b)"]
-        H2 --> H3["Negative SHAP Impact (-0.005 to -0.015)\nCohesive Parabolic / V-Notch (r &approx; 1.2 - 1.8)"]
-    end
-
-    class ARID highlight-blue;
-    class HUMID highlight-teal;
-```
-
-1. **Arid & Semi-Arid Ephemeral Washes ($\text{SM}_{\max} \le 0.35$, $\text{RunoffCat} < 150\text{ mm}$)**:
-   * Represented by the blue cluster at the top-left of the interaction plot.
-   * In arid environments with dry sandy soils and sparse riparian cover, channel banks lack cohesion and are easily eroded during high-intensity flash floods.
-   * Consequently, lateral widening dominates over vertical incision ($b \gg f$), producing broad, flat-bottomed ephemeral washes with positive SHAP contributions ($\text{SHAP} > +0.005$).
-2. **Humid & Perennial Basins ($\text{SM}_{\max} \ge 0.42$, $\text{RunoffCat} > 450\text{ mm}$)**:
-   * Represented by the pink/red cluster at the bottom-right of the interaction plot.
-   * Abundant soil moisture sustains dense riparian root matrices, while high clay fractions increase critical bank shear strength ($\tau_c$).
-   * Floods are conveyed through deeper, narrower channels ($f \ge b$), yielding negative SHAP contributions ($\text{SHAP} < -0.010$) that keep the shape exponent aligned with stable parabolic and cohesive regimes ($r \approx 1.5\text{--}1.8$).
+ High soil moisture ($\text{SM}_{\max} > 0.42$) and heavy runoff ($\text{RunoffCat} > 450\text{ mm}$, pink/red cluster) drive strong negative SHAP contributions, reflecting deep, cohesive parabolic channels.
 
 ---
 
@@ -98,14 +73,10 @@ In headwaters and montane gorges, high bedrock confinement physically restricts 
 ### 2. Geotechnical Bank Cohesion & Critical Shear Stress
 In alluvial plains, channel cross-sectional form reflects the balance between boundary shear stress ($\tau_0 = \gamma R S$) and the critical erodibility of bank materials ($\tau_c$). High soil moisture and clay content increase bank cohesion, allowing channels to maintain steeper sidewalls without geotechnical slumping.
 
-### 3. Sediment Transport Mode (Bedload vs. Suspended Load)
-* **Suspended-Load Channels** (high silt-clay fractions): Characterized by low width-to-depth ratios and steep, stable parabolic banks ($r \approx 1.75\text{--}2.2$).
-* **Bedload-Dominated Channels** (coarse gravels and non-cohesive sands): Require wide, shallow cross-sections to transport heavy sediment loads across the bed, resulting in lower aspect ratios and broader beds ($r < 1.5$).
-
 ---
 
 ## Model Pipeline Navigation
 
-* **[Overview & Dingman Geometry](index.md)** — Fundamentals of continuous channel power-law geometry and $r = f/b$ derivation.
-* **[Model Architecture & Meta-Learners](models.md)** — Machine learning workflows, elbow method & PCA feature reduction, and stacking algorithms.
-* **[Model Skill & Validation](skill.md)** — Continental validation against HYDRoSWOT ADCP surveys, Kling-Gupta Efficiency CDFs, and stream-order bias analysis.
+* **[Overview & Dingman Geometry](index.md)**: Fundamentals of continuous channel power-law geometry and $r = f/b$ derivation.
+* **[Model Architecture & Meta-Learners](models.md)**: Machine learning workflows, elbow method & PCA feature reduction, and stacking algorithms.
+* **[Model Skill & Validation](skill.md)**: Continental validation against HYDRoSWOT ADCP surveys, Kling-Gupta Efficiency CDFs, and stream-order bias analysis.

@@ -3,7 +3,7 @@ title: Model Architecture & Meta-Learners
 description: Multi-tier machine learning pipeline, elbow method feature reduction, PCA decomposition, and meta-learner ensemble architecture for channel shape exponent r in v1.0.
 ---
 
-# Model Architecture — Machine Learning & Meta-Learners
+# Model Architecture: Machine Learning & Meta-Learners
 
 Estimating the continuous Dingman channel shape exponent ($r$) across millions of ungauged river reaches requires an architecture that captures non-linear relationships across diverse physiographic, climatic, and geologic regimes. The **v1.0 Shape Modeling Pipeline** implements a multi-tier machine learning architecture that integrates expert knowledge screening, recursive feature elimination via the elbow method, Principal Component Analysis (PCA), tuned gradient-boosted ensembles, and a **Stacking Meta-Learner**.
 
@@ -21,7 +21,7 @@ flowchart TD
         F5["Climate & NWM 2.1\n(Precipitation, PET, Flood quartiles)"]
     end
 
-    subgraph REDUCTION ["2. Dimensionality Reduction (116 &rarr; 60 Features)"]
+    subgraph REDUCTION ["2. Dimensionality Reduction (116 &rarr; 30 Features)"]
         EXP["Expert Domain Pre-Screening\n(Eliminate unphysical & noisy variables)"]
         RFE["Recursive Feature Elimination & Elbow Method\n(Optimal complexity balance)"]
         PCA["Principal Component Analysis (PCA)\n(Orthogonal decomposition of collinear blocks)"]
@@ -94,7 +94,7 @@ $$
 \mathbf{Z} = \mathbf{X} \mathbf{W}
 $$
 
-This produces the final parsimonious matrix of **60 optimized predictors** for continental ML training.
+This produces the final parsimonious matrix of **30 optimized predictors** for continental ML training.
 
 ---
 
@@ -129,6 +129,6 @@ To guarantee model generalizability across 3.5+ million reaches in CONUS, the tr
 
 ## Model Pipeline Navigation
 
-* **[Overview & Dingman Geometry](index.md)** — Fundamentals of continuous channel power-law geometry and $r = f/b$ derivation.
-* **[Model Skill & Validation](skill.md)** — Empirical validation against field observations, CDF comparisons, and regional diagnostic maps.
-* **[Explainability (XAI)](xai.md)** — SHAP global feature attributions, soil moisture sensitivity, and geomorphic control mechanisms.
+* **[Overview & Dingman Geometry](index.md)**: Fundamentals of continuous channel power-law geometry and $r = f/b$ derivation.
+* **[Model Skill & Validation](skill.md)**: Empirical validation against field observations, CDF comparisons, and regional diagnostic maps.
+* **[Explainability (XAI)](xai.md)**: SHAP global feature attributions, soil moisture sensitivity, and geomorphic control mechanisms.

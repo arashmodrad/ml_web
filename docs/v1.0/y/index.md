@@ -23,7 +23,7 @@ flowchart TD
     end
 
     subgraph REDUCTION ["2. Dimensionality Reduction & Feature Optimization"]
-        AE["<b>Expert Screening &bull; Elbow Method &bull; PCA Decompositions</b><br/>Compresses 116 environmental predictors into 60 parsimonious, orthogonal features"]
+        AE["<b>Expert Screening &bull; Elbow Method &bull; PCA Decompositions</b><br/>Compresses 116 environmental predictors into 30 parsimonious, orthogonal features"]
     end
 
     subgraph ENSEMBLE ["3. Multi-Tier Modeling Cascade"]
@@ -184,9 +184,9 @@ graph TD
     class ML highlight-blue;
 ```
 
-1. **Tier 1 — Best Individual Model**: Out-of-bag tuned Gradient Boosted Decision Tree (GBDT).
-2. **Tier 2 — Voting Ensemble**: Blends predictions across the top 6–8 tuned models to mitigate individual algorithm variance.
-3. **Tier 3 — Meta-Learner**: Learns how individual model errors vary with catchment physiography (e.g., favoring tree models in high-relief headwaters and neural architectures in low-gradient basins), delivering the highest overall skill.
+1. **Tier 1: Best Individual Model**: Out-of-bag tuned Gradient Boosted Decision Tree (GBDT).
+2. **Tier 2: Voting Ensemble**: Blends predictions across the top 6–8 tuned models to mitigate individual algorithm variance.
+3. **Tier 3:  Meta-Learner**: Learns how individual model errors vary with catchment physiography (e.g., favoring tree models in high-relief headwaters and neural architectures in low-gradient basins), delivering the highest overall skill.
 
 ---
 

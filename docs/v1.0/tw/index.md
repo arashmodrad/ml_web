@@ -65,7 +65,7 @@ $$a \cdot c \cdot k = 1.0 \quad \text{and} \quad b + f + m = 1.0$$
 
 ### From AHG to Feature Hydraulic Geometry (FHG)
 
-While classical AHG applies only to individual gaged cross-sections, **Feature Hydraulic Geometry (FHG)** ([Johnson et al., 2023](https://doi.org/10.22541/au.167093222.95689047/v1); [Modaresi Rad et al., 2024](https://doi.org/10.1029/2024JH000173)) bridges localized at-a-station dynamics and continental-scale downstream scaling. FHG learns functional relationships between holistic catchment attributes (hydro-climate, terrain morphometry, lithology, and soils) and the hydraulic coefficients ($a, b$) to infer width across ungaged reaches.
+While classical AHG applies only to individual gaged cross-sections, **Feature Hydraulic Geometry (FHG)** bridges localized at-a-station dynamics and continental-scale downstream scaling. FHG learns functional relationships between holistic catchment attributes (hydro-climate, terrain morphometry, lithology, and soils) and the hydraulic coefficients ($a, b$) to infer width across ungaged reaches.
 
 ```mermaid
 flowchart TD
@@ -137,11 +137,7 @@ The continental map captures clear macro-geomorphic patterns:
 
 ## Key Performance Summary
 
-Across rigorous out-of-fold spatial cross-validation and independent ADCP field benchmarks, the v1.0 TopWidth pipeline achieves exceptional predictive accuracy:
-
-$$\text{In-Channel TopWidth (100\% AEP): } R^2 = 0.66, \quad \text{KGE} = 0.66, \quad \text{NRMSE} = 0.08$$
-
-$$\text{Bankfull TopWidth (50\% AEP): } R^2 = 0.76, \quad \text{KGE} = 0.78, \quad \text{NRMSE} = 0.05$$
+Across rigorous out-of-fold spatial cross-validation and independent ADCP field benchmarks, the v1.0 TopWidth pipeline achieves high predictive accuracy:
 
 ```mermaid
 pie title v1.0 Bankfull TopWidth Variance Explained (R²)
@@ -151,40 +147,9 @@ pie title v1.0 Bankfull TopWidth Variance Explained (R²)
 
 ### Major Scientific & Operational Milestones
 
-1. **Elimination of Regional Discontinuities**: Traditional regional regression equations (e.g., [Blackburn-Lynch et al., 2017](https://doi.org/10.1111/1752-1688.12567)) produce artificial boundary jumps at political and watershed divides. The v1.0 ML model provides seamless, hydro-climatically driven reach predictions across all 20 Hydrologic Landscape Regions (HLRs).
-2. **Superior Benchmarking**: The proposed model substantially outperforms classical global discharge equations ([Andreadis et al., 2013](https://doi.org/10.1002/wrcr.20440)), global drainage area equations ([Frasson et al., 2019](https://doi.org/10.1029/2019WR025345)), and modern machine learning models ([Doyle et al., 2023](https://doi.org/10.1029/2022WR033621)).
+1. **Elimination of Regional Discontinuities**: Traditional regional regression equations (e.g., [Blackburn-Lynch et al., 2017](https://doi.org/10.1111/1752-1688.12540)) produce artificial boundary jumps at political and watershed divides. The v1.0 ML model provides seamless, hydro-climatically driven reach predictions across all 20 Hydrologic Landscape Regions (HLRs).
+2. **Superior Benchmarking**: The proposed model substantially outperforms classical global discharge equations ([Andreadis et al., 2013](https://doi.org/10.1002/wrcr.20440)), global drainage area equations ([Frasson et al., 2019](https://doi.org/10.1029/2019GL082027)), and modern machine learning models ([Doyle et al., 2023](https://doi.org/10.1111/1752-1688.13116)).
 3. **Physical Explainability via TreeSHAP**: Interpretability analysis confirms that predictions are governed by physically sound drivers including bankfull discharge ($Q_{bf}$), flood frequency PC0, Topographic Wetness Index (TWI), and root-stabilizing soil moisture ($\theta$).
 
 ---
 
-## Section Navigation
-
-Explore the technical details of the v1.0 TopWidth modeling framework:
-
-<div class="grid cards" markdown>
-
--   :material-cpu-64-bit:{ .lg .middle } **[Model Architecture & Tuning](models.md)**
-
-    ---
-
-    Base algorithms (XGBoost, ExtraTrees, LightGBM, CatBoost, RF), stacked meta-learner design, target transformations, and feature selection.
-
-    [:octicons-arrow-right-24: Explore Model Pipeline](models.md)
-
--   :material-chart-box-outline:{ .lg .middle } **[Model Skill & Validation](skill.md)**
-
-    ---
-
-    In-channel and bankfull Goodness-of-Fit (NNSE, $R^2$, KGE), quantile diagnostics, and benchmarks against Blackburn-Lynch, Bieger, and Doyle.
-
-    [:octicons-arrow-right-24: View Performance Metrics](skill.md)
-
--   :material-lightbulb-on-outline:{ .lg .middle } **[Explainability (XAI)](xai.md)**
-
-    ---
-
-    Global TreeSHAP feature importance rankings, local explanations, and physical dependency analyses (TWI, soil moisture, flood frequency).
-
-    [:octicons-arrow-right-24: Inspect Geomorphic Drivers](xai.md)
-
-</div>
